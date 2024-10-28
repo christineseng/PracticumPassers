@@ -15,6 +15,7 @@ int main(int argc, char ** argv)
 {
     //hello
     //git push test 10/27/2024
+    //test comment
     SDL_Plotter g(1000,1000);
     int x,y; 
     int red, green, blue;
