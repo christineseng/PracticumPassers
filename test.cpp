@@ -13,8 +13,7 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-	//test
-
+    //git push test 10/27/2024
     SDL_Plotter g(1000,1000);
     int x,y; 
     int red, green, blue;
