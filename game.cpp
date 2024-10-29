@@ -8,7 +8,7 @@ void drawCircle(point loc, int size, color c, SDL_Plotter& g);
 
 int main(int argc, char ** argv)
 {
-
+    //test push
     SDL_Plotter g(1000,1000); //open canvas size 1000x1000
     point p(500, 500); //location for center of circle
     color black; //black
