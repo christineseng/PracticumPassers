@@ -23,9 +23,9 @@ int main(int argc, char ** argv)
     c.G = 0;
     c.B = 0;
     color w;
-    w.B = 255;
     w.R = 255;
     w.G = 255;
+    w.B = 255;
     int size = 100;
     Uint32 RGB;
 
