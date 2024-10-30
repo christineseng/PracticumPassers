@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <cmath>
+#include "force.h"
 #include "SDL_Plotter.h"
 
 using namespace std;
@@ -20,20 +21,26 @@ int main(int argc, char ** argv)
     SDL_Plotter g(1000, 1000);
     point p;
     point clickPos;
+    force f;
 
 
     p.x = 500;
     p.y = 50;
     color c;
-    c.R = 0;
-    c.B = 0;
-    c.G = 0;
+    color black;
+    black.R = 0;
+    black.B = 0;
+    black.G = 0;
+    color red;
+    red.R = 255;
+    red.B = 0; 
+    red.G = 0;
     int size = 10;
     int velocity = 10;
     int xDist;
     int yDist;
     double xPos; //keeps track of location as double for better accuracy
-    //double yPos;
+    double yPos;
     bool isFalling = false;
 
     Uint32 RGB;
@@ -48,26 +55,31 @@ int main(int argc, char ** argv)
         	p.y = 50;
         	p.x = 500;
         	xPos = p.x;
-        	xDist = fabs(clickPos.x - p.x);
-        	yDist = fabs(clickPos.y - p.y);
+            yPos = p.y;
+        	xDist = clickPos.x - p.x;
+        	yDist = clickPos.y - p.y;
+            //sets magnitude based on how far from start you click
+            f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+            f.setDirection(atan(static_cast<double>(xDist)/yDist));
+
+            c = black;
 			drawCircle(p, size, c, g);
 			isFalling = true;
         }
         
         //when clicked 
         if (isFalling) {
-        	p.y += velocity;
-        	if (clickPos.x > 500) {
-        		xPos += 10 * (xDist / static_cast<double>(yDist));
-        		p.x = static_cast<int>(xPos);
-        	} else if (clickPos.x == 500) {
-        		p.x += 0;
-        	}
-        	else {
-        		xPos -= 10 * (xDist / static_cast<double>(yDist));
-        		p.x = static_cast<int>(xPos);
-        	}
+            //change y and x pos based on magnitude and direction
+            yPos += f.getMagnitude() * cos(f.getDirection());
+            p.y = static_cast<int> (yPos);
+            xPos += f.getMagnitude() * sin(f.getDirection());
+            p.x = static_cast<int> (xPos);
 
+            if (p.x <= 10 || p.x >= 990 || p.y <= 10 || p.y >= 990){
+                isFalling = false;
+                c = red;
+                drawCircle(p, size, c, g);
+            }
         }
         g.update();
     }
