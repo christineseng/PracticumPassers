@@ -28,7 +28,7 @@ private:
 class Block{
 public:
     void drawSquare(point loc, int length, int width, color c, SDL_Plotter& win);
-    void drawTraingle(point loc, int size, color c, SDL_Plotter& g);
+    void drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter& g);
 private:
     int location;
     int size;
