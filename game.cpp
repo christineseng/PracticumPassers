@@ -10,10 +10,12 @@
 #include <cmath>
 #include "force.h"
 #include "SDL_Plotter.h"
+#include "flag.h"
+#include "Objects.h"
 
 using namespace std;
 
-void drawCircle(point loc, int size, color c, SDL_Plotter& g);
+//void drawCircle(point loc, int size, color c, SDL_Plotter& g);
 
 int main(int argc, char ** argv)
 {
@@ -22,6 +24,7 @@ int main(int argc, char ** argv)
     point p;
     point clickPos;
     force f;
+    Ball shooter;
 
 
     p.x = 500;
@@ -42,13 +45,26 @@ int main(int argc, char ** argv)
     double xPos; //keeps track of location as double for better accuracy
     double yPos;
     bool isFalling = false;
+    bool hitDetected = false;
+
+    Flag topFlag;
+    Flag bottomFlag;
+    Flag rightFlag;
+    Flag leftFlag;
 
     Uint32 RGB;
-    drawCircle(p, size, c, g);
+    shooter.drawBall(p, size, c, g);
+    //sets flags' initial position
+    topFlag.update(p.x, p.y - size/2);
+    bottomFlag.update(p.x, p.y + size/2);
+    rightFlag.update(p.x + size/2, p.y);
+    leftFlag.update(p.x - size/2, p.y);
+    
+
     while (!g.getQuit()) {
         g.clear();
 
-        drawCircle(p, size, c, g);
+        shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
         	clickPos = g.getMouseClick();
@@ -63,7 +79,6 @@ int main(int argc, char ** argv)
             f.setDirection(atan(static_cast<double>(xDist)/yDist));
 
             c = black;
-			drawCircle(p, size, c, g);
 			isFalling = true;
         }
         
@@ -75,15 +90,24 @@ int main(int argc, char ** argv)
             xPos += f.getMagnitude() * sin(f.getDirection());
             p.x = static_cast<int> (xPos);
 
-            if (p.x <= 10 || p.x >= 990 || p.y <= 10 || p.y >= 990){
+            //update flag positions
+            topFlag.update(xPos, yPos - size/2);
+            bottomFlag.update(xPos, yPos + size/2);
+            rightFlag.update(xPos + size/2, yPos);
+            leftFlag.update(xPos - size/2, yPos);
+            
+            hitDetected = (topFlag.isHit(g) || bottomFlag.isHit(g) || rightFlag.isHit(g) || leftFlag.isHit(g));
+
+
+
+            if (p.x <= 10 || p.x >= 990 || p.y <= 10 || p.y >= 990 || hitDetected){
                 isFalling = false;
                 c = red;
-                drawCircle(p, size, c, g);
+                shooter.drawBall(p, size, c, g);
             }
         }
         g.update();
     }
 
 }
-
 
