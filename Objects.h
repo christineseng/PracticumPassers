@@ -17,9 +17,7 @@ public:
     //BALL-FUNCTIONS
     void drawBall(point loc, SDL_Plotter& win);
     void drawBall(point loc, int size, color c,  SDL_Plotter& win);
-    /*void ballFalling(point ballLoc, point clickPos, int velocity, SDL_Plotter& win);*/
-    //GETTERS
-    int getBallLoc() { return location;}
+    void ballFalling( point clickPos, SDL_Plotter& win);
 private:
     int location;
     color c;
