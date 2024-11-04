@@ -11,6 +11,7 @@
 #include "force.h"
 #include "SDL_Plotter.h"
 #include "Objects.h"
+#include "flag.h"
 
 using namespace std;
 
@@ -18,75 +19,93 @@ int main(int argc, char ** argv)
 {
 	//Data Abstraction------------DEBUG----------------------------------------
 
-	//BALL-ATTRIBUTES
-	Ball shooter;
-	point ballLoc;
-	ballLoc.x = 500; ballLoc.y = 50;
-	color black, red;
-	black.R = 0;   black.B = 0;   black.G = 0;
-	red.R = 255;   red.B = 0;     red.G = 0;
-	int const size = 10;
 
-	//BLOCK-ATTRIBUTES
-	Block sqaure;
-	point blockLoc;
-	blockLoc.x = 450; blockLoc.y = 950;
-	color sc;
-	sc.R = 255;
-	sc.G = 100;
-	sc.B = 120;
-
-	//MAGNITUDE+VELOCITY
-	int const velocity = 10;
-	force f;
-	int xDist, yDist;
-	double xPos, yPos; //keeps track of location as double for better accuracy
-
-	//-----------------------------DEBUG^-----------------------------------------
-
+    SDL_Plotter g(1000, 1000);
+    point p;
     point clickPos;
-	Uint32 RGB;
-    SDL_Plotter window(1000, 1000);
-	bool isFalling = false;
+    force f;
+    Ball shooter;
 
-	//Process--------------------------------
-	cout << "BUMPKIN" << endl;
-	while (!window.getQuit()) {
-		window.clear();
+    p.x = 500;
+    p.y = 50;
+    color c;
+    color black;
+    black.R = 0;
+    black.B = 0;
+    black.G = 0;
+    color red;
+    red.R = 255;
+    red.B = 0; 
+    red.G = 0;
+    int size = 10;
+    int velocity = 10;
+    int xDist;
+    int yDist;
+    double xPos; //keeps track of location as double for better accuracy
+    double yPos;
+    bool isFalling = false;
+    bool hitDetected = false;
 
-		shooter.drawBall(ballLoc, size, black, window);
-		sqaure.drawSquare(blockLoc, 70, 70, red, window);
-		//when clicked x and y calculates distance from start to click point
-		if (window.mouseClick()) {
-			clickPos = window.getMouseClick();
-			ballLoc.y = 50;
-			ballLoc.x = 500;
-			xPos = ballLoc.x;
-			yPos = ballLoc.y;
-			xDist = clickPos.x - ballLoc.x;
-			yDist = clickPos.y - ballLoc.y;
-			//sets magnitude based on how far from start you click
-			f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-			f.setDirection(atan(static_cast<double>(xDist)/yDist));
+    Flag topFlag;
+    Flag bottomFlag;
+    Flag rightFlag;
+    Flag leftFlag;
 
-			shooter.drawBall(ballLoc, size, black, window);
-			isFalling = true;
-		}
+    Uint32 RGB;
+    shooter.drawBall(p, size, c, g);
+    //sets flags' initial position
+    topFlag.update(p.x, p.y - size/2);
+    bottomFlag.update(p.x, p.y + size/2);
+    rightFlag.update(p.x + size/2, p.y);
+    leftFlag.update(p.x - size/2, p.y);
+    
 
-		//when clicked
-		if (isFalling) {
-			//change y and x pos based on magnitude and direction
-			yPos += f.getMagnitude() * cos(f.getDirection());
-			ballLoc.y = static_cast<int> (yPos);
-			xPos += f.getMagnitude() * sin(f.getDirection());
-			ballLoc.x = static_cast<int> (xPos);
+    while (!g.getQuit()) {
+        g.clear();
 
-			if (ballLoc.x <= 10 || ballLoc.x >= 990 || ballLoc.y <= 10 || ballLoc.y >= 990){
-				isFalling = false;
-				shooter.drawBall(ballLoc, size, red, window);
-			}
-		}
-    	window.update();//UPDATE WINDOW
+        shooter.drawBall(p, size, c, g);
+        //when clicked x and y calculates distance from start to click point
+        if (g.mouseClick()) {
+        	clickPos = g.getMouseClick();
+        	p.y = 50;
+        	p.x = 500;
+        	xPos = p.x;
+          yPos = p.y;
+        	xDist = clickPos.x - p.x;
+        	yDist = clickPos.y - p.y;
+          //sets magnitude based on how far from start you click
+          f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+          f.setDirection(atan(static_cast<double>(xDist)/yDist));
+
+          c = black;
+			    isFalling = true;
+        }
+        
+        //when clicked 
+        if (isFalling) {
+            //change y and x pos based on magnitude and direction
+            yPos += f.getMagnitude() * cos(f.getDirection());
+            p.y = static_cast<int> (yPos);
+            xPos += f.getMagnitude() * sin(f.getDirection());
+            p.x = static_cast<int> (xPos);
+
+            //update flag positions
+            topFlag.update(xPos, yPos - size/2);
+            bottomFlag.update(xPos, yPos + size/2);
+            rightFlag.update(xPos + size/2, yPos);
+            leftFlag.update(xPos - size/2, yPos);
+            
+            hitDetected = (topFlag.isHit(g) || bottomFlag.isHit(g) || rightFlag.isHit(g) || leftFlag.isHit(g));
+
+
+
+            if (p.x <= 10 || p.x >= 990 || p.y <= 10 || p.y >= 990 || hitDetected){
+                isFalling = false;
+                c = red;
+                shooter.drawBall(p, size, c, g);
+            }
+        }
+        g.update();
     }
-	return 0;
 }
+	
