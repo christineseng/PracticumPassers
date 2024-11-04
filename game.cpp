@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : graphicsTest2.cpp
-// Author      : 
+// Author      : Erick Martinez
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -10,22 +10,21 @@
 #include <cmath>
 #include "force.h"
 #include "SDL_Plotter.h"
-#include "flag.h"
 #include "Objects.h"
+#include "flag.h"
 
 using namespace std;
 
-//void drawCircle(point loc, int size, color c, SDL_Plotter& g);
-
 int main(int argc, char ** argv)
 {
+	//Data Abstraction------------DEBUG----------------------------------------
+
 
     SDL_Plotter g(1000, 1000);
     point p;
     point clickPos;
     force f;
     Ball shooter;
-
 
     p.x = 500;
     p.y = 50;
@@ -71,15 +70,15 @@ int main(int argc, char ** argv)
         	p.y = 50;
         	p.x = 500;
         	xPos = p.x;
-            yPos = p.y;
+          yPos = p.y;
         	xDist = clickPos.x - p.x;
         	yDist = clickPos.y - p.y;
-            //sets magnitude based on how far from start you click
-            f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-            f.setDirection(atan(static_cast<double>(xDist)/yDist));
+          //sets magnitude based on how far from start you click
+          f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+          f.setDirection(atan(static_cast<double>(xDist)/yDist));
 
-            c = black;
-			isFalling = true;
+          c = black;
+			    isFalling = true;
         }
         
         //when clicked 
@@ -108,6 +107,5 @@ int main(int argc, char ** argv)
         }
         g.update();
     }
-
 }
-
+	
