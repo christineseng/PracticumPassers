@@ -11,6 +11,7 @@ bool Flag::isHit(SDL_Plotter& g){
         result = true;
     }
     result = false;
+    //test
 
     return result;
 }
