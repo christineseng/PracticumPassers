@@ -6,12 +6,25 @@ Flag::Flag(){
 }
 
 bool Flag::isHit(SDL_Plotter& g){
-    bool result;
-    if (g.getColor(x, y) != WHITE){
+    bool result = false;
+    /*if (g.getColor(x, y) != WHITE && g.getColor(x, y) != BLACK){
         result = true;
+        cout << "color" << endl;
+        if (g.getColor(x, y) != WHITE){
+            cout << "not white" << endl;
+        }
+        if (g.getColor(x, y) != BLACK){
+            cout << "not black" << endl;
+        }
+    }*/
+    if (x < 20 || x > g.getRow() - 20){
+        result = true;
+        cout << "x edge" << endl;
     }
-    result = false;
-    //test
+    if (y < 20 || y > g.getCol() - 20){
+        result = true;
+        cout << "y edge" << endl;
+    }
 
     return result;
 }
