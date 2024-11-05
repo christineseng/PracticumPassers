@@ -6,11 +6,16 @@ Flag::Flag(){
 }
 
 bool Flag::isHit(SDL_Plotter& g){
-    bool result;
-    if (g.getColor(x, y) != WHITE){
+    bool result = false;
+    if (g.getColor(x, y) != flagWhite && g.getColor(x, y) != flagBlack){
         result = true;
     }
-    result = false;
+    if (x < 5 || x > g.getRow() - 5){
+        result = true;
+    }
+    if (y < 5 || y > g.getCol() - 5){
+        result = true;
+    }
 
     return result;
 }

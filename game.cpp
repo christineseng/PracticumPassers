@@ -23,11 +23,15 @@ int main(int argc, char ** argv)
     SDL_Plotter g(1000, 1000);
     point p;
     point clickPos;
+    point squarePoint;
     force f;
     Ball shooter;
+    Block square;
 
     p.x = 500;
     p.y = 50;
+    squarePoint.x = 500;
+    squarePoint.y = 500;
     color c;
     color black;
     black.R = 0;
@@ -63,6 +67,7 @@ int main(int argc, char ** argv)
     while (!g.getQuit()) {
         g.clear();
 
+        square.drawSquare(squarePoint, 25, 25, red, g);
         shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
@@ -70,15 +75,15 @@ int main(int argc, char ** argv)
         	p.y = 50;
         	p.x = 500;
         	xPos = p.x;
-          yPos = p.y;
-        	xDist = clickPos.x - p.x;
+            yPos = p.y;
+            xDist = clickPos.x - p.x;
         	yDist = clickPos.y - p.y;
-          //sets magnitude based on how far from start you click
-          f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-          f.setDirection(atan(static_cast<double>(xDist)/yDist));
+            // sets magnitude based on how far from start you click
+            f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+            f.setDirection(atan(static_cast<double>(xDist) / yDist));
 
-          c = black;
-			    isFalling = true;
+            c = black;
+            isFalling = true;
         }
         
         //when clicked 
@@ -90,19 +95,16 @@ int main(int argc, char ** argv)
             p.x = static_cast<int> (xPos);
 
             //update flag positions
-            topFlag.update(xPos, yPos - size/2);
-            bottomFlag.update(xPos, yPos + size/2);
-            rightFlag.update(xPos + size/2, yPos);
-            leftFlag.update(xPos - size/2, yPos);
+            topFlag.update(p.x, p.y - size/2);
+            bottomFlag.update(p.x, p.y + size/2);
+            rightFlag.update(p.x + size/2, p.y);
+            leftFlag.update(p.x - size/2, p.y);
             
-            hitDetected = (topFlag.isHit(g) || bottomFlag.isHit(g) || rightFlag.isHit(g) || leftFlag.isHit(g));
-
-
-
-            if (p.x <= 10 || p.x >= 990 || p.y <= 10 || p.y >= 990 || hitDetected){
-                isFalling = false;
-                c = red;
-                shooter.drawBall(p, size, c, g);
+            if (topFlag.isHit(g) || bottomFlag.isHit(g)){
+                f.setDirection(M_PI - f.getDirection());
+            }
+            if (rightFlag.isHit(g) || leftFlag.isHit(g)){
+                f.setDirection(-f.getDirection());
             }
         }
         g.update();
