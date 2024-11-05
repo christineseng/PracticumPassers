@@ -1,3 +1,0 @@
-C:/Users/User/OneDrive - Baylor University/Clion Programs/GroupProject/PracticumPassers/cmake-build-debug/CMakeFiles/PracticumPassers.dir
-C:/Users/User/OneDrive - Baylor University/Clion Programs/GroupProject/PracticumPassers/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/User/OneDrive - Baylor University/Clion Programs/GroupProject/PracticumPassers/cmake-build-debug/CMakeFiles/rebuild_cache.dir
