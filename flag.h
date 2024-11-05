@@ -3,6 +3,9 @@
 
 #include "SDL_Plotter.h"
 
+const long flagWhite = 4294967295;
+const int flagBlack = 0;
+
 class Flag{
     public:
         Flag();

@@ -100,47 +100,12 @@ int main(int argc, char ** argv)
             rightFlag.update(p.x + size/2, p.y);
             leftFlag.update(p.x - size/2, p.y);
             
-            if (topFlag.isHit(g)){
-                cout << "top flag hit" << endl;
+            if (topFlag.isHit(g) || bottomFlag.isHit(g)){
+                f.setDirection(M_PI - f.getDirection());
             }
-            if (bottomFlag.isHit(g)){
-                cout << "bottom flag hit" << endl;
+            if (rightFlag.isHit(g) || leftFlag.isHit(g)){
+                f.setDirection(-f.getDirection());
             }
-            if (rightFlag.isHit(g)){
-                cout << "right flag hit" << endl;
-            }
-            if (leftFlag.isHit(g)){
-                cout << "left flag hit" << endl;
-            }
-            hitDetected = (topFlag.isHit(g) || bottomFlag.isHit(g) || rightFlag.isHit(g) || leftFlag.isHit(g));
-
-            if (topFlag.isHit(g)){
-                double dist = 2 * M_PI - f.getDirection();
-                f.setDirection(M_PI + dist);
-            }
-            if (bottomFlag.isHit(g)){
-                double dist = 2 * M_PI - f.getDirection();
-                f.setDirection(M_PI + dist);
-            }
-            if (rightFlag.isHit(g)){
-                double dist = M_PI - f.getDirection();
-                f.setDirection(M_PI + dist);
-            }
-            if (leftFlag.isHit(g)){
-                double dist = M_PI - f.getDirection();
-                f.setDirection(M_PI + dist);
-            }
-
-            /*if (hitDetected){
-                isFalling = false;
-                //c = red;
-                shooter.drawBall(p, size, c, g);
-            }*/
-            /*if (p.x <= 10 || p.x >= 990 || p.y <= 10 || p.y >= 990 || hitDetected){
-                isFalling = false;
-                c = red;
-                shooter.drawBall(p, size, c, g);
-            }*/
         }
         g.update();
     }
