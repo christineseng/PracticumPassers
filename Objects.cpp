@@ -5,7 +5,7 @@
 // Description : Hello World in C++, Ansi-style
 #include "Objects.h"
 #include "force.h"
-
+#include "flag.h"
 
 //Ball Class----------------------------------------------------
 void Ball::drawBall(point loc, SDL_Plotter& win)
@@ -26,6 +26,7 @@ void Ball::drawBall(point loc, SDL_Plotter& win)
     }
 }
 
+//called in game.cpp
 void Ball::drawBall(point loc, int size, color c, SDL_Plotter& win)
 {
     for (double i = -size; i <= size; i += 0.1)

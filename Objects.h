@@ -17,9 +17,11 @@ public:
     //BALL-FUNCTIONS
     void drawBall(point loc, SDL_Plotter& win);
     void drawBall(point loc, int size, color c,  SDL_Plotter& win);
-    void ballFalling( point clickPos, SDL_Plotter& win);
+    /*void ballFalling(point ballLoc, point clickPos, int velocity, SDL_Plotter& win);*/
+    //GETTERS
+    point getBallLoc() { return location;}
 private:
-    int location;
+    point location;
     color c;
 };
 
@@ -32,7 +34,7 @@ class Block{
         double distance(point loc1, point loc2);
 
 private:
-    int location;
+    point location;
     int size;
     
 };

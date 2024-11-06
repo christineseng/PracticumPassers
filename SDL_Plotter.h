@@ -24,12 +24,12 @@
 #define SDL_PLOTTER_H_
 
 //OSX Library
-//#include <SDL2/SDL.h>
+#include <SDL2/SDL.h>
 //#include <SDL2/SDL_mixer.h>
 //#include <SDL2/SDL_thread.h>
 
 //Windows Library
-#include <SDL.h>
+//#include <SDL.h>
 //#include <SDL_mixer.h>
 
 #include <string.h>
@@ -49,6 +49,7 @@ const int GREEN_SHIFT  = 256;
 const int BLUE_SHIFT   = 1;
 const int ALPHA_SHIFT  = 16777216;
 const int WHITE        = 255;
+const int BLACK        = 0;
 const int MAX_THREAD   = 100;
 
 
