@@ -50,24 +50,15 @@ int main(int argc, char ** argv)
     bool isFalling = false;
     bool hitDetected = false;
 
-    Flag topFlag;
-    Flag bottomFlag;
-    Flag rightFlag;
-    Flag leftFlag;
+    Flag flag;
 
     Uint32 RGB;
     shooter.drawBall(p, size, c, g);
-    //sets flags' initial position
-    topFlag.update(p.x, p.y - size/2);
-    bottomFlag.update(p.x, p.y + size/2);
-    rightFlag.update(p.x + size/2, p.y);
-    leftFlag.update(p.x - size/2, p.y);
-    
 
     while (!g.getQuit()) {
         g.clear();
 
-        square.drawSquare(squarePoint, 25, 25, red, g);
+        square.drawSquare(squarePoint, 75, 75, red, g);
         shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
@@ -95,16 +86,28 @@ int main(int argc, char ** argv)
             p.x = static_cast<int> (xPos);
 
             //update flag positions
-            topFlag.update(p.x, p.y - size/2);
-            bottomFlag.update(p.x, p.y + size/2);
-            rightFlag.update(p.x + size/2, p.y);
-            leftFlag.update(p.x - size/2, p.y);
-            
-            if (topFlag.isHit(g) || bottomFlag.isHit(g)){
+            flag.update(xPos, yPos, size);
+
+            if (flag.isHit(g) == 0){
+                cout << "top flag initial: " << f.getDirection() << endl;
                 f.setDirection(M_PI - f.getDirection());
+                cout << "top flag new: " << f.getDirection() << endl;
             }
-            if (rightFlag.isHit(g) || leftFlag.isHit(g)){
+            else if (flag.isHit(g) == 2){
+                cout << "bottom flag: " << f.getDirection() << endl;
+                f.setDirection(M_PI - f.getDirection());
+                cout << "bottom flag new: " << f.getDirection() << endl;
+            }
+            
+            if (flag.isHit(g) == 1){
+                cout << "right flag: " << f.getDirection() << endl;
                 f.setDirection(-f.getDirection());
+                cout << "right flag new: " << f.getDirection() << endl;
+            }
+            else if (flag.isHit(g) == 3){
+                cout << "left flag: " << f.getDirection() << endl;
+                f.setDirection(-f.getDirection());
+                cout << "left flag new: " << f.getDirection() << endl;
             }
         }
         g.update();

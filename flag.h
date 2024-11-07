@@ -10,11 +10,19 @@ class Flag{
     public:
         Flag();
         void update(int newX, int newY);
-        bool isHit(SDL_Plotter& g);
+        void update(int newX, int newY, int ballSize);
+        int isHit(SDL_Plotter& g);
 
     private:
         int x;
         int y;
+        point pointArray[5];
+        point topArray[5];
+        point bottomArray[5];
+        point rightArray[5];
+        point leftArray[5];
+        bool isHit(point p, SDL_Plotter& g);
+        bool isHit(point pointArray[], SDL_Plotter& g);
 
 };
 #endif
