@@ -1,5 +1,7 @@
 #ignore all executables
 *.exe
 .idea
-cmake-build-debug
-cmake_modules
+*.txt
+CMakeLists.txt
+cmake-build-debug/
+cmake_modules/
