@@ -24,7 +24,11 @@ int main(int argc, char ** argv)
     point p;
     point clickPos;
     point squarePoint;
-    force f;
+    point triangleTop(300, 300);
+    point triangleLeft(450, 350);
+    point triangleRight(750, 750);
+    force f; //ball force
+    const force GRAVITY(0.5, 0);
     Ball shooter;
     Block square;
 
@@ -55,11 +59,13 @@ int main(int argc, char ** argv)
 
     Uint32 RGB;
     shooter.drawBall(p, size, c, g);
+    
 
     while (!g.getQuit()) {
         g.clear();
 
         square.drawSquare(squarePoint, 75, 75, red, g);
+        square.drawTriangle(triangleTop, triangleLeft, triangleRight, red, g);
         shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
@@ -71,7 +77,8 @@ int main(int argc, char ** argv)
             xDist = clickPos.x - p.x;
         	yDist = clickPos.y - p.y;
             // sets magnitude based on how far from start you click
-            f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+            // f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+            f.setMagnitude(8);
             f.setDirection(atan(static_cast<double>(xDist) / yDist));
 
             c = black;
@@ -80,6 +87,8 @@ int main(int argc, char ** argv)
         
         //when clicked 
         if (isFalling) {
+            //apply gravity
+            f.apply(GRAVITY);
             //change y and x pos based on magnitude and direction
             yPos += f.getMagnitude() * cos(f.getDirection());
             p.y = static_cast<int> (yPos);
@@ -89,6 +98,10 @@ int main(int argc, char ** argv)
             //update flag positions
             flag.update(p.x, p.y, size);
             flagNum = flag.isHit(g);
+
+            /*if (flagNum != -1){
+                f.setMagnitude(f.getMagnitude() - 1);
+            }*/
 
             if (flagNum == 0){
                 cout << "top flag initial: " << f.getDirection() << endl;

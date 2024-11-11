@@ -22,8 +22,8 @@ class Flag{
         point bottomArray[5];
         point rightArray[5];
         point leftArray[5];
-        bool pointIsHit(point p, SDL_Plotter& g);
-        bool rowIsHit(point pointArray[], SDL_Plotter& g);
+        bool pointIsHit(point p, int sideNum, SDL_Plotter& g);
+        bool rowIsHit(point pointArray[], int sideNum, SDL_Plotter& g);
 
 };
 #endif
