@@ -24,19 +24,39 @@ private:
     point location;
     color c;
 };
-
 class Block{
-    public:
-        void drawSquare(point loc, int length, int width, color c, SDL_Plotter &win);
-        void drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter &g);
-        void drawCircle(point loc, int size, color c, SDL_Plotter &g);
-        void drawLine(point loc1, point loc2, color c, SDL_Plotter &g);
-        double distance(point loc1, point loc2);
-
 private:
-    point location;
-    int size;
-    
-};
+	point location;
+	color c;
+	int life;
 
+public:
+	//Constuctors
+	Block();
+	Block (point loc, color col, int l);
+
+	//setters
+	void setLocation(point p) {
+	location.x = p.x;
+	location.y = p.y;
+	}
+	void setColor(color c) {this -> c = c;}
+	void setLife(int l) {life = l;}
+
+	//getters
+	point getLocation() const {return location;}
+	color getColor() const {return c;}
+	int getLife() const {return life;}
+
+	//Member functions:
+	void drawSquare(point loc, int length, int width, color c, SDL_Plotter &win);
+        void drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter &g);
+        void drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter &g);
+        void drawCircle(point loc, int size, color c, SDL_Plotter &g);
+        void drawLine (point loc1, point loc2, color c, SDL_Plotter &g) const;
+        void drawRandomShape();
+        bool isHit(SDL_Plotter &g);
+        double distance (point loc1, point loc2) const;
+
+};
 #endif //BALL_H

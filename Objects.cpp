@@ -38,8 +38,16 @@ void Ball::drawBall(point loc, int size, color c, SDL_Plotter& win)
 }
 
 //BLOCK CLASS----------------------------------------------------
-void Block::drawSquare(point loc, int length, int width, color c, SDL_Plotter& win)
-{
+
+//Constructors
+Block::Block(): location(), c(), life(0) {}
+Block::Block(point loc, color col, int l): location(loc), c(col), life(l){}
+
+
+//Member Functions
+void Block::drawSquare(point loc, int length, int width, color c, SDL_Plotter& win) {
+	location.x = loc.x;
+	location.y = loc.y;
     for (int i = 0; i < length; i++)
     {
         for (int j = 0; j < width; j++)
@@ -50,7 +58,7 @@ void Block::drawSquare(point loc, int length, int width, color c, SDL_Plotter& w
     }
 }
 
-void Block::drawLine(point loc1, point loc2, color c, SDL_Plotter& g) {
+void Block::drawLine (point loc1, point loc2, color c, SDL_Plotter& g) const {
 	int changeInX = loc2.x - loc1.x;
 	int changeInY = loc2.y - loc1.y;
 
@@ -78,13 +86,17 @@ void Block::drawLine(point loc1, point loc2, color c, SDL_Plotter& g) {
 	}
 }
 
-double Block::distance(point loc1, point loc2) {
+double Block::distance(point loc1, point loc2) const{
 	double distance;
 	distance = sqrt(pow(loc1.x - loc2.x, 2.0) + pow(loc1.y - loc2.y, 2.0));
 	return distance;
 }
 
 void Block::drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter& g) {
+
+	location.x = topVertex.x;
+	location.y = topVertex.y;
+
 	int sideLength;
 	int height;
 	int offset; //distance from center to edges
@@ -102,4 +114,32 @@ void Block::drawTriangle(point topVertex, point leftVertex, point rightVertex, c
 		end.y = topVertex.y + y;
 		drawLine(start, end, c, g);
 	}
+}
+
+void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter &g) {
+	int sideLength;
+	int height;
+	int offset; //distance from center to edges
+	point start;
+	point end;
+
+	sideLength = distance(leftVertex, rightVertex);
+	height = (sqrt(3.0) / 2.0) * sideLength;
+
+	for (int y = 0; y <= height; ++y) {
+		offset = ((height - y) /static_cast<double>(height)) * (sideLength / 2.0);
+		start.x = bottomVertex.x - offset;
+		start.y = bottomVertex.y + y;
+		end.x = bottomVertex.x + offset;
+		end.y = bottomVertex.y + y;
+		drawLine(start, end, c, g);
+	}
+}
+
+bool Block::isHit(SDL_Plotter &g) {
+
+	return true;
+
+
+
 }
