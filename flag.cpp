@@ -32,16 +32,16 @@ void Flag::update(int newX, int newY, int ballSize){
 }
 int Flag::isHit(SDL_Plotter& g){
     int sideNum;
-    if (rowIsHit(topArray, g)){
+    if (rowIsHit(topArray, 0, g)){
         sideNum = 0;
     }
-    else if (rowIsHit(rightArray, g)){
+    else if (rowIsHit(rightArray, 1, g)){
         sideNum = 1;
     }
-    else if (rowIsHit(bottomArray, g)){
+    else if (rowIsHit(bottomArray, 2, g)){
         sideNum = 2;
     }
-    else if (rowIsHit(leftArray, g)){
+    else if (rowIsHit(leftArray, 3, g)){
         sideNum = 3;
     }
     else{//if not hit
@@ -50,26 +50,40 @@ int Flag::isHit(SDL_Plotter& g){
     return sideNum;
 }
 //checks if row of flags is hit
-bool Flag::rowIsHit(point pointArray[], SDL_Plotter& g){
+bool Flag::rowIsHit(point pointArray[], int sideNum, SDL_Plotter& g){
     bool hit = false;
     for (int i = 0; i < 5; ++i){
-        if (pointIsHit(pointArray[i], g)){
+        if (pointIsHit(pointArray[i], sideNum, g)){
             hit = true;
         }
     }
     return hit;
 }
 //checks if point p is hit
-bool Flag::pointIsHit(point p, SDL_Plotter& g){
+bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
     bool result = false;
     if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack){
         result = true;
     }
-    if (p.x < 5 || p.x > g.getRow() - 5){
-        result = true;
+    if (sideNum == 0){ //checking top
+        if (p.y < 5){
+            result = true;
+        }
     }
-    if (p.y < 5 || p.y > g.getCol() - 5){
-        result = true;
+    else if (sideNum == 1){ //checking right
+        if (p.x > g.getCol() - 5){
+            result = true;
+        }
+    }
+    else if (sideNum == 2){ //checking bottom
+        if (p.y > g.getRow() - 5){
+            result = true;
+        }
+    }
+    else{ //checking left
+        if (p.x < 5){
+            result = true;
+        }
     }
 
     return result;
