@@ -108,21 +108,38 @@ int main(int argc, char ** argv)
                 f.setDirection(M_PI - f.getDirection());
                 cout << "top flag new: " << f.getDirection() << endl;
             }
-            if (flagNum == 2){
+            else if (flagNum == 2){
                 cout << "bottom flag: " << f.getDirection() << endl;
                 f.setDirection(3 * M_PI - f.getDirection());
                 cout << "bottom flag new: " << f.getDirection() << endl;
             }
             
-            if (flagNum == 1){
+            else if (flagNum == 1){
                 cout << "right flag: " << f.getDirection() << endl;
                 f.setDirection(0 - f.getDirection());
                 cout << "right flag new: " << f.getDirection() << endl;
             }
-            if (flagNum == 3){
+            else if (flagNum == 3){
                 cout << "left flag: " << f.getDirection() << endl;
                 f.setDirection(0 - f.getDirection());
                 cout << "left flag new: " << f.getDirection() << endl;
+            }
+
+            else if (flagNum == 4){ //top right corner hit
+                cout << "TOP RIGHT CORNER" << endl;
+                f.setDirection(f.getDirection() - M_PI);
+            }
+            else if (flagNum == 5){ //bottom right corner hit
+                cout << "BOTTOM RIGHT CORNER" << endl;
+                f.setDirection(M_PI + f.getDirection());
+            }
+            else if (flagNum == 6){ //bottom left corner hit
+                cout << "BOTTOM LEFT CORNER" << endl;
+                f.setDirection(M_PI + f.getDirection());
+            }
+            else if (flagNum == 7){ //top left corner hit
+                cout << "TOP LEFT CORNER" << endl;
+                f.setDirection(f.getDirection() - M_PI);
             }
         }
         g.update();
