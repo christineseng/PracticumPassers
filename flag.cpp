@@ -7,11 +7,16 @@ Flag::Flag(){
     point bottomArray[5];
     point leftArray[5];
     point rightArray[5];
-    flagSpace = 4;
+    point topRight;
+    point bottomRight;
+    point bottomLeft;
+    point topLeft;
+    flagSpace = 3;
 }
 
 void Flag::update(int newX, int newY, int ballSize){
     point p;
+    //update edges
     for (int i = 0; i < 5; ++i){
         p.x = newX + (flagSpace * (i - 2));
         p.y = newY - ballSize;
@@ -29,9 +34,29 @@ void Flag::update(int newX, int newY, int ballSize){
         p.y = newY + (flagSpace * (i - 2));
         leftArray[i] = p;
     }
+
+    //update corners
+    //update top right
+    p.x = newX + ballSize + 1;
+    p.y = newY - ballSize - 1;
+    topRight = p;
+    //bottom right
+    p.x = newX + ballSize + 1;
+    p.y = newY + ballSize + 1;
+    bottomRight = p;
+    //bottom left
+    p.x = newX - ballSize - 1;
+    p.y = newY + ballSize + 1;
+    bottomLeft = p;
+    //top left
+    p.x = newX - ballSize - 1;
+    p.y = newY - ballSize - 1;
+    topLeft = p;
 }
 int Flag::isHit(SDL_Plotter& g){
     int sideNum;
+    
+    //check edges
     if (rowIsHit(topArray, 0, g)){
         sideNum = 0;
     }
@@ -43,6 +68,19 @@ int Flag::isHit(SDL_Plotter& g){
     }
     else if (rowIsHit(leftArray, 3, g)){
         sideNum = 3;
+    }
+    //else check corners
+    else if (cornerIsHit(topRight, g)){
+        sideNum = 4;
+    }
+    else if (cornerIsHit(bottomRight, g)){
+        sideNum = 5;
+    }
+    else if (cornerIsHit(bottomLeft, g)){
+        sideNum = 6;
+    }
+    else if (cornerIsHit(topLeft, g)){
+        sideNum = 7;
     }
     else{//if not hit
         sideNum = -1;
@@ -62,9 +100,12 @@ bool Flag::rowIsHit(point pointArray[], int sideNum, SDL_Plotter& g){
 //checks if point p is hit
 bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
     bool result = false;
+    //check if color hit
     if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack){
         result = true;
     }
+
+    //check if edge of screen hit
     if (sideNum == 0){ //checking top
         if (p.y < 5){
             result = true;
@@ -89,15 +130,10 @@ bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
     return result;
 }
 
-/*void Flag::update(int newX, int newY, int ballSize, bool vertical){
-    point p;
-    if (vertical){
-        p.x = newX;
-        p.y = newY;
-        //pointArray[0] = 
+bool Flag::cornerIsHit(point p, SDL_Plotter& g){
+    bool result = false;
+    if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack){
+        result = true;
     }
-}*/
-/*void Flag::update(int newX, int newY){
-    x = newX;
-    y = newY;
-}*/
+    return result;
+}
