@@ -45,6 +45,7 @@ int main(int argc, char ** argv)
     int velocity = 10;
     int xDist;
     int yDist;
+    int flagNum;
     double xPos; //keeps track of location as double for better accuracy
     double yPos;
     bool isFalling = false;
@@ -86,27 +87,28 @@ int main(int argc, char ** argv)
             p.x = static_cast<int> (xPos);
 
             //update flag positions
-            flag.update(xPos, yPos, size);
+            flag.update(p.x, p.y, size);
+            flagNum = flag.isHit(g);
 
-            if (flag.isHit(g) == 0){
+            if (flagNum == 0){
                 cout << "top flag initial: " << f.getDirection() << endl;
                 f.setDirection(M_PI - f.getDirection());
                 cout << "top flag new: " << f.getDirection() << endl;
             }
-            else if (flag.isHit(g) == 2){
+            if (flagNum == 2){
                 cout << "bottom flag: " << f.getDirection() << endl;
-                f.setDirection(M_PI - f.getDirection());
+                f.setDirection(3 * M_PI - f.getDirection());
                 cout << "bottom flag new: " << f.getDirection() << endl;
             }
             
-            if (flag.isHit(g) == 1){
+            if (flagNum == 1){
                 cout << "right flag: " << f.getDirection() << endl;
-                f.setDirection(-f.getDirection());
+                f.setDirection(0 - f.getDirection());
                 cout << "right flag new: " << f.getDirection() << endl;
             }
-            else if (flag.isHit(g) == 3){
+            if (flagNum == 3){
                 cout << "left flag: " << f.getDirection() << endl;
-                f.setDirection(-f.getDirection());
+                f.setDirection(0 - f.getDirection());
                 cout << "left flag new: " << f.getDirection() << endl;
             }
         }

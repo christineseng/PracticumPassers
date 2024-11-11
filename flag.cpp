@@ -7,40 +7,41 @@ Flag::Flag(){
     point bottomArray[5];
     point leftArray[5];
     point rightArray[5];
+    flagSpace = 4;
 }
 
 void Flag::update(int newX, int newY, int ballSize){
     point p;
     for (int i = 0; i < 5; ++i){
-        p.x = newX + (3 * (i - 2));
+        p.x = newX + (flagSpace * (i - 2));
         p.y = newY - ballSize;
         topArray[i] = p;
         
-        p.x = newX + (3 * (i - 2));
+        p.x = newX + (flagSpace * (i - 2));
         p.y = newY + ballSize;
         bottomArray[i] = p;
 
         p.x = newX + ballSize;
-        p.y = newY + (3 * (i - 2));
+        p.y = newY + (flagSpace * (i - 2));
         rightArray[i] = p;
 
         p.x = newX - ballSize;
-        p.y = newY + (3 * (i - 2));
+        p.y = newY + (flagSpace * (i - 2));
         leftArray[i] = p;
     }
 }
 int Flag::isHit(SDL_Plotter& g){
     int sideNum;
-    if (isHit(topArray, g)){
+    if (rowIsHit(topArray, g)){
         sideNum = 0;
     }
-    else if (isHit(rightArray, g)){
+    else if (rowIsHit(rightArray, g)){
         sideNum = 1;
     }
-    else if (isHit(bottomArray, g)){
+    else if (rowIsHit(bottomArray, g)){
         sideNum = 2;
     }
-    else if (isHit(leftArray, g)){
+    else if (rowIsHit(leftArray, g)){
         sideNum = 3;
     }
     else{//if not hit
@@ -49,17 +50,17 @@ int Flag::isHit(SDL_Plotter& g){
     return sideNum;
 }
 //checks if row of flags is hit
-bool Flag::isHit(point pointArray[], SDL_Plotter& g){
+bool Flag::rowIsHit(point pointArray[], SDL_Plotter& g){
     bool hit = false;
     for (int i = 0; i < 5; ++i){
-        if (isHit(pointArray[i], g)){
+        if (pointIsHit(pointArray[i], g)){
             hit = true;
         }
     }
     return hit;
 }
 //checks if point p is hit
-bool Flag::isHit(point p, SDL_Plotter& g){
+bool Flag::pointIsHit(point p, SDL_Plotter& g){
     bool result = false;
     if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack){
         result = true;
