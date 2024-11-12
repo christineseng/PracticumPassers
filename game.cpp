@@ -78,7 +78,7 @@ int main(int argc, char ** argv)
         	yDist = clickPos.y - p.y;
             // sets magnitude based on how far from start you click
             // f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-            f.setMagnitude(8);
+            f.setMagnitude(6);
             f.setDirection(atan(static_cast<double>(xDist) / yDist));
 
             c = black;
@@ -92,8 +92,20 @@ int main(int argc, char ** argv)
             //change y and x pos based on magnitude and direction
             yPos += f.getMagnitude() * cos(f.getDirection());
             p.y = static_cast<int> (yPos);
+            if (p.y < size){
+                p.y = size;
+            }
+            else if (p.y > g.getRow() - size){
+                p.y = g.getRow() - size;
+            }
             xPos += f.getMagnitude() * sin(f.getDirection());
             p.x = static_cast<int> (xPos);
+            if (p.x < size){
+                p.x = size;
+            }
+            else if (p.x > g.getCol() - size){
+                p.x = g.getCol() - size;
+            }
 
             //update flag positions
             flag.update(p.x, p.y, size);

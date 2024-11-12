@@ -19,38 +19,38 @@ void Flag::update(int newX, int newY, int ballSize){
     //update edges
     for (int i = 0; i < 5; ++i){
         p.x = newX + (flagSpace * (i - 2));
-        p.y = newY - ballSize;
+        p.y = newY - ballSize - 1;
         topArray[i] = p;
         
         p.x = newX + (flagSpace * (i - 2));
-        p.y = newY + ballSize;
+        p.y = newY + ballSize + 1;
         bottomArray[i] = p;
 
-        p.x = newX + ballSize;
+        p.x = newX + ballSize + 1;
         p.y = newY + (flagSpace * (i - 2));
         rightArray[i] = p;
 
-        p.x = newX - ballSize;
+        p.x = newX - ballSize - 1;
         p.y = newY + (flagSpace * (i - 2));
         leftArray[i] = p;
     }
 
     //update corners
     //update top right
-    p.x = newX + ballSize + 1;
-    p.y = newY - ballSize - 1;
+    p.x = newX + ballSize + 2;
+    p.y = newY - ballSize - 2;
     topRight = p;
     //bottom right
-    p.x = newX + ballSize + 1;
-    p.y = newY + ballSize + 1;
+    p.x = newX + ballSize + 2;
+    p.y = newY + ballSize + 2;
     bottomRight = p;
     //bottom left
-    p.x = newX - ballSize - 1;
-    p.y = newY + ballSize + 1;
+    p.x = newX - ballSize - 2;
+    p.y = newY + ballSize + 2;
     bottomLeft = p;
     //top left
-    p.x = newX - ballSize - 1;
-    p.y = newY - ballSize - 1;
+    p.x = newX - ballSize - 2;
+    p.y = newY - ballSize - 2;
     topLeft = p;
 }
 int Flag::isHit(SDL_Plotter& g){
@@ -121,7 +121,7 @@ bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
             result = true;
         }
     }
-    else{ //checking left
+    else if (sideNum == 3){ //checking left
         if (p.x < 5){
             result = true;
         }
