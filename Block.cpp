@@ -1,47 +1,17 @@
-// Name        : graphicsTest2.cpp
-// Author      : Erick Martinez
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-#include "Objects.h"
-#include "force.h"
-#include "flag.h"
+/*
+ * block.cpp
+ *
+ *  Created on: Nov 1, 2024
+ *      Author: nolanschirripa
+ */
 
-//Ball Class----------------------------------------------------
-void Ball::drawBall(point loc, SDL_Plotter& win)
-{
-    for (double i = -10; i <= 10; i += 0.1)
-    {
-        for (double j = -10; j <= 10; j += 0.1)
-        {
-            if (i * i + j * j <= 10 * 10)
-            {
-                win.plotPixel(round(loc.x + i), round(loc.y + j), c);
-            }
-        }
-    }
-}
+#include "Block.h"
 
-//called in game.cpp
-void Ball::drawBall(point loc, int size, color c, SDL_Plotter& win)
-{
-    for (double i = -size; i <= size; i += 0.1)
-    {
-        for (double j = -size; j <= size; j += 0.1)
-        {
-            if (i * i + j * j <= size * size)
-            {
-                win.plotPixel(round(loc.x + i), round(loc.y + j), c);
-            }
-        }
-    }
-}
-
-//BLOCK CLASS----------------------------------------------------
+#include "SDL_Plotter.h"
 
 //Constructors
-Block::Block(): location(), c(), life(0) {}
-Block::Block(point loc, color col, int l): location(loc), c(col), life(l){}
+Block::Block(): location(), c(), life(0), shape("") {}
+Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){}
 
 
 //Member Functions
@@ -135,11 +105,52 @@ void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bott
 		drawLine(start, end, c, g);
 	}
 }
+/*void Block::drawRandomShape() {
+	srand(time(0));
+	int randNum;
+	randNum = rand() % 11;
+	switch (randNum) {
+	case 1: {
+		drawCircle()
+	}
+	}
 
-bool Block::isHit(SDL_Plotter &g) {
+}
+*/
+
+/*bool Block::isHit(SDL_Plotter &g) {
 
 	return true;
 
 
 
 }
+*/
+/*
+ * void Block::drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter& g) {
+
+	location.x = topVertex.x;
+	location.y = topVertex.y;
+
+	int sideLength;
+	int height;
+	int offset; //distance from center to edges
+	point start;
+	point end;
+
+	sideLength = distance(topVertex, leftVertex);
+	height = (sqrt(3.0) / 2.0) * sideLength;
+
+	for (int y = 0; y <= height; ++y) {
+		offset = (y /static_cast<double>(height)) * (sideLength / 2.0);
+		start.x = topVertex.x - offset;
+		start.y = topVertex.y + y;
+		end.x = topVertex.x + offset;
+		end.y = topVertex.y + y;
+		drawLine(start, end, c, g);
+	}
+}
+ */
+
+
+
