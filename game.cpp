@@ -54,6 +54,7 @@ int main(int argc, char ** argv)
     double yPos;
     bool isFalling = false;
     bool hitDetected = false;
+    bool firstHit = false;
 
     Flag flag;
 
@@ -78,42 +79,52 @@ int main(int argc, char ** argv)
         	yDist = clickPos.y - p.y;
             // sets magnitude based on how far from start you click
             // f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-            f.setMagnitude(6);
+            f.setMagnitude(9);
             f.setDirection(atan(static_cast<double>(xDist) / yDist));
 
             c = black;
             isFalling = true;
+            firstHit = false;
         }
         
         //when clicked 
         if (isFalling) {
             //apply gravity
-            f.apply(GRAVITY);
+            if (firstHit){
+                f.apply(GRAVITY);
+                //f.setMagnitude(6);
+            }
             //change y and x pos based on magnitude and direction
             yPos += f.getMagnitude() * cos(f.getDirection());
             p.y = static_cast<int> (yPos);
-            if (p.y < size){
-                p.y = size;
+            if (p.y < size + 3){
+                p.y = size + 3;
             }
-            else if (p.y > g.getRow() - size){
-                p.y = g.getRow() - size;
+            else if (p.y > g.getRow() - size - 3){
+                p.y = g.getRow() - size - 3;
             }
             xPos += f.getMagnitude() * sin(f.getDirection());
             p.x = static_cast<int> (xPos);
-            if (p.x < size){
-                p.x = size;
+            if (p.x < size + 3){
+                p.x = size + 3;
             }
-            else if (p.x > g.getCol() - size){
-                p.x = g.getCol() - size;
+            else if (p.x > g.getCol() - size - 3){
+                p.x = g.getCol() - size - 3;
             }
 
             //update flag positions
             flag.update(p.x, p.y, size);
             flagNum = flag.isHit(g);
 
-            /*if (flagNum != -1){
-                f.setMagnitude(f.getMagnitude() - 1);
-            }*/
+            if (flagNum != -1){
+                if (!firstHit){
+                    firstHit = true;
+                }
+                f.setMagnitude(f.getMagnitude() - 0.5);
+                if (f.getMagnitude() < 0){
+                    f.setMagnitude(0);
+                }
+            }
 
             if (flagNum == 0){
                 cout << "top flag initial: " << f.getDirection() << endl;
