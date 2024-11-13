@@ -10,7 +10,8 @@
 #include <cmath>
 #include "force.h"
 #include "SDL_Plotter.h"
-#include "Objects.h"
+#include "Ball.h"
+#include "Block.h"
 #include "flag.h"
 
 using namespace std;
