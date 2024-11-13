@@ -79,7 +79,7 @@ int main(int argc, char ** argv)
         	yDist = clickPos.y - p.y;
             // sets magnitude based on how far from start you click
             // f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-            f.setMagnitude(9);
+            f.setMagnitude(13);
             f.setDirection(atan(static_cast<double>(xDist) / yDist));
 
             c = black;
@@ -120,7 +120,7 @@ int main(int argc, char ** argv)
                 if (!firstHit){
                     firstHit = true;
                 }
-                f.setMagnitude(f.getMagnitude() - 0.5);
+                f.setMagnitude(f.getMagnitude() - 0.3);
                 if (f.getMagnitude() < 0){
                     f.setMagnitude(0);
                 }
@@ -132,6 +132,11 @@ int main(int argc, char ** argv)
                 cout << "top flag new: " << f.getDirection() << endl;
             }
             else if (flagNum == 2){
+                if (p.y > 985){
+                    isFalling = false;
+                    p.y = 50;
+                    p.x = 500;
+                }
                 cout << "bottom flag: " << f.getDirection() << endl;
                 f.setDirection(3 * M_PI - f.getDirection());
                 cout << "bottom flag new: " << f.getDirection() << endl;

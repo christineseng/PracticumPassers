@@ -11,7 +11,7 @@ Flag::Flag(){
     point bottomRight;
     point bottomLeft;
     point topLeft;
-    flagSpace = 3;
+    flagSpace = 1;
 }
 
 void Flag::update(int newX, int newY, int ballSize){
@@ -37,20 +37,20 @@ void Flag::update(int newX, int newY, int ballSize){
 
     //update corners
     //update top right
-    p.x = newX + ballSize + 1;
-    p.y = newY - ballSize - 1;
+    p.x = newX + ballSize + 2;
+    p.y = newY - ballSize - 2;
     topRight = p;
     //bottom right
-    p.x = newX + ballSize + 1;
-    p.y = newY + ballSize + 1;
+    p.x = newX + ballSize + 2;
+    p.y = newY + ballSize + 2;
     bottomRight = p;
     //bottom left
-    p.x = newX - ballSize - 1;
-    p.y = newY + ballSize + 1;
+    p.x = newX - ballSize - 2;
+    p.y = newY + ballSize + 2;
     bottomLeft = p;
     //top left
-    p.x = newX - ballSize - 1;
-    p.y = newY - ballSize - 1;
+    p.x = newX - ballSize - 2;
+    p.y = newY - ballSize - 2;
     topLeft = p;
 }
 int Flag::isHit(SDL_Plotter& g){
