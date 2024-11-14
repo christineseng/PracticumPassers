@@ -116,11 +116,6 @@ bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
             result = true;
         }
     }
-    else if (sideNum == 2){ //checking bottom
-        if (p.y > g.getRow() - 5){
-            result = true;
-        }
-    }
     else if (sideNum == 3){ //checking left
         if (p.x < 5){
             result = true;
