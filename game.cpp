@@ -27,6 +27,8 @@ int main(int argc, char ** argv)
     point squarePoint, trianglePoint;
     force f; //ball force
     const force GRAVITY(0.5, 0);
+    const force PUSHRIGHT(0.2, M_PI/2);
+    const force PUSHLEFT(0.2, 3*M_PI/2);
     Ball shooter;
     Block square;
 
@@ -114,14 +116,21 @@ int main(int argc, char ** argv)
             //update flag positions
             flag.update(p.x, p.y, size);
             flagNum = flag.isHit(g);
+            if (p.y > 980)
+            {
+                isFalling = false;
+                p.y = 50;
+                p.x = 500;
+            }
 
             if (flagNum != -1){
                 if (!firstHit){
                     firstHit = true;
                 }
-                f.setMagnitude(f.getMagnitude() - 0.3);
+                f.setMagnitude(f.getMagnitude() - 0.4);
                 if (f.getMagnitude() < 0){
                     f.setMagnitude(0);
+                    isFalling = false;
                 }
             }
 
@@ -131,24 +140,28 @@ int main(int argc, char ** argv)
                 cout << "top flag new: " << f.getDirection() << endl;
             }
             else if (flagNum == 2){
-                if (p.y > 985){
-                    isFalling = false;
-                    p.y = 50;
-                    p.x = 500;
-                }
                 cout << "bottom flag: " << f.getDirection() << endl;
                 f.setDirection(3 * M_PI - f.getDirection());
+                //if direction is close to straight up/down, set it to the closest PI/8 value so that it doesn't get stuck bouncing up/down
+                if (f.getDirection() >= 7.0 * M_PI / 8.0 && f.getDirection() <= M_PI){
+                    f.setDirection(7.0 * M_PI / 8.0);
+                }
+                else if (f.getDirection() >=  M_PI && f.getDirection() <= 9.0 * M_PI / 8.0){
+                    f.setDirection(9.0 * M_PI / 8.0);
+                }
                 cout << "bottom flag new: " << f.getDirection() << endl;
             }
             
             else if (flagNum == 1){
                 cout << "right flag: " << f.getDirection() << endl;
                 f.setDirection(0 - f.getDirection());
+                //f.apply(PUSHLEFT);
                 cout << "right flag new: " << f.getDirection() << endl;
             }
             else if (flagNum == 3){
                 cout << "left flag: " << f.getDirection() << endl;
                 f.setDirection(0 - f.getDirection());
+                //f.apply(PUSHRIGHT);
                 cout << "left flag new: " << f.getDirection() << endl;
             }
 
