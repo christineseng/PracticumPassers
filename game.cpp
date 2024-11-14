@@ -24,10 +24,7 @@ int main(int argc, char ** argv)
     SDL_Plotter g(1000, 1000);
     point p;
     point clickPos;
-    point squarePoint;
-    point triangleTop(300, 300);
-    point triangleLeft(450, 350);
-    point triangleRight(750, 750);
+    point squarePoint, trianglePoint;
     force f; //ball force
     const force GRAVITY(0.5, 0);
     Ball shooter;
@@ -37,6 +34,8 @@ int main(int argc, char ** argv)
     p.y = 50;
     squarePoint.x = 500;
     squarePoint.y = 500;
+    trianglePoint.x = 500;
+    trianglePoint.y = 750;
     color c;
     color black;
     black.R = 0;
@@ -47,7 +46,6 @@ int main(int argc, char ** argv)
     red.B = 0; 
     red.G = 0;
     int size = 10;
-    int velocity = 10;
     int xDist;
     int yDist;
     int flagNum;
@@ -66,8 +64,8 @@ int main(int argc, char ** argv)
     while (!g.getQuit()) {
         g.clear();
 
-        square.drawSquare(squarePoint, 75, 75, red, g);
-        square.drawTriangle(triangleTop, triangleLeft, triangleRight, red, g);
+        square.drawSquare(squarePoint, 75, red, g);
+        square.drawTriangle(trianglePoint, 75, red, g);
         shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
