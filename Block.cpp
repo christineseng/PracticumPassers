@@ -15,17 +15,19 @@ Block::Block(point loc, color col, int l, string s): location(loc), c(col), life
 
 
 //Member Functions
-void Block::drawSquare(point loc, int length, int width, color c, SDL_Plotter& win) {
-	location.x = loc.x;
-	location.y = loc.y;
-    for (int i = 0; i < length; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            // Plot each pixel in the square based on the starting location (loc)
-            win.plotPixel(loc.x + i, loc.y + j, c.R, c.G, c.B);
-        }
-    }
+void Block::drawSquare(point loc, int size, color c, SDL_Plotter& win) {
+	int length, width;
+	length = size, width = size;
+	// Calculate the top-left corner of the square based on the center
+	int startX = loc.x - length / 2;
+	int startY = loc.y - width / 2;
+
+	// Draw the square starting from the calculated top-left corner
+	for (int i = 0; i < length; i++) {
+		for (int j = 0; j < width; j++) {
+			win.plotPixel(startX + i, startY + j, c.R, c.G, c.B);
+		}
+	}
 }
 
 void Block::drawLine (point loc1, point loc2, color c, SDL_Plotter& g) const {
@@ -62,26 +64,32 @@ double Block::distance(point loc1, point loc2) const{
 	return distance;
 }
 
-void Block::drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter& g) {
+void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g) {
+	double height;
+	point topVertex, leftVertex, rightVertex;
+	point start, end;
 
-	location.x = topVertex.x;
-	location.y = topVertex.y;
+	height = (sqrt(3.0) / 2.0) * size;
+	topVertex.x = centroid.x;
+	topVertex.y = centroid.y - (2.0 / 3.0) * height;
 
-	int sideLength;
-	int height;
-	int offset; //distance from center to edges
-	point start;
-	point end;
+	leftVertex.x = centroid.x - (size / 2.0);
+	leftVertex.y = centroid.y + (1.0 / 3.0) * height;
 
-	sideLength = distance(topVertex, leftVertex);
-	height = (sqrt(3.0) / 2.0) * sideLength;
+	rightVertex.x = centroid.x + (size / 2.0);
+	rightVertex.y = centroid.y + (1.0 / 3.0) * height;
 
 	for (int y = 0; y <= height; ++y) {
-		offset = (y /static_cast<double>(height)) * (sideLength / 2.0);
+		int offset = (y / static_cast<double>(height)) * (size / 2.0);
+
+		// start and end points of the line to draw at this row
 		start.x = topVertex.x - offset;
 		start.y = topVertex.y + y;
+
 		end.x = topVertex.x + offset;
 		end.y = topVertex.y + y;
+
+		// Draw the line for this row
 		drawLine(start, end, c, g);
 	}
 }
