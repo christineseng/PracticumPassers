@@ -19,11 +19,12 @@ class Block{
     color c;
     int life;
     string shape;
+    int state;
 
 	public:
 		//Constructors
 		Block();
-		Block (point loc, color col, int l, string s);
+		Block (point loc, color col, int l, string s, int st);
 
 		//setters
 		void setLocation(point p) {
@@ -33,6 +34,7 @@ class Block{
 		void setColor(color c) {this -> c = c;}
 		void setLife(int l) {life = l;}
 		void setShape(string s) {shape = s;}
+		void setState();
 
 
 		//getters
@@ -42,17 +44,14 @@ class Block{
 		string getShape() const {return shape;}
 
 		//Member functions:
-		void drawSquare(point loc, int length, int width, color c, SDL_Plotter &win);
-		void drawTriangle(point topVertex, point leftVertex, point rightVertex, color c, SDL_Plotter& g);
+		void drawSquare(point loc, int size, color c, SDL_Plotter &win);
+		void drawTriangle(point centroid, int size, color c, SDL_Plotter& g);
         void drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter &g);
         void drawCircle(point loc, int size, color c, SDL_Plotter &g);
         void drawLine (point loc1, point loc2, color c, SDL_Plotter &g) const;
-        void drawRandomShape();
+        void drawRandomShape(point loc, int size, color c, SDL_Plotter& g);
         //bool isHit(SDL_Plotter &g);
         double distance (point loc1, point loc2) const;
 
 };
-
-
-
 #endif /* BLOCK_H_ */
