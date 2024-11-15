@@ -13,6 +13,7 @@
 #include "Ball.h"
 #include "Block.h"
 #include "flag.h"
+#include "blockFlag.h"
 
 using namespace std;
 
@@ -57,6 +58,8 @@ int main(int argc, char ** argv)
     bool hitDetected = false;
     bool firstHit = false;
 
+    Block testSquare(squarePoint, red, 5, "square");
+
     Flag flag;
 
     Uint32 RGB;
@@ -66,8 +69,9 @@ int main(int argc, char ** argv)
     while (!g.getQuit()) {
         g.clear();
 
-        square.drawSquare(squarePoint, 75, red, g);
-        square.drawTriangle(trianglePoint, 75, red, g);
+        //square.drawSquare(squarePoint, 75, red, g);
+        testSquare.drawSquare(squarePoint, 75, red, g);
+        //square.drawTriangle(trianglePoint, 75, red, g);
         shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
@@ -155,12 +159,18 @@ int main(int argc, char ** argv)
             else if (flagNum == 1){
                 cout << "right flag: " << f.getDirection() << endl;
                 f.setDirection(0 - f.getDirection());
+                if ((f.getDirection() > 15.0/16.0 * M_PI && f.getDirection() < 17.0/16.0 * M_PI) || (f.getDirection() > 31.0/16.0 * M_PI) || f.getDirection() < 1.0/16.0 * M_PI){
+                    f.apply(PUSHLEFT);
+                }
                 //f.apply(PUSHLEFT);
                 cout << "right flag new: " << f.getDirection() << endl;
             }
             else if (flagNum == 3){
                 cout << "left flag: " << f.getDirection() << endl;
                 f.setDirection(0 - f.getDirection());
+                if (f.getDirection() > 15.0/16.0 * M_PI && f.getDirection() < 17.0/16.0 * M_PI || f.getDirection() > 31.0/16.0 || f.getDirection() < 1/16.0 * M_PI){
+                    f.apply(PUSHRIGHT);
+                }
                 //f.apply(PUSHRIGHT);
                 cout << "left flag new: " << f.getDirection() << endl;
             }
@@ -180,6 +190,12 @@ int main(int argc, char ** argv)
             else if (flagNum == 7){ //top left corner hit
                 cout << "TOP LEFT CORNER" << endl;
                 f.setDirection(f.getDirection() - M_PI);
+            }
+
+
+            //check if shapes hit
+            if (testSquare.isHit(g)){
+                cout << "square hit !!" << endl;
             }
         }
         g.update();

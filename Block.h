@@ -9,6 +9,7 @@
 #define BLOCK_H_
 
 #include "SDL_Plotter.h"
+#include "blockFlag.h"
 #include <cmath>
 #include <ctime>
 
@@ -17,6 +18,7 @@ class Block{
 	private:
     point location;
     color c;
+	BlockFlag flag;
     int life;
     string shape;
 
@@ -48,7 +50,9 @@ class Block{
         void drawCircle(point loc, int size, color c, SDL_Plotter &g);
         void drawLine (point loc1, point loc2, color c, SDL_Plotter &g) const;
         void drawRandomShape();
-        //bool isHit(SDL_Plotter &g);
+        bool isHit(SDL_Plotter &g){
+			return flag.isHit(g);
+		}
         double distance (point loc1, point loc2) const;
 
 };

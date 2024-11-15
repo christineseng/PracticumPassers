@@ -11,7 +11,11 @@
 
 //Constructors
 Block::Block(): location(), c(), life(0), shape("") {}
-Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){}
+Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){
+	flag.setShape(s);
+	flag.setLocation(loc);
+	flag.initializeFlags();
+}
 
 
 //Member Functions
