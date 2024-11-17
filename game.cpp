@@ -13,7 +13,7 @@
 #include "Ball.h"
 #include "Block.h"
 #include "flag.h"
-#include "blockFlag.h"
+#include "HitBox.h"
 
 using namespace std;
 
@@ -30,7 +30,7 @@ int main(int argc, char ** argv)
     const force GRAVITY(0.5, 0);
     const force PUSHRIGHT(0.2, M_PI/2);
     const force PUSHLEFT(0.2, 3*M_PI/2);
-    Ball shooter;
+    // Ball shooter;
     Block square;
 
     p.x = 500;
@@ -58,6 +58,7 @@ int main(int argc, char ** argv)
     bool hitDetected = false;
     bool firstHit = false;
 
+    Ball shooter(p, black);
     Block testSquare(squarePoint, red, 5, "square");
 
     Flag flag;
@@ -128,6 +129,7 @@ int main(int argc, char ** argv)
             }
 
             if (flagNum != -1){
+                //if first hit, turn on gravity
                 if (!firstHit){
                     firstHit = true;
                 }
@@ -138,6 +140,12 @@ int main(int argc, char ** argv)
                 }
             }
 
+            // cout << "square hb point: " << testSquare.getHitBox1().getPoint().x << "," <<testSquare.getHitBox1().getPoint().y << endl;
+            // cout << "ball hb point: " << shooter.getHitBox().getPoint().x << "," << shooter.getHitBox().getPoint().y << endl;
+
+            //check which side was hit
+
+            
             if (flagNum == 0){
                 cout << "top flag initial: " << f.getDirection() << endl;
                 f.setDirection(M_PI - f.getDirection());
@@ -192,11 +200,38 @@ int main(int argc, char ** argv)
                 f.setDirection(f.getDirection() - M_PI);
             }
 
-
-            //check if shapes hit
-            if (testSquare.isHit(g)){
+            if (testSquare.isHit(shooter.getHitBox(), g)){
                 cout << "square hit !!" << endl;
             }
+
+            //check if shapes hit
+            /*
+            if (testSquare.isHit(shooter.getHitBox(), g)){
+                cout << "square hit !!" << endl;
+
+
+                if (f.getDirection() >= 0 && f.getDirection() <= M_PI / 2){
+                    f.setDirection(M_PI - f.getDirection());
+                }
+                else if (f.getDirection() >= M_PI / 2 && f.getDirection() <= M_PI){
+                    f.setDirection(M_PI - f.getDirection());
+                }
+                else if (f.getDirection() >= M_PI && f.getDirection() <= 3 * M_PI / 2){
+                    f.setDirection(M_PI - f.getDirection());
+                }
+                else {
+                    f.setDirection(M_PI - f.getDirection());
+                }
+
+                if (f.getDirection() >= 15.0/16 * M_PI && f.getDirection() <= 2 * M_PI){
+                    f.apply(PUSHRIGHT);
+                }
+                else if (f.getDirection() <= 17.0/16 * M_PI && f.getDirection() >= 2 * M_PI){
+                    f.apply(PUSHLEFT);
+                }
+
+            }
+            */
         }
         g.update();
     }
