@@ -28,8 +28,8 @@ int main(int argc, char ** argv)
     point squarePoint, trianglePoint;
     //force f; //ball force
     const force GRAVITY(0.5, 0);
-    const force PUSHRIGHT(0.2, M_PI/2);
-    const force PUSHLEFT(0.2, 3*M_PI/2);
+    const force PUSHRIGHT(0.5, M_PI/2);
+    const force PUSHLEFT(0.5, 3*M_PI/2);
     // Ball shooter;
     Block square;
 
@@ -119,7 +119,7 @@ int main(int argc, char ** argv)
             }
 
             //update flag positions
-            flag.update(p.x, p.y, size);
+            flag.update(p.x, p.y, size, shooter.getForce());
             flagNum = flag.isHit(g);
             if (p.y > 980)
             {
@@ -143,9 +143,14 @@ int main(int argc, char ** argv)
             // cout << "square hb point: " << testSquare.getHitBox1().getPoint().x << "," <<testSquare.getHitBox1().getPoint().y << endl;
             // cout << "ball hb point: " << shooter.getHitBox().getPoint().x << "," << shooter.getHitBox().getPoint().y << endl;
 
-            //check which side was hit
-
+            if (p.x < 15){
+                shooter.setDirection(2*M_PI - shooter.getDirection());
+            } 
+            else if (p.x > 985){
+                shooter.setDirection(2*M_PI - shooter.getDirection());
+            }
             
+            if (HitBox::isHit(shooter.getHitBox(), testSquare.getHitBox1())){//if hit box detected, then check if flags also detect hit in correct direction
             if (flagNum == 0){
                 cout << "top flag initial: " << shooter.getDirection() << endl;
                 shooter.setDirection(M_PI - shooter.getDirection());
@@ -199,10 +204,11 @@ int main(int argc, char ** argv)
                 cout << "TOP LEFT CORNER" << endl;
                 shooter.setDirection(shooter.getDirection() - M_PI);
             }
-
-            if (testSquare.isHit(shooter.getHitBox(), g)){
+            if (flagNum != -1){
                 cout << "square hit !!" << endl;
             }
+            }
+
 
             //check if shapes hit
             /*

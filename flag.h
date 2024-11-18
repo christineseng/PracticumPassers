@@ -2,6 +2,7 @@
 #define flag_h
 
 #include "SDL_Plotter.h"
+#include "force.h"
 
 const long flagWhite = 4294967295;
 const int flagBlack = 0;
@@ -9,14 +10,15 @@ const int flagBlack = 0;
 class Flag{
     public:
         Flag();
-        void update(int newX, int newY);
-        void update(int newX, int newY, int ballSize);
+        void update(int newX, int newY, force& newF);
+        void update(int newX, int newY, int ballSize, force& newF);
         int isHit(SDL_Plotter& g);
 
     private:
         int x;
         int y;
         int flagSpace;
+        force f;
         point pointArray[5];
         point topArray[5];
         point bottomArray[5];

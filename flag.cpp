@@ -11,10 +11,12 @@ Flag::Flag(){
     point bottomRight;
     point bottomLeft;
     point topLeft;
-    flagSpace = 1;
+    flagSpace = 3;
 }
 
-void Flag::update(int newX, int newY, int ballSize){
+void Flag::update(int newX, int newY, int ballSize, force& newF){
+    //update force
+    f = newF;
     point p;
     //update edges
     for (int i = 0; i < 5; ++i){
@@ -54,8 +56,54 @@ void Flag::update(int newX, int newY, int ballSize){
     topLeft = p;
 }
 int Flag::isHit(SDL_Plotter& g){
-    int sideNum;
+    int sideNum = -1; //if no sides or corners hit return -1
     
+    if (f.getDirection() >= 0 && f.getDirection() <= M_PI / 2){ //check bottom, right, bottom-right
+        if(rowIsHit(bottomArray, 2, g)){
+            sideNum = 2;
+        }
+        else if (rowIsHit(rightArray, 1, g)){
+            sideNum = 1;
+        }
+        else if (cornerIsHit(bottomRight, g)){
+            sideNum = 5;
+        }
+    }
+    else if (f.getDirection() >= M_PI / 2 && f.getDirection() <= M_PI){ //check right, top, top-right
+        if (rowIsHit(rightArray, 1, g)){
+            sideNum = 1;
+        }
+        else if (rowIsHit(topArray, 0, g)){
+            sideNum = 0;
+        }
+        else if (cornerIsHit(topRight, g)){
+            sideNum = 4;
+        }
+    }
+    else if (f.getDirection() >= M_PI && f.getDirection() <= 3 * M_PI / 2){ //check top, left, top-left
+        if (rowIsHit(topArray, 0, g)){
+            sideNum = 0;
+        }
+        else if (rowIsHit(leftArray, 3, g)){
+            sideNum = 3;
+        }
+        else if (cornerIsHit(topLeft, g)){
+            sideNum = 7;
+        }
+    }
+    else if (f.getDirection() >= 3 * M_PI / 2 && f.getDirection() <= 2 * M_PI){ //check left, bottom, bottom-left
+        if (rowIsHit(leftArray, 3, g)){
+            sideNum = 3;
+        }
+        else if (rowIsHit(bottomArray, 2, g)){
+            sideNum = 2;
+        }
+        else if (cornerIsHit(bottomLeft, g)){
+            sideNum = 6;
+        }
+    }
+    
+    /*
     //check edges
     if (rowIsHit(topArray, 0, g)){
         sideNum = 0;
@@ -86,6 +134,7 @@ int Flag::isHit(SDL_Plotter& g){
     else{
         sideNum = -1;
     }
+    */
     return sideNum;
 }
 //checks if row of flags is hit

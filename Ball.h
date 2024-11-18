@@ -38,9 +38,9 @@ public:
     void apply(force newForce){f.apply(newForce);} 
 
     //GETTERS
-    point getBallLoc(){ return location; }
-    HitBox getHitBox(){ return hb; }
-    force getForce(){ return f; }
+    point& getBallLoc(){ return location; }
+    HitBox& getHitBox(){ return hb; }
+    force& getForce(){ return f; }
 private:
     point location;
     color c;
