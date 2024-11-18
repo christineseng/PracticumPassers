@@ -14,8 +14,12 @@
 #include "Block.h"
 #include "flag.h"
 #include "HitBox.h"
+#include "Timer.h"
 
 using namespace std;
+
+const int SCREEN_FPS = 45;
+const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 int main(int argc, char ** argv)
 {
@@ -58,6 +62,19 @@ int main(int argc, char ** argv)
     bool hitDetected = false;
     bool firstHit = false;
 
+    //FRAMERATE
+    Timer fpsTimer;
+    int countedFrames;
+    int frameTicks;
+
+    //LEVELS
+    Block shape;
+    point startLoc;
+    startLoc.x = 500, startLoc.y = 500;
+    bool levelChanged = true;
+    color test = {255,0,0};
+
+    //debug
     Ball shooter(p, black);
     Block testSquare(squarePoint, red, 5, "square");
 
@@ -68,12 +85,18 @@ int main(int argc, char ** argv)
     
 
     while (!g.getQuit()) {
+        fpsTimer.start();
         g.clear();
 
-        //square.drawSquare(squarePoint, 75, red, g);
-        testSquare.drawSquare(squarePoint, 75, red, g);
-        //square.drawTriangle(trianglePoint, 75, red, g);
+	// Create new level only when needed
+        if (levelChanged)
+        {
+            shape.createLevel(startLoc);
+            levelChanged = false;
+        }
+        shape.drawLevel(startLoc, g);
         shooter.drawBall(p, size, c, g);
+        
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
         	clickPos = g.getMouseClick();
@@ -138,6 +161,8 @@ int main(int argc, char ** argv)
                     shooter.setMagnitude(0);
                     isFalling = false;
                 }
+		g.initSound("sounds/soundHit.wav");
+            	g.playSound("sounds/soundHit.wav");
             }
 
             // cout << "square hb point: " << testSquare.getHitBox1().getPoint().x << "," <<testSquare.getHitBox1().getPoint().y << endl;
@@ -162,6 +187,8 @@ int main(int argc, char ** argv)
                     shooter.setDirection(9.0 * M_PI / 8.0);
                 }
                 cout << "bottom flag new: " << shooter.getDirection() << endl;
+		shape.nextLevel();
+                levelChanged = true;
             }
             
             else if (flagNum == 1){
@@ -203,37 +230,19 @@ int main(int argc, char ** argv)
             if (testSquare.isHit(shooter.getHitBox(), g)){
                 cout << "square hit !!" << endl;
             }
-
-            //check if shapes hit
-            /*
-            if (testSquare.isHit(shooter.getHitBox(), g)){
-                cout << "square hit !!" << endl;
-
-
-                if (f.getDirection() >= 0 && f.getDirection() <= M_PI / 2){
-                    f.setDirection(M_PI - f.getDirection());
-                }
-                else if (f.getDirection() >= M_PI / 2 && f.getDirection() <= M_PI){
-                    f.setDirection(M_PI - f.getDirection());
-                }
-                else if (f.getDirection() >= M_PI && f.getDirection() <= 3 * M_PI / 2){
-                    f.setDirection(M_PI - f.getDirection());
-                }
-                else {
-                    f.setDirection(M_PI - f.getDirection());
-                }
-
-                if (f.getDirection() >= 15.0/16 * M_PI && f.getDirection() <= 2 * M_PI){
-                    f.apply(PUSHRIGHT);
-                }
-                else if (f.getDirection() <= 17.0/16 * M_PI && f.getDirection() >= 2 * M_PI){
-                    f.apply(PUSHLEFT);
-                }
-
-            }
-            */
         }
+        g.Sleep(10);
+        ++countedFrames;
         g.update();
+
+        //If frame finished early syncing with fps
+        frameTicks = fpsTimer.getTicks();
+        if (frameTicks < SCREEN_TICKS_PER_FRAME)
+        {
+            //Wait remaining time
+            SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+        }
     }
+	return 0;
 }
 	
