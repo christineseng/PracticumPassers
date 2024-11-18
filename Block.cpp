@@ -17,30 +17,6 @@ Block::Block(point loc, color col, int l, string s): location(loc), c(col), life
 	hb2 = b;
 }
 
-void Block::setState()
-{
-    srand(time(0));
-    int randNum;
-    randNum = rand() % 10;
-    if (state == -1)
-    {
-        if (randNum >= 0 && randNum <= 3)
-        {
-            //circle
-            state = 1;
-        }
-        else if (randNum <= 6)
-        {
-            //square
-            state = 2;
-        }
-        else
-        {
-            state = 3; //triangle
-        }
-    }
-}
-
 //Member Functions
 void Block::drawSquare(point loc, int size, color c, SDL_Plotter& win)
 {
@@ -195,11 +171,6 @@ void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bott
         end.y = bottomVertex.y + y;
         drawLine(start, end, c, g);
     }
-}
-
-bool Block::isHit(SDL_Plotter& g)
-{
-    return true;
 }
 
 void Block::drawRandomShape(point loc, int size, color c, SDL_Plotter& g, int state)
