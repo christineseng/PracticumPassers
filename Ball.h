@@ -2,7 +2,7 @@
  * Ball.h
  *
  *  Created on: Nov 1, 2024
- *      Author: nolanschirripa
+ *  Author: nolanschirripa
  */
 
 
@@ -10,6 +10,7 @@
 #define BALL_H
 #include "SDL_Plotter.h"
 #include "HitBox.h"
+#include "force.h"
 #include <cmath>
 
 //Class for ball fucntions like creating balls
@@ -29,14 +30,22 @@ public:
     //BALL-FUNCTIONS
     void drawBall(point loc, SDL_Plotter& win);
     void drawBall(point loc, int size, color c,  SDL_Plotter& win);
+    //FORCE-FUNCTIONS
+    void setMagnitude(double m){f.setMagnitude(m);}
+    void setDirection(double d){f.setDirection(d);}
+    double getMagnitude(){return f.getMagnitude();}
+    double getDirection(){return f.getDirection();}
+    void apply(force newForce){f.apply(newForce);} 
 
     //GETTERS
-    point getBallLoc() { return location;}
+    point getBallLoc(){ return location; }
     HitBox getHitBox(){ return hb; }
+    force getForce(){ return f; }
 private:
     point location;
     color c;
     HitBox hb;
+    force f;
 };
 
 

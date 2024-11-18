@@ -6,13 +6,12 @@
  */
 
 #include "Ball.h"
-#include "force.h"
-
 
 //Ball Class----------------------------------------------------
 void Ball::drawBall(point loc, SDL_Plotter& win)
 {
     location = loc;
+    //update hit box location and force so that they match the ball's
     hb.setPoint(loc);
     for (double i = -10; i <= 10; i += 0.1)
     {

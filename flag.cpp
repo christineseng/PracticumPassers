@@ -82,7 +82,8 @@ int Flag::isHit(SDL_Plotter& g){
     else if (cornerIsHit(topLeft, g)){
         sideNum = 7;
     }
-    else{//if not hit
+    // if not hit
+    else{
         sideNum = -1;
     }
     return sideNum;
