@@ -1,5 +1,5 @@
 /*
- * Ball.h
+* Ball.h
  *
  *  Created on: Nov 1, 2024
  *  Author: nolanschirripa
@@ -35,7 +35,7 @@ public:
     void setDirection(double d){f.setDirection(d);}
     double getMagnitude(){return f.getMagnitude();}
     double getDirection(){return f.getDirection();}
-    void apply(force newForce){f.apply(newForce);} 
+    void apply(force newForce){f.apply(newForce);}
 
     //GETTERS
     point& getBallLoc(){ return location; }

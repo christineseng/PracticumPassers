@@ -1,5 +1,5 @@
 /*
- * Ball.cpp
+* Ball.cpp
  *
  *  Created on: Nov 1, 2024
  *      Author: nolanschirripa
@@ -40,5 +40,3 @@ void Ball::drawBall(point loc, int size, color c, SDL_Plotter& win)
         }
     }
 }
-
-
