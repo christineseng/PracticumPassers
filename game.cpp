@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : graphicsTest2.cpp
-// Author      : Erick Martinez
+// Author      :
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -34,7 +34,7 @@ int main(int argc, char ** argv)
     const force GRAVITY(0.5, 0);
     const force PUSHRIGHT(0.2, M_PI/2);
     const force PUSHLEFT(0.2, 3*M_PI/2);
-    // Ball shooter;
+    //Ball shooter;
     Block square;
 
     p.x = 500;
@@ -50,7 +50,7 @@ int main(int argc, char ** argv)
     black.G = 0;
     color red;
     red.R = 255;
-    red.B = 0; 
+    red.B = 0;
     red.G = 0;
     int size = 10;
     int xDist;
@@ -82,7 +82,7 @@ int main(int argc, char ** argv)
 
     Uint32 RGB;
     shooter.drawBall(p, size, c, g);
-    
+
 
     while (!g.getQuit()) {
         fpsTimer.start();
@@ -96,7 +96,7 @@ int main(int argc, char ** argv)
         }
         shape.drawLevel(startLoc, g);
         shooter.drawBall(p, size, c, g);
-        
+
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
         	clickPos = g.getMouseClick();
@@ -115,8 +115,8 @@ int main(int argc, char ** argv)
             isFalling = true;
             firstHit = false;
         }
-        
-        //when clicked 
+
+        //when clicked
         if (isFalling) {
             //apply gravity
             if (firstHit){
@@ -170,7 +170,7 @@ int main(int argc, char ** argv)
 
             //check which side was hit
 
-            
+
             if (flagNum == 0){
                 cout << "top flag initial: " << shooter.getDirection() << endl;
                 shooter.setDirection(M_PI - shooter.getDirection());
@@ -190,7 +190,7 @@ int main(int argc, char ** argv)
 		shape.nextLevel();
                 levelChanged = true;
             }
-            
+
             else if (flagNum == 1){
                 cout << "right flag: " << shooter.getDirection() << endl;
                 shooter.setDirection(0 - shooter.getDirection());
@@ -245,4 +245,3 @@ int main(int argc, char ** argv)
     }
 	return 0;
 }
-	
