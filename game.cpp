@@ -13,6 +13,7 @@
 #include "Ball.h"
 #include "Block.h"
 #include "flag.h"
+#include "HitBox.h"
 
 using namespace std;
 
@@ -25,11 +26,11 @@ int main(int argc, char ** argv)
     point p;
     point clickPos;
     point squarePoint, trianglePoint;
-    force f; //ball force
+    //force f; //ball force
     const force GRAVITY(0.5, 0);
     const force PUSHRIGHT(0.2, M_PI/2);
     const force PUSHLEFT(0.2, 3*M_PI/2);
-    Ball shooter;
+    // Ball shooter;
     Block square;
 
     p.x = 500;
@@ -57,6 +58,9 @@ int main(int argc, char ** argv)
     bool hitDetected = false;
     bool firstHit = false;
 
+    Ball shooter(p, black);
+    Block testSquare(squarePoint, red, 5, "square");
+
     Flag flag;
 
     Uint32 RGB;
@@ -66,8 +70,9 @@ int main(int argc, char ** argv)
     while (!g.getQuit()) {
         g.clear();
 
-        square.drawSquare(squarePoint, 75, red, g);
-        square.drawTriangle(trianglePoint, 75, red, g);
+        //square.drawSquare(squarePoint, 75, red, g);
+        testSquare.drawSquare(squarePoint, 75, red, g);
+        //square.drawTriangle(trianglePoint, 75, red, g);
         shooter.drawBall(p, size, c, g);
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick()) {
@@ -80,8 +85,8 @@ int main(int argc, char ** argv)
         	yDist = clickPos.y - p.y;
             // sets magnitude based on how far from start you click
             // f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
-            f.setMagnitude(13);
-            f.setDirection(atan(static_cast<double>(xDist) / yDist));
+            shooter.setMagnitude(13);
+            shooter.setDirection(atan(static_cast<double>(xDist) / yDist));
 
             c = black;
             isFalling = true;
@@ -92,11 +97,11 @@ int main(int argc, char ** argv)
         if (isFalling) {
             //apply gravity
             if (firstHit){
-                f.apply(GRAVITY);
+                shooter.apply(GRAVITY);
                 //f.setMagnitude(6);
             }
             //change y and x pos based on magnitude and direction
-            yPos += f.getMagnitude() * cos(f.getDirection());
+            yPos += shooter.getMagnitude() * cos(shooter.getDirection());
             p.y = static_cast<int> (yPos);
             if (p.y < size + 3){
                 p.y = size + 3;
@@ -104,7 +109,7 @@ int main(int argc, char ** argv)
             else if (p.y > g.getRow() - size - 3){
                 p.y = g.getRow() - size - 3;
             }
-            xPos += f.getMagnitude() * sin(f.getDirection());
+            xPos += shooter.getMagnitude() * sin(shooter.getDirection());
             p.x = static_cast<int> (xPos);
             if (p.x < size + 3){
                 p.x = size + 3;
@@ -124,63 +129,109 @@ int main(int argc, char ** argv)
             }
 
             if (flagNum != -1){
+                //if first hit, turn on gravity
                 if (!firstHit){
                     firstHit = true;
                 }
-                f.setMagnitude(f.getMagnitude() - 0.4);
-                if (f.getMagnitude() < 0){
-                    f.setMagnitude(0);
+                shooter.setMagnitude(shooter.getMagnitude() - 0.4);
+                if (shooter.getMagnitude() < 0){
+                    shooter.setMagnitude(0);
                     isFalling = false;
                 }
             }
 
+            // cout << "square hb point: " << testSquare.getHitBox1().getPoint().x << "," <<testSquare.getHitBox1().getPoint().y << endl;
+            // cout << "ball hb point: " << shooter.getHitBox().getPoint().x << "," << shooter.getHitBox().getPoint().y << endl;
+
+            //check which side was hit
+
+            
             if (flagNum == 0){
-                cout << "top flag initial: " << f.getDirection() << endl;
-                f.setDirection(M_PI - f.getDirection());
-                cout << "top flag new: " << f.getDirection() << endl;
+                cout << "top flag initial: " << shooter.getDirection() << endl;
+                shooter.setDirection(M_PI - shooter.getDirection());
+                cout << "top flag new: " << shooter.getDirection() << endl;
             }
             else if (flagNum == 2){
-                cout << "bottom flag: " << f.getDirection() << endl;
-                f.setDirection(3 * M_PI - f.getDirection());
+                cout << "bottom flag: " << shooter.getDirection() << endl;
+                shooter.setDirection(3 * M_PI - shooter.getDirection());
                 //if direction is close to straight up/down, set it to the closest PI/8 value so that it doesn't get stuck bouncing up/down
-                if (f.getDirection() >= 7.0 * M_PI / 8.0 && f.getDirection() <= M_PI){
-                    f.setDirection(7.0 * M_PI / 8.0);
+                if (shooter.getDirection() >= 7.0 * M_PI / 8.0 && shooter.getDirection() <= M_PI){
+                    shooter.setDirection(7.0 * M_PI / 8.0);
                 }
-                else if (f.getDirection() >=  M_PI && f.getDirection() <= 9.0 * M_PI / 8.0){
-                    f.setDirection(9.0 * M_PI / 8.0);
+                else if (shooter.getDirection() >=  M_PI && shooter.getDirection() <= 9.0 * M_PI / 8.0){
+                    shooter.setDirection(9.0 * M_PI / 8.0);
                 }
-                cout << "bottom flag new: " << f.getDirection() << endl;
+                cout << "bottom flag new: " << shooter.getDirection() << endl;
             }
             
             else if (flagNum == 1){
-                cout << "right flag: " << f.getDirection() << endl;
-                f.setDirection(0 - f.getDirection());
+                cout << "right flag: " << shooter.getDirection() << endl;
+                shooter.setDirection(0 - shooter.getDirection());
+                if ((shooter.getDirection() > 15.0/16.0 * M_PI && shooter.getDirection() < 17.0/16.0 * M_PI) || (shooter.getDirection() > 31.0/16.0 * M_PI) || shooter.getDirection() < 1.0/16.0 * M_PI){
+                    shooter.apply(PUSHLEFT);
+                }
                 //f.apply(PUSHLEFT);
-                cout << "right flag new: " << f.getDirection() << endl;
+                cout << "right flag new: " << shooter.getDirection() << endl;
             }
             else if (flagNum == 3){
-                cout << "left flag: " << f.getDirection() << endl;
-                f.setDirection(0 - f.getDirection());
+                cout << "left flag: " << shooter.getDirection() << endl;
+                shooter.setDirection(0 - shooter.getDirection());
+                if (shooter.getDirection() > 15.0/16.0 * M_PI && shooter.getDirection() < 17.0/16.0 * M_PI || shooter.getDirection() > 31.0/16.0 || shooter.getDirection() < 1/16.0 * M_PI){
+                    shooter.apply(PUSHRIGHT);
+                }
                 //f.apply(PUSHRIGHT);
-                cout << "left flag new: " << f.getDirection() << endl;
+                cout << "left flag new: " << shooter.getDirection() << endl;
             }
 
             else if (flagNum == 4){ //top right corner hit
                 cout << "TOP RIGHT CORNER" << endl;
-                f.setDirection(f.getDirection() - M_PI);
+                shooter.setDirection(shooter.getDirection() - M_PI);
             }
             else if (flagNum == 5){ //bottom right corner hit
                 cout << "BOTTOM RIGHT CORNER" << endl;
-                f.setDirection(M_PI + f.getDirection());
+                shooter.setDirection(M_PI + shooter.getDirection());
             }
             else if (flagNum == 6){ //bottom left corner hit
                 cout << "BOTTOM LEFT CORNER" << endl;
-                f.setDirection(M_PI + f.getDirection());
+                shooter.setDirection(M_PI + shooter.getDirection());
             }
             else if (flagNum == 7){ //top left corner hit
                 cout << "TOP LEFT CORNER" << endl;
-                f.setDirection(f.getDirection() - M_PI);
+                shooter.setDirection(shooter.getDirection() - M_PI);
             }
+
+            if (testSquare.isHit(shooter.getHitBox(), g)){
+                cout << "square hit !!" << endl;
+            }
+
+            //check if shapes hit
+            /*
+            if (testSquare.isHit(shooter.getHitBox(), g)){
+                cout << "square hit !!" << endl;
+
+
+                if (f.getDirection() >= 0 && f.getDirection() <= M_PI / 2){
+                    f.setDirection(M_PI - f.getDirection());
+                }
+                else if (f.getDirection() >= M_PI / 2 && f.getDirection() <= M_PI){
+                    f.setDirection(M_PI - f.getDirection());
+                }
+                else if (f.getDirection() >= M_PI && f.getDirection() <= 3 * M_PI / 2){
+                    f.setDirection(M_PI - f.getDirection());
+                }
+                else {
+                    f.setDirection(M_PI - f.getDirection());
+                }
+
+                if (f.getDirection() >= 15.0/16 * M_PI && f.getDirection() <= 2 * M_PI){
+                    f.apply(PUSHRIGHT);
+                }
+                else if (f.getDirection() <= 17.0/16 * M_PI && f.getDirection() >= 2 * M_PI){
+                    f.apply(PUSHLEFT);
+                }
+
+            }
+            */
         }
         g.update();
     }

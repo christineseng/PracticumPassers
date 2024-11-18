@@ -5,16 +5,16 @@
 #include "Block.h"
 #include "SDL_Plotter.h"
 
-
-//BLOCK CLASS----------------------------------------------------
-
 //Constructors
-Block::Block(): location(), c(), life(1), shape(""), state(-1), currentLevel(1)
-{
-}
-
-Block::Block(point loc, color col, int l, string s, int st): location(loc), c(col), life(l), shape(s), state(st)
-{
+Block::Block(): location(), c(), life(0), shape("") {}
+Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){
+	//FIXME depending on the shape, set the hit boxes differently
+	HitBox b;
+	b.setPoint(loc);
+	b.setLength(85);
+	b.setWidth(85);
+	hb1 = b;
+	hb2 = b;
 }
 
 void Block::setState()
