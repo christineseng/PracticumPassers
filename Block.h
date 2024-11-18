@@ -9,6 +9,7 @@
 #define BLOCK_H_
 
 #include "SDL_Plotter.h"
+#include "HitBox.h"
 #include <cmath>
 #include <ctime>
 
@@ -19,6 +20,8 @@ class Block{
     color c;
     int life;
     string shape;
+	HitBox hb1;
+	HitBox hb2;
 
 	public:
 		//Constructors
@@ -40,6 +43,8 @@ class Block{
 		color getColor() const {return c;}
 		int getLife() const {return life;}
 		string getShape() const {return shape;}
+		HitBox getHitBox1() const {return hb1; }
+		HitBox getHitBox2() const {return hb2;}
 
 		//Member functions:
 		void drawSquare(point loc, int size, color c, SDL_Plotter &win);
@@ -48,7 +53,10 @@ class Block{
         void drawCircle(point loc, int size, color c, SDL_Plotter &g);
         void drawLine (point loc1, point loc2, color c, SDL_Plotter &g) const;
         void drawRandomShape();
-        //bool isHit(SDL_Plotter &g);
+        bool isHit(HitBox ballHB, SDL_Plotter &g){
+			//FIXME add is hit with hit boxes
+			return (HitBox::isHit(ballHB, hb1)) || (HitBox::isHit(ballHB, hb2));
+		}
         double distance (point loc1, point loc2) const;
 
 };
