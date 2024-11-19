@@ -183,7 +183,7 @@ void Block::drawRandomShape(point loc, int size, color c, SDL_Plotter& g, int st
     {
     case 1:
         {
-            drawCircle(loc, size - 20, c, g);
+            drawCircle(loc, size / 2, c, g);
             break;
         }
     case 2:

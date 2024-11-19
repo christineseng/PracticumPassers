@@ -21,18 +21,18 @@ void Flag::update(int newX, int newY, int ballSize, force& newF){
     //update edges
     for (int i = 0; i < 5; ++i){
         p.x = newX + (flagSpace * (i - 2));
-        p.y = newY - ballSize - 2;
+        p.y = newY - ballSize - 3;
         topArray[i] = p;
         
         p.x = newX + (flagSpace * (i - 2));
-        p.y = newY + ballSize + 2;
+        p.y = newY + ballSize + 3;
         bottomArray[i] = p;
 
-        p.x = newX + ballSize + 2;
+        p.x = newX + ballSize + 3;
         p.y = newY + (flagSpace * (i - 2));
         rightArray[i] = p;
 
-        p.x = newX - ballSize - 2;
+        p.x = newX - ballSize - 3;
         p.y = newY + (flagSpace * (i - 2));
         leftArray[i] = p;
     }
@@ -92,49 +92,18 @@ int Flag::isHit(SDL_Plotter& g){
         }
     }
     else if (f.getDirection() >= 3 * M_PI / 2 && f.getDirection() <= 2 * M_PI){ //check left, bottom, bottom-left
-        if (rowIsHit(leftArray, 3, g)){
-            sideNum = 3;
-        }
-        else if (rowIsHit(bottomArray, 2, g)){
+        if (rowIsHit(bottomArray, 2, g)){
             sideNum = 2;
+        }
+        else if (rowIsHit(leftArray, 3, g)){
+            sideNum = 3;
         }
         else if (cornerIsHit(bottomLeft, g)){
             sideNum = 6;
         }
     }
     
-    /*
-    //check edges
-    if (rowIsHit(topArray, 0, g)){
-        sideNum = 0;
-    }
-    else if (rowIsHit(rightArray, 1, g)){
-        sideNum = 1;
-    }
-    else if (rowIsHit(bottomArray, 2, g)){
-        sideNum = 2;
-    }
-    else if (rowIsHit(leftArray, 3, g)){
-        sideNum = 3;
-    }
-    //else check corners
-    else if (cornerIsHit(topRight, g)){
-        sideNum = 4;
-    }
-    else if (cornerIsHit(bottomRight, g)){
-        sideNum = 5;
-    }
-    else if (cornerIsHit(bottomLeft, g)){
-        sideNum = 6;
-    }
-    else if (cornerIsHit(topLeft, g)){
-        sideNum = 7;
-    }
-    // if not hit
-    else{
-        sideNum = -1;
-    }
-    */
+
     return sideNum;
 }
 //checks if row of flags is hit
