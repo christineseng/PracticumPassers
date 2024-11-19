@@ -19,7 +19,7 @@
 #include "SDL_Plotter.h"
 
 //Threaded Sound Function
-/*
+
 static int Sound(void *data){
 	param *p = (param*)data;
 	p->running = true;
@@ -39,7 +39,7 @@ static int Sound(void *data){
 	p->running = false;
 	return 0;
 }
-*/
+
 
 // SDL Plotter Function Definitions
 
@@ -68,12 +68,12 @@ SDL_Plotter::SDL_Plotter(int r, int c, bool WITH_SOUND){
     memset(pixels, WHITE, col * row * sizeof(Uint32));
 
     currentKeyStates = SDL_GetKeyboardState( NULL );
-/*
+
     //SOUND Thread Pool
     Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
     soundCount = 0;
     update();
-    */
+    
   }
 
 
@@ -196,7 +196,7 @@ int SDL_Plotter::getRow(){
 int SDL_Plotter::getCol(){
     return col;
 }
-/*
+
 void SDL_Plotter::initSound(string sound){
 	if(!soundMap[sound].running){
 			param* p = &soundMap[sound];
@@ -207,7 +207,7 @@ void SDL_Plotter::initSound(string sound){
 			p->threadID = SDL_CreateThread( Sound, sound.c_str(), (void*)p );
 	}
 }
-*/
+
 void SDL_Plotter::setQuit(bool flag){
 	this->quit = flag;
 }
