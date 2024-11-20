@@ -8,13 +8,9 @@
 //Constructors
 Block::Block(): location(), c(), life(0), shape("") {}
 Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){
-	//FIXME depending on the shape, set the hit boxes differently
-	HitBox b;
-	b.setPoint(loc);
-	b.setLength(85);
-	b.setWidth(85);
-	hb1 = b;
-	hb2 = b;
+    hb.setPoint(loc);
+    hb.setLength(85);
+    hb.setWidth(85);
 }
 
 //Member Functions
@@ -179,31 +175,48 @@ void Block::drawRandomShape(point loc, int size, color c, SDL_Plotter& g, int st
     else if (state < 8) state = 2;
     else if (state <= 9) state = 3;
 
+    string shape = "default";
+
     switch (state)
     {
     case 1:
         {
-            drawCircle(loc, size - 20, c, g);
+            drawCircle(loc, size / 2, c, g);
+            shape = "Circle";
             break;
         }
     case 2:
         {
             drawSquare(loc, size, c, g);
+            shape = "Square";
             break;
         }
     case 3:
         {
             drawTriangle(loc, size, c, g);
+            shape = "Triangle";
             break;
         }
     default:
         break;
     }
+    Block currentShape(loc,c,size,shape);
+    allActiveShapes.push_back(currentShape);
+
+    //Once ran we should pushback block into 2D vector to store location,size,color etc.
+    //Because some levels might have a differnt amount of objects spawning ie. not three
+    //we need a boolean flag to differtiate rows(levels) in a 2D vector named allActiveShapes
+    //We also need a way to update allActiveShapes to check if life levels of any shape has dropped below 0 if then NULL that pos
+    //in drawLevel we need to iterate through this 2D vector to draw the correct amount of levels
+    //If we reach NULL just skip that draw phase and move forward
+    //
 }
 
 void Block::createLevel(point startLoc)
 {
     shapeStates.clear();
+    levelOffsetY += 50;
+
     shapeStates.push_back(rand() % 10);
     shapeStates.push_back(rand() % 10);
     shapeStates.push_back(rand() % 10);
@@ -213,22 +226,17 @@ void Block::drawLevel(point startLoc, SDL_Plotter& g)
 {
     int size = 75;
 
-    color red;
-    red.R = 255, red.G = 0, red.B = 0;
+    color red = {255, 0, 0};
+    color blue = {0, 0, 255};
+    color green = {0, 255, 0};
 
-    color blue;
-    blue = {0,0,255};
-
-    color green;
-    green = {0,255,0};
-
-    point loc2, loc3;
-    loc2.x = 250, loc2.y = 500;
-    loc3.x = 750, loc3.y = 500;
+    point loc1 = {startLoc.x, startLoc.y - levelOffsetY};
+    point loc2 = {startLoc.x - 250, startLoc.y - levelOffsetY};
+    point loc3 = {startLoc.x + 250, startLoc.y - levelOffsetY};
 
     if (!shapeStates.empty())
     {
-        drawRandomShape(startLoc, size, red, g, shapeStates[0]);
+        drawRandomShape(loc1, size, red, g, shapeStates[0]);
         drawRandomShape(loc2, size, green, g, shapeStates[1]);
         drawRandomShape(loc3, size, blue, g, shapeStates[2]);
     }
