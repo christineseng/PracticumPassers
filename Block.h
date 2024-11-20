@@ -20,8 +20,7 @@ private:
     //HitBoxes
     HitBox hb;
 
-    //Levels
-    vector<int> shapeStates; // keep state of random Shapes
+    //Level
     int currentLevel = 0;
     int levelOffsetY = 0;//how far a block should move up
     vector<Block> allActiveShapes;
@@ -30,7 +29,7 @@ private:
 public:
     //Constructors
     Block();
-    Block (point loc, color col, int l, string s);
+    Block (point loc, color col, int size, string s);
 
     //setters
     void setLocation(point p) {
@@ -47,7 +46,7 @@ public:
     color getColor() const {return c;}
     int getLife() const {return life;}
     string getShape() const {return shape;}
-    HitBox getHitBox1() const {return hb; }
+    HitBox getHitBox() const {return hb; }
 
     //Member functions:
     void drawSquare(point loc, int size, color c, SDL_Plotter &win);
@@ -55,9 +54,7 @@ public:
     void drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter &g);
     void drawCircle(point loc, int size, color c, SDL_Plotter &g);
     void drawLine (point loc1, point loc2, color c, SDL_Plotter &g) const;
-    void drawRandomShape();
     bool isHit(HitBox ballHB, SDL_Plotter &g){
-        //FIXME add is hit with hit boxes
         return (HitBox::isHit(ballHB, hb));
     }
     double distance (point loc1, point loc2) const;
