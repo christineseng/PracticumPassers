@@ -18,8 +18,7 @@ private:
     int state;
     vector<int> shapeStates; // keep state of random Shapes
     int currentLevel;
-    HitBox hb1;
-    HitBox hb2;
+    HitBox hb;
 
 public:
     //Constructors
@@ -41,8 +40,7 @@ public:
     color getColor() const {return c;}
     int getLife() const {return life;}
     string getShape() const {return shape;}
-    HitBox getHitBox1() const {return hb1; }
-    HitBox getHitBox2() const {return hb2;}
+    HitBox getHitBox() const {return hb; }
 
     //Member functions:
     void drawSquare(point loc, int size, color c, SDL_Plotter &win);
@@ -53,7 +51,7 @@ public:
     void drawRandomShape();
     bool isHit(HitBox ballHB, SDL_Plotter &g){
         //FIXME add is hit with hit boxes
-        return (HitBox::isHit(ballHB, hb1)) || (HitBox::isHit(ballHB, hb2));
+        return (HitBox::isHit(ballHB, hb));
     }
     double distance (point loc1, point loc2) const;
 

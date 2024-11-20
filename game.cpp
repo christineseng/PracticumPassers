@@ -78,6 +78,7 @@ int main(int argc, char ** argv)
     //debug
     Ball shooter(p, black);
     Block testSquare(squarePoint, red, 5, "square");
+    bool bottomHit = false;
 
     Flag flag;
 
@@ -96,6 +97,7 @@ int main(int argc, char ** argv)
             levelChanged = false;
         }
         shape.drawLevel(startLoc, g);
+        cout << "p: (" << p.x << ", " << p.y << ")" << endl;
         shooter.drawBall(p, size, c, g);
 
         //when clicked x and y calculates distance from start to click point
@@ -125,7 +127,6 @@ int main(int argc, char ** argv)
             if (firstHit)
             {
                 shooter.apply(GRAVITY);
-                // f.setMagnitude(6);
             }
             // change y and x pos based on magnitude and direction
             yPos += shooter.getMagnitude() * cos(shooter.getDirection());
@@ -138,6 +139,7 @@ int main(int argc, char ** argv)
             {
                 p.y = g.getRow() - size - 3;
             }*/
+            
             xPos += shooter.getMagnitude() * sin(shooter.getDirection());
             p.x = static_cast<int>(xPos);
             if (p.x < size + 3)
@@ -148,18 +150,14 @@ int main(int argc, char ** argv)
             {
                 p.x = g.getCol() - size - 3;
             }
+            
 
             // update flag positions
             flag.update(p.x, p.y, size, shooter.getForce());
-            flagNum = flag.isHit(g);
-            if (p.y > 950)
-            {
-                isFalling = false;
-                p.y = 50;
-                p.x = 500;
-            }
+            // flagNum = flag.isHit(g);
 
-            if (flagNum != -1)
+
+            /*if (flagNum != -1)
             {
                 // if first hit, turn on gravity
                 if (!firstHit)
@@ -174,22 +172,44 @@ int main(int argc, char ** argv)
                 }
                 g.initSound("sounds/soundHit.wav");
                 g.playSound("sounds/soundHit.wav");
+            }*/
+
+            //if reach the bottom of the screen
+            if (p.y > 980)
+            {
+                bottomHit = true;
             }
-
-            // cout << "square hb point: " << testSquare.getHitBox1().getPoint().x << "," <<testSquare.getHitBox1().getPoint().y << endl;
-            // cout << "ball hb point: " << shooter.getHitBox().getPoint().x << "," << shooter.getHitBox().getPoint().y << endl;
-
-            if (p.x < 15)
+            //if hit left wall
+            else if (p.x < 15)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
+            //if hit right wall
             else if (p.x > 985)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
 
-            if (HitBox::isHit(shooter.getHitBox(), testSquare.getHitBox1()))
+            else if (HitBox::isHit(shooter.getHitBox(), testSquare.getHitBox()))
             { // if hit box detected, then check if flags also detect hit in correct direction
+                flagNum = flag.isHit(g);
+                if (flagNum != -1)
+                {
+                    // if first hit, turn on gravity
+                    if (!firstHit)
+                    {
+                        firstHit = true;
+                    }
+                    shooter.setMagnitude(shooter.getMagnitude() - 0.4);
+                    if (shooter.getMagnitude() < 0)
+                    {
+                        shooter.setMagnitude(0);
+                        isFalling = false;
+                    }
+                    g.initSound("sounds/soundHit.wav");
+                    g.playSound("sounds/soundHit.wav");
+                    cout << "square hit !!" << endl;
+                }
 
                 if (flagNum == 0)
                 {
@@ -211,8 +231,8 @@ int main(int argc, char ** argv)
                         shooter.setDirection(9.0 * M_PI / 8.0);
                     }
                     cout << "bottom flag new: " << shooter.getDirection() << endl;
-                    shape.nextLevel();
-                    levelChanged = true;
+                    //shape.nextLevel();
+                    // levelChanged = true;
                 }
 
                 else if (flagNum == 1)
@@ -258,11 +278,8 @@ int main(int argc, char ** argv)
                     cout << "TOP LEFT CORNER" << endl;
                     shooter.setDirection(shooter.getDirection() - M_PI);
                 }
-                if (flagNum != -1)
-                {
-                    cout << "square hit !!" << endl;
-                }
             }
+            
             g.Sleep(10);
             ++countedFrames;
             g.update();
@@ -274,6 +291,16 @@ int main(int argc, char ** argv)
                 // Wait remaining time
                 SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
             }
+        }
+        if (bottomHit){
+            isFalling = false;
+            p.y = 50;
+            p.x = 500;
+            flag.update(p.x, p.y, size, shooter.getForce());
+            // shooter.setMagnitude(0.0);
+            shape.nextLevel();
+            levelChanged = true;
+            bottomHit = false;
         }
     }
     return 0;
