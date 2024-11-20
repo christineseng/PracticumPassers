@@ -9,12 +9,9 @@
 Block::Block(): location(), c(), life(0), shape("") {}
 Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){
 	//FIXME depending on the shape, set the hit boxes differently
-	HitBox b;
-	b.setPoint(loc);
-	b.setLength(85);
-	b.setWidth(85);
-	hb1 = b;
-	hb2 = b;
+    hb.setPoint(loc);
+    hb.setLength(85);
+    hb.setWidth(85);
 }
 
 //Member Functions
