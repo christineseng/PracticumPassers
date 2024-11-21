@@ -18,7 +18,7 @@
 
 using namespace std;
 
-const int SCREEN_FPS = 45;
+const int SCREEN_FPS = 150;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 int main(int argc, char ** argv)
@@ -30,11 +30,9 @@ int main(int argc, char ** argv)
     point p;
     point clickPos;
     point squarePoint, trianglePoint;
-    //force f; //ball force
     const force GRAVITY(0.5, 0);
     const force PUSHRIGHT(0.5, M_PI/2);
     const force PUSHLEFT(0.5, 3*M_PI/2);
-    // Ball shooter;
 
     Block square;
 
@@ -71,14 +69,14 @@ int main(int argc, char ** argv)
     //LEVELS
     Block shape;
     point startLoc;
-    startLoc.x = 500, startLoc.y = 950;
+    startLoc.x = 500, startLoc.y = 850;
     bool levelChanged = false;
     color test = {255,0,0};
-
 
     //debug
     Ball shooter(p, black);
     Block testSquare(squarePoint, red, 5, "square");
+    bool bottomHit = false;
 
     Flag flag;
 
@@ -109,8 +107,7 @@ int main(int argc, char ** argv)
             yPos = p.y;
             xDist = clickPos.x - p.x;
             yDist = clickPos.y - p.y;
-            // sets magnitude based on how far from start you click
-            // f.setMagnitude(sqrt(pow(xDist, 2) + pow(yDist, 2)) / 60);
+
             shooter.setMagnitude(13);
             shooter.setDirection(atan(static_cast<double>(xDist) / yDist));
 
@@ -128,7 +125,6 @@ int main(int argc, char ** argv)
             if (firstHit)
             {
                 shooter.apply(GRAVITY);
-                // f.setMagnitude(6);
             }
             // change y and x pos based on magnitude and direction
             yPos += shooter.getMagnitude() * cos(shooter.getDirection());
@@ -137,10 +133,7 @@ int main(int argc, char ** argv)
             {
                 p.y = size + 3;
             }
-            /*else if (p.y > g.getRow() - size - 3)
-            {
-                p.y = g.getRow() - size - 3;
-            }*/
+
             xPos += shooter.getMagnitude() * sin(shooter.getDirection());
             p.x = static_cast<int>(xPos);
             if (p.x < size + 3)
@@ -152,56 +145,50 @@ int main(int argc, char ** argv)
                 p.x = g.getCol() - size - 3;
             }
 
+
             // update flag positions
             flag.update(p.x, p.y, size, shooter.getForce());
-            flagNum = flag.isHit(g);
-            if (p.y > 950)
-            {
-                isFalling = false;
-                p.y = 50;
-                p.x = 500;
-            }
 
-            if (flagNum != -1)
-            {
-                // if first hit, turn on gravity
-                if (!firstHit)
-                {
-                    firstHit = true;
-                }
-                shooter.setMagnitude(shooter.getMagnitude() - 0.4);
-                if (shooter.getMagnitude() < 0)
-                {
-                    shooter.setMagnitude(0);
-                    isFalling = false;
-                }
-                g.initSound("sounds/soundHit.wav");
-                g.playSound("sounds/soundHit.wav");
-            }
-
-            // cout << "square hb point: " << testSquare.getHitBox1().getPoint().x << "," <<testSquare.getHitBox1().getPoint().y << endl;
-            // cout << "ball hb point: " << shooter.getHitBox().getPoint().x << "," << shooter.getHitBox().getPoint().y << endl;
-
+            //if hit left wall
             if (p.x < 15)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
+            //if hit right wall
             else if (p.x > 985)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
 
-            if (HitBox::isHit(shooter.getHitBox(), testSquare.getHitBox()))
+            else if (HitBox::isHit(shooter.getHitBox(), testSquare.getHitBox()))
             { // if hit box detected, then check if flags also detect hit in correct direction
+                flagNum = flag.isHit(g);
+                if (flagNum != -1)
+                {
+                    // if first hit, turn on gravity
+                    if (!firstHit)
+                    {
+                        firstHit = true;
+                    }
+                    shooter.setMagnitude(shooter.getMagnitude() - 0.4);
+                    if (shooter.getMagnitude() < 0)
+                    {
+                        shooter.setMagnitude(0);
+                        isFalling = false;
+                    }
+                    g.initSound("sounds/soundHit.wav");
+                    g.playSound("sounds/soundHit.wav");
+                    cout << "square hit !!" << endl;
+                }
 
                 if (flagNum == 0)
-                {
+                { //top hit
                     cout << "top flag initial: " << shooter.getDirection() << endl;
                     shooter.setDirection(M_PI - shooter.getDirection());
                     cout << "top flag new: " << shooter.getDirection() << endl;
                 }
                 else if (flagNum == 2)
-                {
+                { //bottom hit
                     cout << "bottom flag: " << shooter.getDirection() << endl;
                     shooter.setDirection(3 * M_PI - shooter.getDirection());
                     // if direction is close to straight up/down, set it to the closest PI/8 value so that it doesn't get stuck bouncing up/down
@@ -214,30 +201,26 @@ int main(int argc, char ** argv)
                         shooter.setDirection(9.0 * M_PI / 8.0);
                     }
                     cout << "bottom flag new: " << shooter.getDirection() << endl;
-                    /*shape.nextLevel();
-                    levelChanged = true;*/
                 }
 
                 else if (flagNum == 1)
-                {
+                { //right hit
                     cout << "right flag: " << shooter.getDirection() << endl;
                     shooter.setDirection(0 - shooter.getDirection());
                     if ((shooter.getDirection() > 15.0 / 16.0 * M_PI && shooter.getDirection() < 17.0 / 16.0 * M_PI) || (shooter.getDirection() > 31.0 / 16.0 * M_PI) || shooter.getDirection() < 1.0 / 16.0 * M_PI)
                     {
                         shooter.apply(PUSHLEFT);
                     }
-                    // f.apply(PUSHLEFT);
                     cout << "right flag new: " << shooter.getDirection() << endl;
                 }
                 else if (flagNum == 3)
-                {
+                { //left hit
                     cout << "left flag: " << shooter.getDirection() << endl;
                     shooter.setDirection(0 - shooter.getDirection());
                     if (shooter.getDirection() > 15.0 / 16.0 * M_PI && shooter.getDirection() < 17.0 / 16.0 * M_PI || shooter.getDirection() > 31.0 / 16.0 || shooter.getDirection() < 1 / 16.0 * M_PI)
                     {
                         shooter.apply(PUSHRIGHT);
                     }
-                    // f.apply(PUSHRIGHT);
                     cout << "left flag new: " << shooter.getDirection() << endl;
                 }
 
@@ -261,14 +244,7 @@ int main(int argc, char ** argv)
                     cout << "TOP LEFT CORNER" << endl;
                     shooter.setDirection(shooter.getDirection() - M_PI);
                 }
-                if (flagNum != -1)
-                {
-                    cout << "square hit !!" << endl;
-                }
             }
-            g.Sleep(10);
-            ++countedFrames;
-            g.update();
 
             // If frame finished early syncing with fps
             frameTicks = fpsTimer.getTicks();
@@ -278,6 +254,26 @@ int main(int argc, char ** argv)
                 SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
             }
         }
+
+        //if the position is above 980 (ball is at bottom of the screen), then reset ball to top and draw a new level
+        if (p.y > 980){
+            g.clear();
+            cout << "POSITION RESET" << endl;
+            //reset the ball position to the top
+            p.x = 500;
+            p.y = 50;
+            isFalling = false;
+            // redraw the ball and update/draw the new level
+            shooter.drawBall(p, size, c, g);
+            shape.nextLevel();
+            levelChanged = true;
+            shape.drawLevel(startLoc, g);
+        }
+
+        //while in the game loop, update the screen
+        g.Sleep(10);
+        ++countedFrames;
+        g.update();
     }
     return 0;
 }
