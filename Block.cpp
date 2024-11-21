@@ -16,6 +16,7 @@ Block::Block(point loc, color col, int l, string s): location(loc), c(col), life
 //Member Functions
 void Block::drawSquare(point loc, int size, color c, SDL_Plotter& win)
 {
+    hb.setPoint(loc);
     int length, width;
     shape = "Square";
     location.x = loc.x;
@@ -77,6 +78,7 @@ double Block::distance(point loc1, point loc2) const
 
 void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g)
 {
+    hb.setPoint(centroid);
     double height;
     point topVertex, leftVertex, rightVertex;
     point start, end;
@@ -113,6 +115,7 @@ void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g)
 
 void Block::drawCircle(point loc, int size, color c, SDL_Plotter& win)
 {
+    hb.setPoint(loc);
     int x = 0;
     int y = size;
     int d = 3 - 2 * size;
@@ -149,6 +152,7 @@ void Block::drawCircle(point loc, int size, color c, SDL_Plotter& win)
 
 void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter& g)
 {
+    //FIX ME: if updated to take a single point for location, then update hb.setPoint() to the point
     int sideLength;
     int height;
     int offset; //distance from center to edges
@@ -188,7 +192,6 @@ void Block::createLevel(point startLoc)
         if (state == 1) shapes[i] = "Circle";
         if (state == 2) shapes[i] = "Square";
         if (state == 3) shapes[i] = "Triangle";
-
     }
 
     //Save all Objects data members in vector for Health logic

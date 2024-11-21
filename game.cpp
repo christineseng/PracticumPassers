@@ -144,7 +144,7 @@ int main(int argc, char ** argv)
             {
                 p.x = g.getCol() - size - 3;
             }
-
+            
 
             // update flag positions
             flag.update(p.x, p.y, size, shooter.getForce());
@@ -245,7 +245,7 @@ int main(int argc, char ** argv)
                     shooter.setDirection(shooter.getDirection() - M_PI);
                 }
             }
-
+            
             // If frame finished early syncing with fps
             frameTicks = fpsTimer.getTicks();
             if (frameTicks < SCREEN_TICKS_PER_FRAME)
@@ -254,7 +254,7 @@ int main(int argc, char ** argv)
                 SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
             }
         }
-
+        
         //if the position is above 980 (ball is at bottom of the screen), then reset ball to top and draw a new level
         if (p.y > 980){
             g.clear();
@@ -266,7 +266,7 @@ int main(int argc, char ** argv)
             // redraw the ball and update/draw the new level
             shooter.drawBall(p, size, c, g);
             shape.nextLevel();
-            levelChanged = true;
+            levelChanged = true;          
             shape.drawLevel(startLoc, g);
         }
 
