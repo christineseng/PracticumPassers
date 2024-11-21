@@ -8,7 +8,6 @@
 //Constructors
 Block::Block(): location(), c(), life(0), shape("") {}
 Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){
-	//FIXME depending on the shape, set the hit boxes differently
     hb.setPoint(loc);
     hb.setLength(85);
     hb.setWidth(85);
@@ -153,7 +152,6 @@ void Block::drawCircle(point loc, int size, color c, SDL_Plotter& win)
 
 void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter& g)
 {
-    //FIX ME: if updated to take a single point for location, then update hb.setPoint() to the point
     int sideLength;
     int height;
     int offset; //distance from center to edges
@@ -174,65 +172,67 @@ void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bott
     }
 }
 
-void Block::drawRandomShape(point loc, int size, color c, SDL_Plotter& g, int state)
-{
-    if (state >= 0 && state < 4) state = 1;
-    else if (state < 8) state = 2;
-    else if (state <= 9) state = 3;
-
-    switch (state)
-    {
-    case 1:
-        {
-            drawCircle(loc, size / 2, c, g);
-            break;
-        }
-    case 2:
-        {
-            drawSquare(loc, size, c, g);
-            break;
-        }
-    case 3:
-        {
-            drawTriangle(loc, size, c, g);
-            break;
-        }
-    default:
-        break;
-    }
-}
-
 void Block::createLevel(point startLoc)
 {
-    shapeStates.clear();
-    shapeStates.push_back(rand() % 10);
-    shapeStates.push_back(rand() % 10);
-    shapeStates.push_back(rand() % 10);
+    //Data-Abstraction
+    int size = 75;
+    color red = {255, 0, 0};
+    point loc1 = {startLoc.x, startLoc.y - levelOffsetY};
+    point loc2 = {startLoc.x - 250, startLoc.y - levelOffsetY};
+    point loc3 = {startLoc.x + 250, startLoc.y - levelOffsetY};
+    vector<string> shapes(3);
+
+    for (int i = 0; i < 3; ++i) {
+        int state = rand() % 10;
+        if (state >= 0 && state < 4) state = 1;
+        else if (state < 8) state = 2;
+        else if (state <= 9) state = 3;
+
+        if (state == 1) shapes[i] = "Circle";
+        if (state == 2) shapes[i] = "Square";
+        if (state == 3) shapes[i] = "Triangle";
+
+    }
+
+    //Save all Objects data members in vector for Health logic
+    Block shapeOne(loc1,red,size,shapes[0]);
+    allActiveShapes.push_back(shapeOne);
+
+    Block shapeTwo(loc2, red, size, shapes[1]);
+    allActiveShapes.push_back(shapeTwo);
+
+    Block shapeThree(loc3, red, size, shapes[2]);
+    allActiveShapes.push_back(shapeThree);
+
+    //Update where next Level should spawn
+    levelOffsetY += 100;
 }
 
 void Block::drawLevel(point startLoc, SDL_Plotter& g)
 {
+    //Data-Abstraction
     int size = 75;
 
-    color red;
-    red.R = 255, red.G = 0, red.B = 0;
-
-    color blue;
-    blue = {0,0,255};
-
-    color green;
-    green = {0,255,0};
-
-    point loc2, loc3;
-    loc2.x = 250, loc2.y = 500;
-    loc3.x = 750, loc3.y = 500;
-
-    if (!shapeStates.empty())
+    //Draw random Shapes to the created Level
+    if (!allActiveShapes.empty())
     {
-        drawRandomShape(startLoc, size, red, g, shapeStates[0]);
-        drawRandomShape(loc2, size, green, g, shapeStates[1]);
-        drawRandomShape(loc3, size, blue, g, shapeStates[2]);
+        for(int i = 0; i < allActiveShapes.size(); ++i)
+        {
+            if(allActiveShapes[i].shape == "Circle")
+            {
+                drawCircle(allActiveShapes[i].location, size / 2, allActiveShapes[i].c, g);
+            }
+            if(allActiveShapes[i].shape == "Square")
+            {
+                drawSquare(allActiveShapes[i].location, size, allActiveShapes[i].c, g);
+            }
+            if(allActiveShapes[i].shape == "Triangle")
+            {
+                drawTriangle(allActiveShapes[i].location, size, allActiveShapes[i].c, g);
+            }
+        }
     }
+
 }
 
 void Block::nextLevel()
