@@ -176,10 +176,16 @@ void Block::createLevel(point startLoc)
 {
     //Data-Abstraction
     int size = 75;
+    int randLocOne, randLocTwo, randLocThree;
+    //MIGHT NOT WORK LOL TODO
+    randLocOne = rand() % 125 + 200;
+    randLocTwo = rand() % 125 + 200;
+    randLocThree = rand() % 125 - 62;
+
     color red = {255, 0, 0};
-    point loc1 = {startLoc.x, startLoc.y - levelOffsetY};
-    point loc2 = {startLoc.x - 250, startLoc.y - levelOffsetY};
-    point loc3 = {startLoc.x + 250, startLoc.y - levelOffsetY};
+    point loc1 = {startLoc.x + randLocThree, startLoc.y - levelOffsetY};
+    point loc2 = {startLoc.x - randLocOne, startLoc.y - levelOffsetY};
+    point loc3 = {startLoc.x + randLocTwo, startLoc.y - levelOffsetY};
     vector<string> shapes(3);
 
     for (int i = 0; i < 3; ++i) {
