@@ -73,7 +73,7 @@ int main(int argc, char ** argv)
     startLoc.x = 500, startLoc.y = 850;
     bool levelChanged = true;
     color test = {255,0,0};
-    vector<Block> allBlocks;
+    //vector<Block> allBlocks;
 
     //debug
     Ball shooter(p, black);
@@ -95,7 +95,7 @@ int main(int argc, char ** argv)
         {
             shape.createLevel(startLoc);
             levelChanged = false;
-            allBlocks = shape.getAllActiveShapes();
+            //allBlocks = shape.getAllActiveShapes();
 
         }
         shape.drawLevel(startLoc, g);
@@ -161,9 +161,9 @@ int main(int argc, char ** argv)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
-            for(int i = 0; i < allBlocks.size(); ++i)
+            for(int i = 0; i < shape.getAllActiveShapes().size(); ++i)
             {
-                if (HitBox::isHit(shooter.getHitBox(), allBlocks[i].getHitBox()))
+                if (HitBox::isHit(shooter.getHitBox(), shape.getAllActiveShapes().at(i).getHitBox()))
                 { // if hit box detected, then check if flags also detect hit in correct direction
                     flagNum = flag.isHit(g);
                     if (flagNum != -1)
@@ -182,8 +182,8 @@ int main(int argc, char ** argv)
                         g.initSound("sounds/soundHit.wav");
                         g.playSound("sounds/soundHit.wav");
                         cout << "square hit !!" << endl;
-                        allBlocks.at(i).decreaseLife();
-                        cout << allBlocks.at(i).getLife() << endl;
+                        shape.getAllActiveShapes().at(i).decreaseLife();
+                        cout << shape.getAllActiveShapes().at(i).getLife() << endl;
 
                     }
 
