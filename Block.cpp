@@ -14,6 +14,7 @@ Block::Block(point loc, int newLife, string s): location(loc), life(newLife), sh
 }
 
 //Member Functions
+
 void Block::drawSquare(point loc, int size, color c, SDL_Plotter& win)
 {
     hb.setPoint(loc);
@@ -201,13 +202,13 @@ void Block::createLevel(point startLoc)
     }
 
     //Save all Objects data members in vector for Health logic
-    Block shapeOne(loc1, 4, shapes[0]);
+    Block shapeOne(loc1, rand() % 8 + 1, shapes[0]);
     allActiveShapes.push_back(shapeOne);
 
-    Block shapeTwo(loc2, 4, shapes[1]);
+    Block shapeTwo(loc2, rand() % 8 + 1, shapes[1]);
     allActiveShapes.push_back(shapeTwo);
 
-    Block shapeThree(loc3, 4, shapes[2]);
+    Block shapeThree(loc3, rand() % 8 + 1, shapes[2]); //FIXME color won't change because we are passing life through
     allActiveShapes.push_back(shapeThree);
 
     //Update where next Level should spawn
@@ -254,48 +255,52 @@ void Block::decreaseLife() {
 }
 
 color Block::getColor() {
-	color otherColor;
+	color col;
 	switch (life) {
 	case 8: {
-		otherColor = {255, 0, 0};
+		col = {255, 0, 0}; //red
 		break;
 	}
 	case 7: {
-		otherColor = {255, 128, 0};
+		col = {255, 51, 153}; //hot red/pink
 		break;
 	}
 	case 6: {
-		otherColor = {255, 255, 0};
+		col = {255, 128, 0}; //orange
 		break;
 	}
 	case 5: {
-		otherColor = {128, 255, 0};
+		col = {255, 230, 20}; //yellowish
 		break;
 	}
 	case 4: {
-		otherColor = {0, 255, 0};
+		col = {51, 255, 51}; //green
 		break;
 	}
 	case 3: {
-		otherColor = {0, 255, 128};
+		col = {0, 255, 128};
 		break;
 	}
 	case 2: {
-		otherColor = {255, 255, 0};
+		col = {255, 255, 0};
 		break;
 	}
 	case 1: {
-		otherColor = {102, 178, 255};
+		col = {102, 178, 255};
 		break;
 	}
 	case 0: {
-		otherColor = {102, 178, 255};
+		col = {102, 178, 255};
 		break;
 	}
 	default:
 		break;
 
 	}
-	return otherColor;
+	return col;
+}
+
+void Block::setAllActiveShapesLife (int l, int index) {
+	allActiveShapes.at(index).setLife(l);
 }
 
