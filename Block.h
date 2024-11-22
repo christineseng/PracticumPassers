@@ -36,6 +36,7 @@ public:
         location.y = p.y;
     }
     void setLife(int l) {life = l;}
+    void setAllActiveShapesLife (int, int);
     void setShape(string s) {shape = s;}
 
 
