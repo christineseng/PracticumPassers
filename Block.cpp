@@ -304,3 +304,4 @@ void Block::setAllActiveShapesLife (int l, int index) {
 	allActiveShapes.at(index).setLife(l);
 }
 
+
