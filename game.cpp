@@ -179,11 +179,14 @@ int main(int argc, char ** argv)
                             shooter.setMagnitude(0);
                             isFalling = false;
                         }
+                        Block& currentBlock = shape.getAllActiveShapes().at(i); //FIXME should be in data abstraction but weird error if declared there
                         g.initSound("sounds/soundHit.wav");
                         g.playSound("sounds/soundHit.wav");
+                        cout << "Before: Block life: " << currentBlock.getLife() << endl;
                         cout << "square hit !!" << endl;
-                        shape.getAllActiveShapes().at(i).decreaseLife();
-                        cout << shape.getAllActiveShapes().at(i).getLife() << endl;
+                        currentBlock.decreaseLife();
+                        cout << "After: Block life: " << currentBlock.getLife() << endl;
+
 
                     }
 
