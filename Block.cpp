@@ -6,8 +6,10 @@
 #include "SDL_Plotter.h"
 
 //Constructors
-Block::Block(): location(), life(8), shape("") {}
-Block::Block(point loc, int newLife, string s): location(loc), life(newLife), shape(s){
+Block::Block(): location(), life(1), blockColor(), shape("") {}
+Block::Block(point loc, string s): location(loc), shape(s){
+	life = rand() % 8 + 1;
+	updateBlockColor();
     hb.setPoint(loc);
     hb.setLength(85);
     hb.setWidth(85);
@@ -201,17 +203,12 @@ void Block::createLevel(point startLoc)
 
     }
 
-    //Save all Objects data members in vector for Health logic
-    Block shapeOne(loc1, rand() % 8 + 1, shapes[0]);
-    allActiveShapes.push_back(shapeOne);
 
-    Block shapeTwo(loc2, rand() % 8 + 1, shapes[1]);
-    allActiveShapes.push_back(shapeTwo);
+    allActiveShapes.emplace_back(loc1, shapes[0]); //emplace_back() is like push_back() but for pass by refrence
+    allActiveShapes.emplace_back(loc2, shapes[1]);
+    allActiveShapes.emplace_back(loc3, shapes[2]);
 
-    Block shapeThree(loc3, rand() % 8 + 1, shapes[2]); //FIXME color won't change because we are passing life through
-    allActiveShapes.push_back(shapeThree);
 
-    //Update where next Level should spawn
     levelOffsetY += 100;
 }
 
@@ -251,57 +248,57 @@ void Block::nextLevel()
 void Block::decreaseLife() {
 	if (life > 0) {
 		--life;
+		cout << "Life decreased to: " << life << endl;
+		updateBlockColor();
 	}
 }
 
-color Block::getColor() {
-	color col;
+void Block::updateBlockColor() {
 	switch (life) {
 	case 8: {
-		col = {255, 0, 0}; //red
+		blockColor = {255, 0, 0}; //red
 		break;
 	}
 	case 7: {
-		col = {255, 51, 153}; //hot red/pink
+		blockColor = {255, 51, 153}; //hot red/pink
 		break;
 	}
 	case 6: {
-		col = {255, 128, 0}; //orange
+		blockColor = {255, 128, 0}; //orange
 		break;
 	}
 	case 5: {
-		col = {255, 230, 20}; //yellowish
+		blockColor = {255, 230, 20}; //yellowish
 		break;
 	}
 	case 4: {
-		col = {51, 255, 51}; //green
+		blockColor = {51, 255, 51}; //green
 		break;
 	}
 	case 3: {
-		col = {0, 255, 128};
+		blockColor = {0, 255, 128}; //
 		break;
 	}
 	case 2: {
-		col = {255, 255, 0};
+		blockColor = {255, 255, 0};
 		break;
 	}
 	case 1: {
-		col = {102, 178, 255};
+		blockColor = {102, 178, 255};
 		break;
 	}
 	case 0: {
-		col = {102, 178, 255};
+		blockColor = {0, 0, 0}; //black for testing
 		break;
 	}
 	default:
 		break;
 
 	}
-	return col;
+
 }
 
 void Block::setAllActiveShapesLife (int l, int index) {
 	allActiveShapes.at(index).setLife(l);
 }
-
 
