@@ -19,7 +19,12 @@ class Ball
 {
 public:
     //CONSTRUCTORS
-    Ball();
+    Ball(){
+        HitBox h;
+        h.setLength(20);
+        h.setWidth(20);
+        hb = h;
+    }
     Ball(point loc, color col):location(loc), c(col){
         HitBox h;
         h.setLength(20);
@@ -37,6 +42,11 @@ public:
     double getDirection(){return f.getDirection();}
     void apply(force newForce){f.apply(newForce);}
 
+    //SETTERS
+    void setBallLoc(const point& p){
+        location = p;
+        hb.setPoint(p);
+    }
     //GETTERS
     point& getBallLoc(){ return location; }
     HitBox& getHitBox(){ return hb; }

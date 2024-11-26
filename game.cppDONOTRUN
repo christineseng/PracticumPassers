@@ -17,6 +17,9 @@
 #include "Timer.h"
 #include <vector>
 
+
+// #include "game.h"
+
 using namespace std;
 
 const int SCREEN_FPS = 150;
@@ -28,31 +31,15 @@ int main(int argc, char ** argv)
 
 
     SDL_Plotter g(1000, 1000);
-    point p;
+    point ballPoint = {500, 50};
     point clickPos;
-    point squarePoint, trianglePoint;
     const force GRAVITY(0.5, 0);
-    const force PUSHRIGHT(0.5, M_PI/2);
+    const force PUSHRIGHT(0.5, 3*M_PI/2);
     const force PUSHLEFT(0.5, 3*M_PI/2);
 
-    Block square;
-
-    p.x = 500;
-    p.y = 50;
-    squarePoint.x = 500;
-    squarePoint.y = 500;
-    trianglePoint.x = 500;
-    trianglePoint.y = 750;
-    color c;
-    color black;
-    black.R = 0;
-    black.B = 0;
-    black.G = 0;
-    color red;
-    red.R = 255;
-    red.B = 0;
-    red.G = 0;
-    int size = 10;
+    color ballColor;
+    color BLACKCOLOR = {0,0,0};
+    const int BALLSIZE = 10;
     int xDist;
     int yDist;
     int flagNum;
@@ -69,23 +56,13 @@ int main(int argc, char ** argv)
 
     //LEVELS
     Block shape;
-    point startLoc;
-    startLoc.x = 500, startLoc.y = 850;
+    point startLoc = {500, 850};
     bool levelChanged = true;
-    color test = {255,0,0};
-
-    //vector<Block> allBlocks;
+    // color test = {255,0,0};
 
     //debug
-    Ball shooter(p, black);
-    //Block testSquare(squarePoint, red, 5, "square");
-
-    bool bottomHit = false;
-
-    Flag flag;
-
-    Uint32 RGB;
-    shooter.drawBall(p, size, c, g);
+    Ball shooter(ballPoint, BLACKCOLOR);
+    Flag ballFlags;
 
 
     while (!g.getQuit()) {
@@ -103,23 +80,23 @@ int main(int argc, char ** argv)
 
         }
         shape.drawLevel(startLoc, g);
-        shooter.drawBall(p, size, c, g);
+        shooter.drawBall(ballPoint, BALLSIZE, ballColor, g);
 
         //when clicked x and y calculates distance from start to click point
         if (g.mouseClick())
         {
             clickPos = g.getMouseClick();
-            p.y = 50;
-            p.x = 500;
-            xPos = p.x;
-            yPos = p.y;
-            xDist = clickPos.x - p.x;
-            yDist = clickPos.y - p.y;
+            ballPoint.y = 50;
+            ballPoint.x = 500;
+            xPos = ballPoint.x;
+            yPos = ballPoint.y;
+            xDist = clickPos.x - ballPoint.x;
+            yDist = clickPos.y - ballPoint.y;
 
             shooter.setMagnitude(13);
             shooter.setDirection(atan(static_cast<double>(xDist) / yDist));
 
-            c = black;
+            ballColor = BLACKCOLOR;
             isFalling = true;
             firstHit = false;
         }
@@ -134,35 +111,35 @@ int main(int argc, char ** argv)
             }
             // change y and x pos based on magnitude and direction
             yPos += shooter.getMagnitude() * cos(shooter.getDirection());
-            p.y = static_cast<int>(yPos);
-            if (p.y < size + 3)
+            ballPoint.y = static_cast<int>(yPos);
+            if (ballPoint.y < BALLSIZE + 3)
             {
-                p.y = size + 3;
+                ballPoint.y = BALLSIZE + 3;
             }
 
             xPos += shooter.getMagnitude() * sin(shooter.getDirection());
-            p.x = static_cast<int>(xPos);
-            if (p.x < size + 3)
+            ballPoint.x = static_cast<int>(xPos);
+            if (ballPoint.x < BALLSIZE + 3)
             {
-                p.x = size + 3;
+                ballPoint.x = BALLSIZE + 3;
             }
-            else if (p.x > g.getCol() - size - 3)
+            else if (ballPoint.x > g.getCol() - BALLSIZE - 3)
             {
-                p.x = g.getCol() - size - 3;
+                ballPoint.x = g.getCol() - BALLSIZE - 3;
             }
 
 
             // update flag positions
-            flag.update(p.x, p.y, size, shooter.getForce());
+            ballFlags.update(ballPoint.x, ballPoint.y, BALLSIZE, shooter.getForce());
 
             //if hit left wall
-            if (p.x < 15)
+            if (ballPoint.x < 15)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
 
             }
             //if hit right wall
-            else if (p.x > 985)
+            else if (ballPoint.x > 985)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
@@ -170,7 +147,7 @@ int main(int argc, char ** argv)
             {
                 if (HitBox::isHit(shooter.getHitBox(), shape.getAllActiveShapes().at(i).getHitBox()))
                 { // if hit box detected, then check if flags also detect hit in correct direction
-                    flagNum = flag.isHit(g);
+                    flagNum = ballFlags.isHit(g);
                     if (flagNum != -1)
                     {
                         // if first hit, turn on gravity
@@ -191,7 +168,6 @@ int main(int argc, char ** argv)
                         cout << "square hit !!" << endl;
                         currentBlock.decreaseLife();
                         cout << "After: Block life: " << currentBlock.getLife() << endl;
-
 
                     }
 
@@ -272,15 +248,15 @@ int main(int argc, char ** argv)
         }
 
         //if the position is above 980 (ball is at bottom of the screen), then reset ball to top and draw a new level
-        if (p.y > 980){
+        if (ballPoint.y > 980){
             g.clear();
             cout << "POSITION RESET" << endl;
             //reset the ball position to the top
-            p.x = 500;
-            p.y = 50;
+            ballPoint.x = 500;
+            ballPoint.y = 50;
             isFalling = false;
             // redraw the ball and update/draw the new level
-            shooter.drawBall(p, size, c, g);
+            shooter.drawBall(ballPoint, BALLSIZE, ballColor, g);
             shape.nextLevel();
             levelChanged = true;
             shape.drawLevel(startLoc, g);
