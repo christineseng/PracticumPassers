@@ -1,8 +1,8 @@
 #include "flag.h"
 
 Flag::Flag(){
-    //x = 0; 
-    //y = 0;
+    x = 0;
+    y = 0;
     point topArray[5];
     point bottomArray[5];
     point leftArray[5];
@@ -23,7 +23,7 @@ void Flag::update(int newX, int newY, int ballSize, force& newF){
         p.x = newX + (flagSpace * (i - 2));
         p.y = newY - ballSize - 3;
         topArray[i] = p;
-        
+
         p.x = newX + (flagSpace * (i - 2));
         p.y = newY + ballSize + 3;
         bottomArray[i] = p;
@@ -57,7 +57,7 @@ void Flag::update(int newX, int newY, int ballSize, force& newF){
 }
 int Flag::isHit(SDL_Plotter& g){
     int sideNum = -1; //if no sides or corners hit return -1
-    
+
     if (f.getDirection() >= 0 && f.getDirection() <= M_PI / 2){ //check bottom, right, bottom-right
         if(rowIsHit(bottomArray, 2, g)){
             sideNum = 2;
@@ -102,7 +102,6 @@ int Flag::isHit(SDL_Plotter& g){
             sideNum = 6;
         }
     }
-    
 
     return sideNum;
 }
@@ -151,3 +150,4 @@ bool Flag::cornerIsHit(point p, SDL_Plotter& g){
     }
     return result;
 }
+

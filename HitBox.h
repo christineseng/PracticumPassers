@@ -43,4 +43,5 @@ class HitBox{
         static bool isHit(HitBox h1, HitBox h2);
 
 };
+
 #endif

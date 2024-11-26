@@ -73,11 +73,13 @@ int main(int argc, char ** argv)
     startLoc.x = 500, startLoc.y = 850;
     bool levelChanged = true;
     color test = {255,0,0};
-    vector<Block> allBlocks;
+
+    //vector<Block> allBlocks;
 
     //debug
     Ball shooter(p, black);
-    Block testSquare(squarePoint, red, 5, "square");
+    //Block testSquare(squarePoint, red, 5, "square");
+
     bool bottomHit = false;
 
     Flag flag;
@@ -95,7 +97,9 @@ int main(int argc, char ** argv)
         {
             shape.createLevel(startLoc);
             levelChanged = false;
-            allBlocks = shape.getAllActiveShapes();
+
+            //allBlocks = shape.getAllActiveShapes();
+
 
         }
         shape.drawLevel(startLoc, g);
@@ -155,15 +159,16 @@ int main(int argc, char ** argv)
             if (p.x < 15)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
+
             }
             //if hit right wall
             else if (p.x > 985)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
             }
-            for(int i = 0; i < allBlocks.size(); ++i)
+            for(int i = 0; i < shape.getAllActiveShapes().size(); ++i)
             {
-                if (HitBox::isHit(shooter.getHitBox(), allBlocks[i].getHitBox()))
+                if (HitBox::isHit(shooter.getHitBox(), shape.getAllActiveShapes().at(i).getHitBox()))
                 { // if hit box detected, then check if flags also detect hit in correct direction
                     flagNum = flag.isHit(g);
                     if (flagNum != -1)
@@ -179,9 +184,15 @@ int main(int argc, char ** argv)
                             shooter.setMagnitude(0);
                             isFalling = false;
                         }
+                        Block& currentBlock = shape.getAllActiveShapes().at(i); //FIXME should be in data abstraction but weird error if declared there
                         g.initSound("sounds/soundHit.wav");
                         g.playSound("sounds/soundHit.wav");
+                        cout << "Before: Block life: " << currentBlock.getLife() << endl;
                         cout << "square hit !!" << endl;
+                        currentBlock.decreaseLife();
+                        cout << "After: Block life: " << currentBlock.getLife() << endl;
+
+
                     }
 
                     if (flagNum == 0)
@@ -220,7 +231,7 @@ int main(int argc, char ** argv)
                     { //left hit
                         cout << "left flag: " << shooter.getDirection() << endl;
                         shooter.setDirection(0 - shooter.getDirection());
-                        if (shooter.getDirection() > 15.0 / 16.0 * M_PI && shooter.getDirection() < 17.0 / 16.0 * M_PI || shooter.getDirection() > 31.0 / 16.0 || shooter.getDirection() < 1 / 16.0 * M_PI)
+                        if ((shooter.getDirection() > 15.0 / 16.0 * M_PI && shooter.getDirection() < 17.0 / 16.0 * M_PI) || shooter.getDirection() > 31.0 / 16.0 || shooter.getDirection() < 1 / 16.0 * M_PI)
                         {
                             shooter.apply(PUSHRIGHT);
                         }
@@ -249,6 +260,7 @@ int main(int argc, char ** argv)
                     }
                 }
             }
+
 
             // If frame finished early syncing with fps
             frameTicks = fpsTimer.getTicks();

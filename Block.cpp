@@ -6,14 +6,19 @@
 #include "SDL_Plotter.h"
 
 //Constructors
-Block::Block(): location(), c(), life(0), shape("") {}
-Block::Block(point loc, color col, int l, string s): location(loc), c(col), life(l), shape(s){
+
+Block::Block(): location(), life(1), blockColor(), shape("") {}
+Block::Block(point loc, string s): location(loc), shape(s){
+	life = rand() % 8 + 1;
+	updateBlockColor();
+
     hb.setPoint(loc);
     hb.setLength(85);
     hb.setWidth(85);
 }
 
 //Member Functions
+
 void Block::drawSquare(point loc, int size, color c, SDL_Plotter& win)
 {
     hb.setPoint(loc);
@@ -83,6 +88,7 @@ void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g)
     point topVertex, leftVertex, rightVertex;
     point start, end;
 
+
     shape = "Triangle";
     location.x = centroid.x;
     location.y = centroid.y;
@@ -96,6 +102,7 @@ void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g)
 
     rightVertex.x = centroid.x + (size / 2.0);
     rightVertex.y = centroid.y + (1.0 / 3.0) * height;
+
 
     for (int y = 0; y <= height; ++y)
     {
@@ -200,17 +207,11 @@ void Block::createLevel(point startLoc)
 
     }
 
-    //Save all Objects data members in vector for Health logic
-    Block shapeOne(loc1,red,size,shapes[0]);
-    allActiveShapes.push_back(shapeOne);
 
-    Block shapeTwo(loc2, red, size, shapes[1]);
-    allActiveShapes.push_back(shapeTwo);
+    allActiveShapes.emplace_back(loc1, shapes[0]); //emplace_back() is like push_back() but for pass by refrence
+    allActiveShapes.emplace_back(loc2, shapes[1]);
+    allActiveShapes.emplace_back(loc3, shapes[2]);
 
-    Block shapeThree(loc3, red, size, shapes[2]);
-    allActiveShapes.push_back(shapeThree);
-
-    //Update where next Level should spawn
     levelOffsetY += 100;
 }
 
@@ -226,15 +227,15 @@ void Block::drawLevel(point startLoc, SDL_Plotter& g)
         {
             if(allActiveShapes[i].shape == "Circle")
             {
-                drawCircle(allActiveShapes[i].location, size / 2, allActiveShapes[i].c, g);
+                drawCircle(allActiveShapes[i].location, size / 2, allActiveShapes[i].getColor(), g);
             }
             if(allActiveShapes[i].shape == "Square")
             {
-                drawSquare(allActiveShapes[i].location, size, allActiveShapes[i].c, g);
+                drawSquare(allActiveShapes[i].location, size, allActiveShapes[i].getColor(), g);
             }
             if(allActiveShapes[i].shape == "Triangle")
             {
-                drawTriangle(allActiveShapes[i].location, size, allActiveShapes[i].c, g);
+                drawTriangle(allActiveShapes[i].location, size, allActiveShapes[i].getColor(), g);
             }
         }
     }
@@ -245,3 +246,63 @@ void Block::nextLevel()
 {
     currentLevel++;
 }
+
+
+void Block::decreaseLife() {
+	if (life > 0) {
+		--life;
+		cout << "Life decreased to: " << life << endl;
+		updateBlockColor();
+	}
+}
+
+void Block::updateBlockColor() {
+	switch (life) {
+	case 8: {
+		blockColor = {255, 0, 0}; //red
+		break;
+	}
+	case 7: {
+		blockColor = {255, 51, 153}; //hot red/pink
+		break;
+	}
+	case 6: {
+		blockColor = {255, 128, 0}; //orange
+		break;
+	}
+	case 5: {
+		blockColor = {255, 230, 20}; //yellowish
+		break;
+	}
+	case 4: {
+		blockColor = {51, 255, 51}; //green
+		break;
+	}
+	case 3: {
+		blockColor = {0, 255, 128}; //
+		break;
+	}
+	case 2: {
+		blockColor = {255, 255, 0};
+		break;
+	}
+	case 1: {
+		blockColor = {102, 178, 255};
+		break;
+	}
+	case 0: {
+		blockColor = {0, 0, 0}; //black for testing
+		break;
+	}
+	default:
+		break;
+
+	}
+
+}
+
+void Block::setAllActiveShapesLife (int l, int index) {
+	allActiveShapes.at(index).setLife(l);
+
+}
+
