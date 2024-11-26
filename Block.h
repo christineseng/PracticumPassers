@@ -208,32 +208,4 @@ public:
 
 };
 
-    //getters
-    point getLocation() const {return location;}
-    color getColor() const {return c;}
-    int getLife() const {return life;}
-    string getShape() const {return shape;}
-    HitBox getHitBox() const {return hb; }
-    vector<Block> getAllActiveShapes() const{return allActiveShapes;}
-
-    //Member functions:
-    void drawSquare(point loc, int size, color c, SDL_Plotter &win);
-    void drawTriangle(point centroid, int size, color c, SDL_Plotter& g);
-    void drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter &g);
-    void drawCircle(point loc, int size, color c, SDL_Plotter &g);
-    void drawLine (point loc1, point loc2, color c, SDL_Plotter &g) const;
-    bool isHit(HitBox ballHB, SDL_Plotter &g){
-        return (HitBox::isHit(ballHB, hb));
-    }
-    double distance (point loc1, point loc2) const;
-
-    //Levels
-    void createLevel(point startLoc);
-    void drawLevel(point startLoc, SDL_Plotter& g);
-    void nextLevel();
-    void drawRandomShape(point loc, int size, color c, SDL_Plotter& g, int state);
-
-};
-
-
 #endif //BLOCK_H
