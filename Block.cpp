@@ -6,10 +6,12 @@
 #include "SDL_Plotter.h"
 
 //Constructors
+
 Block::Block(): location(), life(1), blockColor(), shape("") {}
 Block::Block(point loc, string s): location(loc), shape(s){
 	life = rand() % 8 + 1;
 	updateBlockColor();
+
     hb.setPoint(loc);
     hb.setLength(85);
     hb.setWidth(85);
@@ -86,6 +88,7 @@ void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g)
     point topVertex, leftVertex, rightVertex;
     point start, end;
 
+
     shape = "Triangle";
     location.x = centroid.x;
     location.y = centroid.y;
@@ -99,6 +102,7 @@ void Block::drawTriangle(point centroid, int size, color c, SDL_Plotter& g)
 
     rightVertex.x = centroid.x + (size / 2.0);
     rightVertex.y = centroid.y + (1.0 / 3.0) * height;
+
 
     for (int y = 0; y <= height; ++y)
     {
@@ -208,7 +212,6 @@ void Block::createLevel(point startLoc)
     allActiveShapes.emplace_back(loc2, shapes[1]);
     allActiveShapes.emplace_back(loc3, shapes[2]);
 
-
     levelOffsetY += 100;
 }
 
@@ -300,5 +303,6 @@ void Block::updateBlockColor() {
 
 void Block::setAllActiveShapesLife (int l, int index) {
 	allActiveShapes.at(index).setLife(l);
+
 }
 

@@ -73,11 +73,13 @@ int main(int argc, char ** argv)
     startLoc.x = 500, startLoc.y = 850;
     bool levelChanged = true;
     color test = {255,0,0};
+
     //vector<Block> allBlocks;
 
     //debug
     Ball shooter(p, black);
     //Block testSquare(squarePoint, red, 5, "square");
+
     bool bottomHit = false;
 
     Flag flag;
@@ -95,7 +97,9 @@ int main(int argc, char ** argv)
         {
             shape.createLevel(startLoc);
             levelChanged = false;
+
             //allBlocks = shape.getAllActiveShapes();
+
 
         }
         shape.drawLevel(startLoc, g);
@@ -155,6 +159,7 @@ int main(int argc, char ** argv)
             if (p.x < 15)
             {
                 shooter.setDirection(2 * M_PI - shooter.getDirection());
+
             }
             //if hit right wall
             else if (p.x > 985)
@@ -255,6 +260,7 @@ int main(int argc, char ** argv)
                     }
                 }
             }
+
 
             // If frame finished early syncing with fps
             frameTicks = fpsTimer.getTicks();

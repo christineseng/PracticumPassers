@@ -103,7 +103,6 @@ int Flag::isHit(SDL_Plotter& g){
         }
     }
 
-
     return sideNum;
 }
 //checks if row of flags is hit
@@ -151,3 +150,4 @@ bool Flag::cornerIsHit(point p, SDL_Plotter& g){
     }
     return result;
 }
+

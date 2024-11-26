@@ -1,3 +1,4 @@
+
 #include "HitBox.h"
 bool HitBox::isHit(HitBox h1, HitBox h2){
     bool result;
