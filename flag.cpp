@@ -119,7 +119,7 @@ bool Flag::rowIsHit(point pointArray[], int sideNum, SDL_Plotter& g){
 bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
     bool result = false;
     //check if color hit
-    if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack){
+    if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack && g.getColor(p.x, p.y) != flagEmpty){
         result = true;
     }
 
@@ -145,7 +145,7 @@ bool Flag::pointIsHit(point p, int sideNum, SDL_Plotter& g){
 
 bool Flag::cornerIsHit(point p, SDL_Plotter& g){
     bool result = false;
-    if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack){
+    if (g.getColor(p.x, p.y) != flagWhite && g.getColor(p.x, p.y) != flagBlack && g.getColor(p.x, p.y) != flagEmpty){
         result = true;
     }
     return result;
