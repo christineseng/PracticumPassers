@@ -32,25 +32,86 @@ public:
         h.setPoint(loc);
         hb = h;
     }
+
     //BALL-FUNCTIONS
-    void drawBall(point loc, SDL_Plotter& win);
+    //************************************************************
+    // description: draws ball at a given point in given color
+    // return: void
+    // pre: loc is a valid point on the screen
+    // post: draws ball at given location
+    //************************************************************
     void drawBall(point loc, int size, color c,  SDL_Plotter& win);
     //FORCE-FUNCTIONS
+    //************************************************************
+    // description: sets magnitude to double parameter
+    // return: void
+    // pre: m is a valid double
+    // post: ball's force's magnitude is m
+    //************************************************************
     void setMagnitude(double m){f.setMagnitude(m);}
+    //************************************************************
+    // description: sets direction to double parameter
+    // return: void
+    // pre: d is a valid double
+    // post: ball's force's direction is m
+    //************************************************************
     void setDirection(double d){f.setDirection(d);}
-    double getMagnitude(){return f.getMagnitude();}
-    double getDirection(){return f.getDirection();}
+    //************************************************************
+    // description: returns magnitude of ball's force
+    // return: double representing magnitude
+    // pre: magnitude is initialized
+    // post: ball's force remains unchanged
+    //************************************************************
+    double getMagnitude()const {return f.getMagnitude();}
+    //************************************************************
+    // description: returns direction of ball's force
+    // return: double representing direction
+    // pre: direction is initialized
+    // post: ball's force remains unchanged
+    //************************************************************
+    double getDirection()const {return f.getDirection();}
+    //************************************************************
+    // description: applies force parameter to current force
+    // return: void
+    // pre: ball's force is initialized
+    // post: ball's force is the combination of current force and parameter
+    //************************************************************
     void apply(force newForce){f.apply(newForce);}
 
     //SETTERS
-    void setBallLoc(const point& p){
+    //************************************************************
+    // description: sets ball location to point parameter
+    // return: void
+    // pre: ball's force is initialized
+    // post: ball's force is the combination of current force and parameter
+    //************************************************************
+    void setBallLoc(point& p){
         location = p;
         hb.setPoint(p);
     }
+
     //GETTERS
-    point& getBallLoc(){ return location; }
-    HitBox& getHitBox(){ return hb; }
-    force& getForce(){ return f; }
+    //************************************************************
+    // description: returns pointer for ball's location point
+    // return: Point reference
+    // pre: ball's location is initialized
+    // post: ball remains unchanged
+    //************************************************************
+    point& getBallLoc() { return location; }
+    //************************************************************
+    // description: returns pointer for ball's hit box
+    // return: HitBox reference
+    // pre: ball's hit box is initialized
+    // post: ball remains unchanged
+    //************************************************************
+    HitBox& getHitBox() { return hb; }
+    //************************************************************
+    // description: returns pointer for ball's force
+    // return: force reference
+    // pre: ball's force is initialized
+    // post: ball remains unchanged
+    //************************************************************
+    force& getForce() { return f; }
 private:
     point location;
     color c;
