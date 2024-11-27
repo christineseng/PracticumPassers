@@ -1,12 +1,5 @@
 #include "newGame.h"
 Game::Game(){
-    SDL_Plotter window(1000, 1000);
-    
-    g = window;
-    ballPoint = {500, 50};
-    shooter.setBallLoc(ballPoint);
-}
-Game::Game(SDL_Plotter &gw):g(gw){
     ballPoint = {500, 50};
     shooter.setBallLoc(ballPoint);
 }
@@ -39,6 +32,8 @@ void Game::run(){
         ++countedFrames;
         g.update();
     }
+    g.setQuit(true);
+    g.Sleep(500);
 }
 
 bool Game::bottomHit(){

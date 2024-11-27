@@ -21,14 +21,13 @@ const int BALLSIZE = 10;
 const force GRAVITY(0.5, 0);
 const force PUSHRIGHT(0.5, 3 * M_PI / 2);
 const force PUSHLEFT(0.5, 3 * M_PI / 2);
-// SDL_Plotter window(1000,1000);
+
 class Game{
 private:
-    SDL_Plotter g;
+	SDL_Plotter g{1000,1000};
 
     point ballPoint;
     point clickPos;
-    // point startLoc;
 
     int flagNum;
 
@@ -57,7 +56,6 @@ private:
 public:
     //constructor
     Game();
-    Game(SDL_Plotter& gw);
 
     //functions
     void run();
