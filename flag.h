@@ -4,7 +4,8 @@
 #include "SDL_Plotter.h"
 #include "force.h"
 
-const long flagWhite = 4294967295;
+const long flagEmpty = 4294967295;
+const long flagWhite = 16777215;
 const int flagBlack = 0;
 
 class Flag{

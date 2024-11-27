@@ -290,7 +290,7 @@ void Block::updateBlockColor() {
 		break;
 	}
 	case 0: {
-		blockColor = {0, 0, 0}; //black for testing
+        blockColor = {255, 255, 255}; //white
 		break;
 	}
 	default:
