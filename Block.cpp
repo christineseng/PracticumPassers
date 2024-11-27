@@ -189,10 +189,17 @@ void Block::createLevel(point startLoc)
     randLocThree = rand() % 281 + 679;
 
     color red = {255, 0, 0};
-    point loc1 = {randLocOne, startLoc.y - levelOffsetY};
-    point loc2 = {randLocTwo, startLoc.y - levelOffsetY};
-    point loc3 = {randLocThree, startLoc.y - levelOffsetY};
+    point loc1 = {randLocOne, startLoc.y + levelOffsetY};
+    point loc2 = {randLocTwo, startLoc.y + levelOffsetY};
+    point loc3 = {randLocThree, startLoc.y + levelOffsetY};
     vector<string> shapes(3);
+
+    // Push existing levels upward
+    for (int i = 0; i < allActiveShapes.size(); ++i) {
+        allActiveShapes[i].location.y -= 100;
+        //make sure hitboxes update
+        allActiveShapes[i].hb.setPoint(allActiveShapes[i].location);
+    }
 
     for (int i = 0; i < 3; ++i) {
         int state = rand() % 10;
@@ -205,7 +212,6 @@ void Block::createLevel(point startLoc)
         if (state == 3) shapes[i] = "Triangle";
 
     }
-
 
     allActiveShapes.emplace_back(loc1, shapes[0]); //emplace_back() is like push_back() but for pass by refrence
     allActiveShapes.emplace_back(loc2, shapes[1]);
@@ -245,7 +251,6 @@ void Block::nextLevel()
 {
     currentLevel++;
 }
-
 
 void Block::decreaseLife() {
 	if (life > 0) {
@@ -304,4 +309,3 @@ void Block::setAllActiveShapesLife (int l, int index) {
 	allActiveShapes.at(index).setLife(l);
 
 }
-
