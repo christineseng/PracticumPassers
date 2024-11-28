@@ -6,10 +6,20 @@
 #include "SDL_Plotter.h"
 
 //Constructors
-
-Block::Block(): location(), life(1), blockColor(), shape("") {}
+int Block::maxDifficulty = 3;
+int Block::minDifficulty = 1;
+Block::Block(): location(), life(1), blockColor(), shape("") {
+	updateBlockColor();
+}
 Block::Block(point loc, string s): location(loc), shape(s){
-	life = rand() % 8 + 1;
+	
+	life = rand() % (Block::maxDifficulty - Block::minDifficulty + 1) + Block::minDifficulty;
+	
+	if (life < Block::minDifficulty) {
+		life = Block::minDifficulty;
+	} else if (life > Block::maxDifficulty) {
+		life = Block::maxDifficulty;
+	}
 	updateBlockColor();
 
     hb.setPoint(loc);
@@ -181,19 +191,26 @@ void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bott
 
 void Block::createLevel(point startLoc)
 {
+	srand(time(0));
     //Data-Abstraction
     int size = 75;
     int randLocOne, randLocTwo, randLocThree;
-    //MIGHT NOT WORK LOL TODO
-    randLocOne = rand() % 125 + 200;
-    randLocTwo = rand() % 125 + 200;
-    randLocThree = rand() % 125 - 62;
+    randLocOne = rand() % 281 + 39;
+    randLocTwo = rand() % 281 + 359;
+    randLocThree = rand() % 281 + 679;
 
     color red = {255, 0, 0};
-    point loc1 = {startLoc.x + randLocThree, startLoc.y - levelOffsetY};
-    point loc2 = {startLoc.x - randLocOne, startLoc.y - levelOffsetY};
-    point loc3 = {startLoc.x + randLocTwo, startLoc.y - levelOffsetY};
+    point loc1 = {randLocOne, startLoc.y + levelOffsetY};
+    point loc2 = {randLocTwo, startLoc.y + levelOffsetY};
+    point loc3 = {randLocThree, startLoc.y + levelOffsetY};
     vector<string> shapes(3);
+
+    // Push existing levels upward
+    for (int i = 0; i < allActiveShapes.size(); ++i) {
+        allActiveShapes[i].location.y -= 100;
+        //make sure hitboxes update
+        allActiveShapes[i].hb.setPoint(allActiveShapes[i].location);
+    }
 
     for (int i = 0; i < 3; ++i) {
         int state = rand() % 10;
@@ -206,7 +223,6 @@ void Block::createLevel(point startLoc)
         if (state == 3) shapes[i] = "Triangle";
 
     }
-
 
     allActiveShapes.emplace_back(loc1, shapes[0]); //emplace_back() is like push_back() but for pass by refrence
     allActiveShapes.emplace_back(loc2, shapes[1]);
@@ -247,7 +263,6 @@ void Block::nextLevel()
     currentLevel++;
 }
 
-
 void Block::decreaseLife() {
 	if (life > 0) {
 		--life;
@@ -263,39 +278,41 @@ void Block::updateBlockColor() {
 		break;
 	}
 	case 7: {
-		blockColor = {255, 51, 153}; //hot red/pink
-		break;
-	}
-	case 6: {
 		blockColor = {255, 128, 0}; //orange
 		break;
 	}
+	case 6: {
+		blockColor = {255, 240, 70}; //yellow
+		break;
+	}
 	case 5: {
-		blockColor = {255, 230, 20}; //yellowish
+		blockColor = {102, 204, 0}; //Green
 		break;
 	}
 	case 4: {
-		blockColor = {51, 255, 51}; //green
+		blockColor = {51, 255, 51}; //lime green
 		break;
 	}
 	case 3: {
-		blockColor = {0, 255, 128}; //
+		blockColor = {102, 255, 178}; //turquois
 		break;
 	}
 	case 2: {
-		blockColor = {255, 255, 0};
+		blockColor = {102, 178, 255}; //sky blue
 		break;
 	}
 	case 1: {
-		blockColor = {102, 178, 255};
+		blockColor = {255, 102, 255}; //violet
 		break;
 	}
 	case 0: {
-		blockColor = {0, 0, 0}; //black for testing
+        blockColor = {255, 255, 255}; //white
 		break;
 	}
-	default:
+	default: {
+		blockColor = {0, 0, 0}; //black for debugging
 		break;
+	}
 
 	}
 
@@ -305,4 +322,3 @@ void Block::setAllActiveShapesLife (int l, int index) {
 	allActiveShapes.at(index).setLife(l);
 
 }
-
