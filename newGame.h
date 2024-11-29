@@ -55,6 +55,8 @@ private:
     Flag ballFlags;
 public:
     static int score;
+    static int maxDifficulty;
+    static int minDifficulty;
     //constructor
     Game();
 
