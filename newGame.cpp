@@ -1,4 +1,9 @@
 #include "newGame.h"
+
+int Game::score = 0;
+int Game::maxDifficulty = 3;
+int Game::minDifficulty = 1;
+
 Game::Game(){
     ballPoint = {500, 50};
     shooter.setBallLoc(ballPoint);
@@ -8,7 +13,7 @@ void Game::run(){
     while (!g.getQuit()){
         fpsTimer.start();
         g.clear();
-        
+
         shape.drawLevel(startLoc, g);
         shooter.drawBall(ballPoint, BALLSIZE, BLACKCOLOR, g);
 
@@ -121,6 +126,24 @@ void Game::ballFalling(){
                 cout << "square hit !!" << endl;
                 currentBlock.decreaseLife();
                 cout << "After: Block life: " << currentBlock.getLife() << endl;
+
+                ++Game::score;
+                cout << "Score: " << Game::score << endl;
+                if (Game::score % 5 == 0) {
+                	if (Game::maxDifficulty <= 7) {
+                		++Game::maxDifficulty;
+                	}
+                	if (Game::minDifficulty <= 5) {
+                		++Game::minDifficulty;
+                	}
+
+
+                	cout << "Max difficulty is now: " << Game::maxDifficulty << endl;
+                	cout << "Min difficulty is now: " << Game::minDifficulty << endl;
+                }
+
+                cout << endl;
+
             }
 
             if (flagNum == 0)
@@ -188,7 +211,7 @@ void Game::ballFalling(){
             }
         }
     }
-    
+
     // If frame finished early syncing with fps
     frameTicks = fpsTimer.getTicks();
     if (frameTicks < SCREEN_TICKS_PER_FRAME)
@@ -211,4 +234,6 @@ void Game::updateLevel(){
     shape.nextLevel();
     levelChanged = true;
     shape.drawLevel(startLoc, g);
+
 }
+
