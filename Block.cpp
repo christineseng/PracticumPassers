@@ -4,12 +4,22 @@
 
 #include "Block.h"
 #include "SDL_Plotter.h"
+#include "newGame.h"
 
 //Constructors
 
-Block::Block(): location(), life(1), blockColor(), shape("") {}
+Block::Block(): location(), life(1), blockColor(), shape("") {
+	updateBlockColor();
+}
 Block::Block(point loc, string s): location(loc), shape(s){
-	life = rand() % 8 + 1;
+
+	life = rand() % (Game::maxDifficulty - Game::minDifficulty + 1) + Game::minDifficulty;
+
+	if (life < Game::minDifficulty) {
+		life = Game::minDifficulty;
+	} else if (life > Game::maxDifficulty) {
+		life = Game::maxDifficulty;
+	}
 	updateBlockColor();
 
     hb.setPoint(loc);
@@ -181,6 +191,7 @@ void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bott
 
 void Block::createLevel(point startLoc)
 {
+	srand(time(0));
     //Data-Abstraction
     int size = 75;
     int randLocOne, randLocTwo, randLocThree;
@@ -189,9 +200,11 @@ void Block::createLevel(point startLoc)
     randLocThree = rand() % 281 + 679;
 
     color red = {255, 0, 0};
+
     point loc1 = {randLocOne, startLoc.y + levelOffsetY};
     point loc2 = {randLocTwo, startLoc.y + levelOffsetY};
     point loc3 = {randLocThree, startLoc.y + levelOffsetY};
+
     vector<string> shapes(3);
 
     // Push existing levels upward
@@ -267,39 +280,41 @@ void Block::updateBlockColor() {
 		break;
 	}
 	case 7: {
-		blockColor = {255, 51, 153}; //hot red/pink
-		break;
-	}
-	case 6: {
 		blockColor = {255, 128, 0}; //orange
 		break;
 	}
+	case 6: {
+		blockColor = {255, 240, 70}; //yellow
+		break;
+	}
 	case 5: {
-		blockColor = {255, 230, 20}; //yellowish
+		blockColor = {102, 204, 0}; //Green
 		break;
 	}
 	case 4: {
-		blockColor = {51, 255, 51}; //green
+		blockColor = {51, 255, 51}; //lime green
 		break;
 	}
 	case 3: {
-		blockColor = {0, 255, 128}; //
+		blockColor = {102, 255, 178}; //turquois
 		break;
 	}
 	case 2: {
-		blockColor = {255, 255, 0};
+		blockColor = {102, 178, 255}; //sky blue
 		break;
 	}
 	case 1: {
-		blockColor = {102, 178, 255};
+		blockColor = {255, 102, 255}; //violet
 		break;
 	}
 	case 0: {
         blockColor = {255, 255, 255}; //white
 		break;
 	}
-	default:
+	default: {
+		blockColor = {0, 0, 0}; //black for debugging
 		break;
+	}
 
 	}
 
