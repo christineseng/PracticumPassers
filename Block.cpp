@@ -200,9 +200,11 @@ void Block::createLevel(point startLoc)
     randLocThree = rand() % 281 + 679;
 
     color red = {255, 0, 0};
+
     point loc1 = {randLocOne, startLoc.y + levelOffsetY};
     point loc2 = {randLocTwo, startLoc.y + levelOffsetY};
     point loc3 = {randLocThree, startLoc.y + levelOffsetY};
+
     vector<string> shapes(3);
 
     // Push existing levels upward

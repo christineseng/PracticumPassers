@@ -171,6 +171,7 @@ public:
     // return: void
     // pre: valid loc, color, and window
     // post: circle drawn location changed to center of circle
+
     //************************************************************
     void drawCircle(point loc, int size, color c, SDL_Plotter &g);
 

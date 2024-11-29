@@ -57,6 +57,7 @@ public:
     static int score;
     static int maxDifficulty;
     static int minDifficulty;
+
     //constructor
     Game();
 
@@ -67,4 +68,6 @@ public:
     void updateLevel();
     bool bottomHit();
 };
+
 #endif
+
