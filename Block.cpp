@@ -4,21 +4,21 @@
 
 #include "Block.h"
 #include "SDL_Plotter.h"
+#include "newGame.h"
 
 //Constructors
-int Block::maxDifficulty = 3;
-int Block::minDifficulty = 1;
+
 Block::Block(): location(), life(1), blockColor(), shape("") {
 	updateBlockColor();
 }
 Block::Block(point loc, string s): location(loc), shape(s){
-	
-	life = rand() % (Block::maxDifficulty - Block::minDifficulty + 1) + Block::minDifficulty;
-	
-	if (life < Block::minDifficulty) {
-		life = Block::minDifficulty;
-	} else if (life > Block::maxDifficulty) {
-		life = Block::maxDifficulty;
+
+	life = rand() % (Game::maxDifficulty - Game::minDifficulty + 1) + Game::minDifficulty;
+
+	if (life < Game::minDifficulty) {
+		life = Game::minDifficulty;
+	} else if (life > Game::maxDifficulty) {
+		life = Game::maxDifficulty;
 	}
 	updateBlockColor();
 
