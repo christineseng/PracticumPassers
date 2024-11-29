@@ -1,5 +1,10 @@
 #include "newGame.h"
+
+
 int Game::score = 0;
+int Game::maxDifficulty = 3;
+int Game::minDifficulty = 1;
+
 Game::Game(){
     ballPoint = {500, 50};
     shooter.setBallLoc(ballPoint);
@@ -125,16 +130,16 @@ void Game::ballFalling(){
                 ++Game::score;
                 cout << "Score: " << Game::score << endl;
                 if (Game::score % 5 == 0) {
-                	if (Block::maxDifficulty <= 7) {
-                		++Block::maxDifficulty;
+                	if (Game::maxDifficulty <= 7) {
+                		++Game::maxDifficulty;
                 	}
-                	if (Block::minDifficulty <= 5) {
-                		++Block::minDifficulty;
+                	if (Game::minDifficulty <= 5) {
+                		++Game::minDifficulty;
                 	}
 
 
-                	cout << "Max difficulty is now: " << Block::maxDifficulty << endl;
-                	cout << "Min difficulty is now: " << Block::minDifficulty << endl;
+                	cout << "Max difficulty is now: " << Game::maxDifficulty << endl;
+                	cout << "Min difficulty is now: " << Game::minDifficulty << endl;
                 }
 
                 cout << endl;
