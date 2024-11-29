@@ -30,8 +30,7 @@ private:
 
 
 public:
-    static int maxDifficulty;
-    static int minDifficulty;
+
     //Constructors
     Block();
 
