@@ -35,6 +35,7 @@ private:
     int yDist;
     double xPos;
     double yPos;
+    //int score = 0;
 
     bool isFalling = false;
     bool hitDetected = false;

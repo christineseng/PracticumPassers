@@ -69,27 +69,61 @@ SDL_Plotter::SDL_Plotter(int r, int c, bool WITH_SOUND){
 
     currentKeyStates = SDL_GetKeyboardState( NULL );
 
+	if (TTF_Init() != 0) {
+        cout << "TTF_Init Error: " << TTF_GetError() << endl;
+        SDL_Quit();
+        return;
+    }
+	// load font
+	font = TTF_OpenFont("ARIAL.TTF", 20);
+
+    
+    
+
     //SOUND Thread Pool
     Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
     soundCount = 0;
-    update();
+    //update();
     
   }
 
 
 SDL_Plotter::~SDL_Plotter(){
+	// destroys text
+	SDL_DestroyTexture(textTexture);
+    TTF_CloseFont(font);
+
     delete[] pixels;
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+
+	TTF_Quit();
     SDL_Quit();
 
 }
 
-void SDL_Plotter::update(){
+string SDL_Plotter::updateText(int score){
+	stringstream ss;
+	ss << "Score: " << score;
+	return ss.str();
+}
+
+void SDL_Plotter::update(int score){
     SDL_UpdateTexture(texture, NULL, pixels, col * sizeof(Uint32));
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
+
+	// Create text surface and texture
+	SDL_Color textColor = {0, 0, 0};
+	string text = updateText(score);
+	textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	// renders text to screen
+    SDL_FreeSurface(textSurface);
+	SDL_Rect textRect = {10, 10, 50, 100};
+    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+
     SDL_RenderPresent(renderer);
 }
 

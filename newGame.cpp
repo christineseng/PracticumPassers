@@ -30,7 +30,7 @@ void Game::run(){
         //while in the game loop, update the screen
         g.Sleep(10);
         ++countedFrames;
-        g.update();
+        g.update(score);
     }
     g.setQuit(true);
     g.Sleep(500);
@@ -121,6 +121,9 @@ void Game::ballFalling(){
                 cout << "square hit !!" << endl;
                 currentBlock.decreaseLife();
                 cout << "After: Block life: " << currentBlock.getLife() << endl;
+                /*if (currentBlock.getLife() == 0){
+                    ++score;
+                }*/
             }
 
             if (flagNum == 0)

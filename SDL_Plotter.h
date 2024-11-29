@@ -26,12 +26,13 @@
 //OSX Library
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 //#include <SDL2/SDL_thread.h>
 
 //Windows Library
 //#include <SDL.h>
 //#include <SDL_mixer.h>
-
+#include <sstream>
 #include <string.h>
 #include <iostream>
 #include <string>
@@ -104,6 +105,10 @@ struct param{
 
 class SDL_Plotter{
 private:
+    TTF_Font *font;
+    SDL_Surface *textSurface;
+    SDL_Texture *textTexture;
+    
 	SDL_Texture  *texture;
 	SDL_Renderer *renderer;
 	SDL_Window   *window;
@@ -127,9 +132,11 @@ private:
     char getKeyPress(SDL_Event & event);
 
 public:
+    string updateText(int score);
+
     SDL_Plotter(int r=480, int c=640, bool WITH_SOUND = true);
     ~SDL_Plotter();
-    void update();
+    void update(int score);
 
     bool getQuit();
     void setQuit(bool flag);
