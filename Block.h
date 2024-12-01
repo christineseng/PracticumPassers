@@ -223,12 +223,6 @@ public:
     // post: currentLevel += 1
     //************************************************************
     void nextLevel();
-    //************************************************************
-    // description: increases current level by one
-    // return: void
-    // pre: currentLevel is initialized
-    // post: currentLevel += 1
-    //************************************************************
 
 };
 

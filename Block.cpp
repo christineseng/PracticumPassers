@@ -4,7 +4,7 @@
 
 #include "Block.h"
 #include "SDL_Plotter.h"
-#include "newGame.h"
+#include "game.h"
 
 //Constructors
 
