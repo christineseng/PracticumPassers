@@ -36,9 +36,12 @@ private:
     double xPos;
     double yPos;
 
+    //BALL
     bool isFalling = false;
     bool hitDetected = false;
     bool firstHit = false;
+    Ball shooter;
+    Flag ballFlags;
 
     //FRAMERATE
     Timer fpsTimer;
@@ -50,9 +53,6 @@ private:
     point startLoc = {500, 850};
     bool levelChanged = true;
 
-    //debug
-    Ball shooter;
-    Flag ballFlags;
 public:
     static int score;
     static int maxDifficulty;
