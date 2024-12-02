@@ -30,6 +30,7 @@ private:
 
 
 public:
+
     //Constructors
     Block();
 
@@ -51,7 +52,7 @@ public:
     //************************************************************
     // description: sets life to l
     // return: void
-    // pre: valid argument int l 
+    // pre: valid argument int l
     // post: life changed to int l
     //************************************************************
     void setLife(int l) {life = l;}
@@ -85,7 +86,7 @@ public:
 
     //************************************************************
     // description: returns life
-    // return: int 
+    // return: int
     // pre: life initialized
     // post: life remains unchanged
     //************************************************************
@@ -129,7 +130,7 @@ public:
     // description: gets allActiveShapes on screen
     // return: vector<Block>
     // pre: allActiveShapes initialized
-    // post: vector allActiveShapes returned 
+    // post: vector allActiveShapes returned
     //************************************************************
     vector<Block>& getAllActiveShapes() {
         return allActiveShapes;
@@ -159,7 +160,7 @@ public:
     // description: draws a triangle of color c on screen at point
     // return: void
     // pre: valid loc, color, and window
-    // post: triangle drawn location changed to center of triangle 
+    // post: triangle drawn location changed to center of triangle
     //************************************************************
     void drawTriangle(point centroid, int size, color c, SDL_Plotter& g);
 
@@ -169,7 +170,8 @@ public:
     // description: draws a circle of color c on screen at point
     // return: void
     // pre: valid loc, color, and window
-    // post: circle drawn location changed to center of circle 
+    // post: circle drawn location changed to center of circle
+
     //************************************************************
     void drawCircle(point loc, int size, color c, SDL_Plotter &g);
 
@@ -208,7 +210,7 @@ public:
     //************************************************************
     void createLevel(point startLoc);
     //************************************************************
-    // description: draws all shapes 
+    // description: draws all shapes
     // return: void
     // pre: startLoc is same point used to create levels
     // post: all shapes drawn onto the screen
@@ -221,12 +223,6 @@ public:
     // post: currentLevel += 1
     //************************************************************
     void nextLevel();
-    //************************************************************
-    // description: increases current level by one
-    // return: void
-    // pre: currentLevel is initialized
-    // post: currentLevel += 1
-    //************************************************************
 
 };
 

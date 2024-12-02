@@ -1,6 +1,7 @@
-#include "newGame.h"
+#include "game.h"
 
-int main(){
+
+int main(int argc, char* argv[]){
     Game gameObject;
     gameObject.run();
     return 0;

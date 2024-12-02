@@ -11,8 +11,28 @@ const int flagBlack = 0;
 class Flag{
     public:
         Flag();
+
+        //************************************************************
+        // description: sets the flags to be centered around the point passed
+        // return: void
+        // pre: x and y represent valid point on the screen
+        // post: flags centered around (newX, newY)
+        //************************************************************
         void update(int newX, int newY, force& newF);
+        //************************************************************
+        // description: sets the flags to be centered around the point passed
+        // return: void
+        // pre: x and y represent valid point on the screen
+        // post: flags centered around (newX, newY)
+        //************************************************************
         void update(int newX, int newY, int ballSize, force& newF);
+        //************************************************************
+        // description: returns an int depending on whether or not flags are 
+        // hit; -1 for no hit, 0-3 for sides, 4-7 for corners
+        // return: int
+        // pre: int x and y are initialized, represent valid point on screen
+        // post: flag remains unchanged
+        //************************************************************
         int isHit(SDL_Plotter& g);
 
     private:
@@ -29,9 +49,21 @@ class Flag{
         point bottomRight;
         point bottomLeft;
         point topLeft;
-        bool cornerIsHit(point p, SDL_Plotter& g);
-        bool pointIsHit(point p, int sideNum, SDL_Plotter& g);
-        bool rowIsHit(point pointArray[], int sideNum, SDL_Plotter& g);
+        
+        //************************************************************
+        // description: returns true if the given row is hit
+        // return: bool
+        // pre: 
+        // post: screen remains unchanged
+        //************************************************************
+        bool rowIsHit(point pointArray[], SDL_Plotter& g);
+        //************************************************************
+        // description: returns true/false depending on if point is hit
+        // return: bool
+        // pre: point represents valid point on screen
+        // post: screen remains unchanged
+        //************************************************************
+        bool pointIsHit(point p, SDL_Plotter& g);
 
 };
 #endif
