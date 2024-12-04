@@ -24,12 +24,13 @@ void Game::run(){
         if (g.mouseClick()){
             launchBall();
         }
-        if (isFalling)
+        else if (isFalling)
         {
             ballFalling();
         }
         if (bottomHit()){
             updateLevel();
+            isFalling = false;
         }
 
         //while in the game loop, update the screen
@@ -57,7 +58,6 @@ void Game::launchBall(){
     shooter.setMagnitude(13);
     shooter.setDirection(atan(static_cast<double>(xDist) / yDist));
 
-    // ballColor = BLACKCOLOR;
     isFalling = true;
     firstHit = false;
 }
