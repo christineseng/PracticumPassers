@@ -11,32 +11,44 @@ Game::Game(){
 
 void Game::run(){
     while (!g.getQuit()){
-        fpsTimer.start();
-        g.clear();
+    	Block endLine;
+    	point p1 = {0, 100};
+    	point p2 = {1000, 100};
+    	if (!gameOver) {
+			fpsTimer.start();
+			g.clear();
 
-        shape.drawLevel(startLoc, g);
-        shooter.drawBall(ballPoint, BALLSIZE, BLACKCOLOR, g);
+			shape.drawLevel(startLoc, g);
+			shooter.drawBall(ballPoint, BALLSIZE, BLACKCOLOR, g);
 
-        if (levelChanged){
-            shape.createLevel(startLoc);
-            levelChanged = false;
-        }
-        if (g.mouseClick()){
-            launchBall();
-        }
-        if (isFalling)
-        {
-            ballFalling();
-        }
-        if (bottomHit()){
-            updateLevel();
-        }
+			endLine.drawLine(p1, p2, BLACKCOLOR, g);
+			setGameOver();
 
-        //while in the game loop, update the screen
-        g.Sleep(10);
-        ++countedFrames;
-        g.update();
+			if (levelChanged){
+				shape.createLevel(startLoc);
+				levelChanged = false;
+			}
+			if (g.mouseClick() && !gameOver){
+				launchBall();
+			}
+			if (isFalling)
+			{
+				ballFalling();
+			}
+			if (bottomHit()){
+				updateLevel();
+			}
+
+			//while in the game loop, update the screen
+			g.Sleep(10);
+			++countedFrames;
+			g.update();
+    	}
+    	else {
+    		displayGameOverScreen();
+    	}
     }
+
     g.setQuit(true);
     g.Sleep(500);
 }
@@ -103,7 +115,9 @@ void Game::ballFalling(){
     }
     for (int i = 0; i < shape.getAllActiveShapes().size(); ++i)
     {
-        if (HitBox::isHit(shooter.getHitBox(), shape.getAllActiveShapes().at(i).getHitBox()))
+    	Block &currentBlock = shape.getAllActiveShapes().at(i);
+
+        if (HitBox::isHit(shooter.getHitBox(), currentBlock.getHitBox()))
         { // if hit box detected, then check if flags also detect hit in correct direction
             flagNum = ballFlags.isHit(g);
             if (flagNum != -1)
@@ -119,7 +133,7 @@ void Game::ballFalling(){
                     shooter.setMagnitude(0);
                     isFalling = false;
                 }
-                Block &currentBlock = shape.getAllActiveShapes().at(i); // FIXME should be in data abstraction but weird error if declared there
+
                 g.initSound("sounds/soundHit.wav");
                 g.playSound("sounds/soundHit.wav");
                 cout << "Before: Block life: " << currentBlock.getLife() << endl;
@@ -223,17 +237,36 @@ void Game::ballFalling(){
 
 
 void Game::updateLevel(){
+
     g.clear();
+
     cout << "POSITION RESET" << endl;
     // reset the ball position to the top
     ballPoint.x = 500;
     ballPoint.y = 50;
     isFalling = false;
     // redraw the ball and update/draw the new level
+
     shooter.drawBall(ballPoint, BALLSIZE, BLACKCOLOR, g);
     shape.nextLevel();
     levelChanged = true;
     shape.drawLevel(startLoc, g);
 
+}
+
+void Game::setGameOver() {
+	for (int i = 0; i < shape.getAllActiveShapes().size(); ++i) {
+		Block &currentBlock = shape.getAllActiveShapes().at(i);
+	    if (currentBlock.getLocation().y <= 100 && currentBlock.getLife() != 0) {
+	    	cout << "GAME OVER!!!!" << endl;
+	    	gameOver = true;
+	    	//exit(0);
+	    }
+	}
+}
+
+void Game::displayGameOverScreen() {
+	g.clear();
+	g.update();
 }
 
