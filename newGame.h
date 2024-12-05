@@ -12,10 +12,13 @@
 #include "Timer.h"
 #include <vector>
 
+
+
 const int SCREEN_FPS = 150;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 const color BLACKCOLOR = {0, 0, 0};
+const color WHITECOLOR = {255, 255, 255};
 const int BALLSIZE = 10;
 
 const force GRAVITY(0.5, 0);
@@ -39,6 +42,7 @@ private:
     bool isFalling = false;
     bool hitDetected = false;
     bool firstHit = false;
+    bool gameOver = false;
 
     //FRAMERATE
     Timer fpsTimer;
@@ -67,7 +71,8 @@ public:
     void ballFalling();
     void updateLevel();
     bool bottomHit();
+    void setGameOver();
+    void displayGameOverScreen();
 };
 
 #endif
-
