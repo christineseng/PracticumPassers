@@ -136,6 +136,12 @@ public:
 
     SDL_Plotter(int r=480, int c=640, bool WITH_SOUND = true);
     ~SDL_Plotter();
+    //************************************************************
+    // description: updates screen and displays text
+    // return: void
+    // pre: int score and window exists
+    // post: screen updates with new score and objects
+    //************************************************************
     void update(int score);
 
     bool getQuit();
