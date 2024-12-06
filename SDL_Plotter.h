@@ -24,10 +24,10 @@
 #define SDL_PLOTTER_H_
 
 //OSX Library
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-//#include <SDL2/SDL_thread.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <SDL_thread.h>
 
 //Windows Library
 //#include <SDL.h>
@@ -39,6 +39,7 @@
 #include <string.h>
 #include <map>
 #include <queue>
+#include <SDL_image.h>
 using namespace std;
 
 const char UP_ARROW    = 1;
@@ -105,10 +106,12 @@ struct param{
 
 class SDL_Plotter{
 private:
+	SDL_Texture* backgroundTexture;
+	std::string backgroundImagePath;//TODO
     TTF_Font *font;
     SDL_Surface *textSurface;
     SDL_Texture *textTexture;
-    
+
 	SDL_Texture  *texture;
 	SDL_Renderer *renderer;
 	SDL_Window   *window;
@@ -132,16 +135,11 @@ private:
     char getKeyPress(SDL_Event & event);
 
 public:
+
     string updateText(int score);
 
     SDL_Plotter(int r=480, int c=640, bool WITH_SOUND = true);
     ~SDL_Plotter();
-    //************************************************************
-    // description: updates screen and displays text
-    // return: void
-    // pre: int score and window exists
-    // post: screen updates with new score and objects
-    //************************************************************
     void update(int score);
 
     bool getQuit();
@@ -171,6 +169,8 @@ public:
     bool getMouseUp(int& x, int& y);
     bool getMouseMotion(int& x, int& y);
     void getMouseLocation(int& x, int& y);
+
+
 
     Uint32 getColor(int x, int y);
 
