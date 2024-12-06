@@ -3,7 +3,6 @@
 //
 
 #include "Block.h"
-#include "SDL_Plotter.h"
 #include "game.h"
 
 //Constructors
@@ -323,4 +322,17 @@ void Block::updateBlockColor() {
 void Block::setAllActiveShapesLife (int l, int index) {
 	allActiveShapes.at(index).setLife(l);
 
+}
+
+bool Block::gameOver()
+{
+	bool flag = false;
+	for(int i = 0; i < allActiveShapes.size(); ++i)
+	{
+		if(allActiveShapes[i].location.y < 0)
+		{
+			flag = true;
+		}
+	}
+	return flag;
 }
