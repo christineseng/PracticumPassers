@@ -58,7 +58,7 @@ private:
     Ball shooter;
     Flag ballFlags;
 public:
-    static int score;
+    int score = 0;
     static int maxDifficulty;
     static int minDifficulty;
 
