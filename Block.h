@@ -4,9 +4,10 @@
 
 #ifndef BLOCK_H
 #define BLOCK_H
+
 #include "SDL_Plotter.h"
 #include "HitBox.h"
-#include <cmath>
+
 
 class Block
 {
@@ -16,7 +17,6 @@ private:
     int life;
     color blockColor;
     string shape;
-
 
 
     //HitBoxes
@@ -223,6 +223,8 @@ public:
     // post: currentLevel += 1
     //************************************************************
     void nextLevel();
+
+    bool gameOver();
 
 };
 
