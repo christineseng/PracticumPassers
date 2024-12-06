@@ -3,7 +3,7 @@
 //
 
 #include "game.h"
-int Game::score = 0;
+#include "SDL_Plotter.h"
 int Game::maxDifficulty = 3;
 int Game::minDifficulty = 1;
 
@@ -135,7 +135,7 @@ void Game::drawStartScreen()
 
 bool Game::bottomHit()
 {
-    return ballPoint.y > 910;
+    return ballPoint.y > 930;
 }
 
 void Game::launchBall()
@@ -232,7 +232,10 @@ void Game::checkHits(int index)
         currentBlock.decreaseLife();
         cout << "After: Block life: " << currentBlock.getLife() << endl;
 
-        ++Game::score;
+        if (currentBlock.getLife() <= 0)
+        {
+            ++score;
+        }
         cout << "Score: " << Game::score << endl;
         if (Game::score % 5 == 0)
         {
