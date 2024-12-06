@@ -1,5 +1,5 @@
-#ifndef newgame_h
-#define newgame_h
+#ifndef game_h
+#define game_h
 
 #include <iostream>
 #include <cmath>
@@ -12,10 +12,13 @@
 #include "Timer.h"
 #include <vector>
 
+
+
 const int SCREEN_FPS = 150;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 const color BLACKCOLOR = {0, 0, 0};
+const color WHITECOLOR = {255, 255, 255};
 const int BALLSIZE = 10;
 
 const force GRAVITY(0.5, 0);
@@ -36,12 +39,10 @@ private:
     double xPos;
     double yPos;
 
-    //BALL
     bool isFalling = false;
     bool hitDetected = false;
     bool firstHit = false;
-    Ball shooter;
-    Flag ballFlags;
+    bool gameOver = false;
 
     //FRAMERATE
     Timer fpsTimer;
@@ -53,6 +54,9 @@ private:
     point startLoc = {500, 850};
     bool levelChanged = true;
 
+    //debug
+    Ball shooter;
+    Flag ballFlags;
 public:
     static int score;
     static int maxDifficulty;
@@ -61,52 +65,14 @@ public:
     //constructor
     Game();
 
-    // functions
-    //************************************************************
-    //  description: runs game 
-    //  return: void
-    //  pre: none
-    //  post: game run
-    //************************************************************
+    //functions
     void run();
-    //************************************************************
-    //  description: drop ball
-    //  return: void
-    //  pre: none
-    //  post: ball launched, isFalling set true
-    //************************************************************
     void launchBall();
-    //************************************************************
-    //  description: ball is falling/updating, checking for hits
-    //  return: void
-    //  pre: none
-    //  post: ball is falling
-    //************************************************************
     void ballFalling();
-    //************************************************************
-    //  description: check for ball hits, update direction and blocks if 
-    //  anything hit, int parameter represents index of Block in array to check
-    //  return: void
-    //  pre: none
-    //  post: if hit play sound, update direction, update score
-    //************************************************************
-    void checkHits(int);
-    //************************************************************
-    //  description: reset ball to top, draw the new level, draw all shapes in 
-    //  new positions
-    //  return: void
-    //  pre: none
-    //  post: update screen for next level
-    //************************************************************
     void updateLevel();
-    //************************************************************
-    //  description: check if ball hit botttom of screen
-    //  return: void
-    //  pre: ball location initialized
-    //  post: ball remains unchanged
-    //************************************************************
     bool bottomHit();
+    void setGameOver();
+    void displayGameOverScreen();
 };
 
 #endif
-
