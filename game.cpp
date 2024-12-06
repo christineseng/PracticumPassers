@@ -42,7 +42,7 @@ void Game::run(){
 			//while in the game loop, update the screen
 			g.Sleep(10);
 			++countedFrames;
-			g.update();
+			g.update(score);
     	}
     	else {
     		displayGameOverScreen();
@@ -267,5 +267,5 @@ void Game::setGameOver() {
 
 void Game::displayGameOverScreen() {
 	g.clear();
-	g.update();
+	g.update(score);
 }
