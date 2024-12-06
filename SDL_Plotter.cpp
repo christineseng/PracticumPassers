@@ -77,11 +77,14 @@ SDL_Plotter::SDL_Plotter(int r, int c, bool WITH_SOUND){
 	// load font
 	font = TTF_OpenFont("ARIAL.TTF", 30);
 
+
+
+
     //SOUND Thread Pool
     Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
     soundCount = 0;
     //update();
-    
+
   }
 
 
@@ -118,7 +121,7 @@ void SDL_Plotter::update(int score){
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 	// renders text to screen
     SDL_FreeSurface(textSurface);
-	SDL_Rect textRect = {5, 5, 150, 70};
+	SDL_Rect textRect = {10, 10, 150, 70};
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
 
     SDL_RenderPresent(renderer);
