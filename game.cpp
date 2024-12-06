@@ -1,6 +1,6 @@
 #include "game.h"
 
-int Game::score = 0;
+//int Game::score = 0;
 int Game::maxDifficulty = 3;
 int Game::minDifficulty = 1;
 
@@ -141,7 +141,9 @@ void Game::ballFalling(){
                 currentBlock.decreaseLife();
                 cout << "After: Block life: " << currentBlock.getLife() << endl;
 
-                ++Game::score;
+                if (currentBlock.getLife() <= 0){
+                    ++score;
+                }
                 cout << "Score: " << Game::score << endl;
                 if (Game::score % 5 == 0) {
                 	if (Game::maxDifficulty <= 7) {
