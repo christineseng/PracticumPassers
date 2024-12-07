@@ -1,6 +1,11 @@
-//
-// Created by Erick on 11/17/2024.
-//
+/*
+* Authors: Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas, Nolan Schirripa
+* Assignment Title:  Group Project (Timer.cpp)
+* Assignment Description: defines Timer class that can be used to set ticks and frame rate
+* Due Date: 12/09/2024
+* Date Created: 10/31/2024
+* Date Last Modified: 12/07/2024
+*/
 
 #include "Timer.h"
 
