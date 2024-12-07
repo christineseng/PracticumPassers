@@ -1,9 +1,12 @@
 /*
-* Ball.cpp
- *
- *  Created on: Nov 1, 2024
- *      Author: nolanschirripa
- */
+* Author: Nolan Schirripa, Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas
+* Assignment Title:  Group Project (Ball.h)
+* Assignment Description: declares ball class that can bounce off blocks and walls
+* Due Date: 12/09/2024
+* Date Created: 10/25/2024
+* Date Last Modified: 12/07/2024
+*/
+
 
 #include "Ball.h"
 
