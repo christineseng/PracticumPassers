@@ -167,28 +167,6 @@ void Block::drawCircle(point loc, int size, color c, SDL_Plotter& win)
     }
 }
 
-void Block::drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter& g)
-{
-    int sideLength;
-    int height;
-    int offset; //distance from center to edges
-    point start;
-    point end;
-
-    sideLength = distance(leftVertex, rightVertex);
-    height = (sqrt(3.0) / 2.0) * sideLength;
-
-    for (int y = 0; y <= height; ++y)
-    {
-        offset = ((height - y) / static_cast<double>(height)) * (sideLength / 2.0);
-        start.x = bottomVertex.x - offset;
-        start.y = bottomVertex.y + y;
-        end.x = bottomVertex.x + offset;
-        end.y = bottomVertex.y + y;
-        drawLine(start, end, c, g);
-    }
-}
-
 void Block::createLevel(point startLoc)
 {
 	srand(time(0));

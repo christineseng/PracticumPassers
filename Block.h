@@ -164,8 +164,6 @@ public:
     //************************************************************
     void drawTriangle(point centroid, int size, color c, SDL_Plotter& g);
 
-    void drawMirroredTriangle(point leftVertex, point rightVertex, point bottomVertex, color c, SDL_Plotter &g);
-
     //************************************************************
     // description: draws a circle of color c on screen at point
     // return: void
