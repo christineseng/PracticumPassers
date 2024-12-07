@@ -1,6 +1,11 @@
-//
-// Created by User on 12/6/2024.
-//
+/*
+* Author: Nolan Schirripa, Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas
+* Assignment Title:  Group Project (game.h)
+* Assignment Description: declares game class to run and update game
+* Due Date: 12/09/2024
+* Date Created: 12/6/2024
+* Date Last Modified: 12/07/2024
+*/
 
 #ifndef GAME_H
 #define GAME_H
