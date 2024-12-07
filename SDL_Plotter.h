@@ -135,6 +135,7 @@ private:
     char getKeyPress(SDL_Event & event);
 
 public:
+	SDL_Renderer* getRenderer() { return renderer; }
 
     string updateText(int score);
 
