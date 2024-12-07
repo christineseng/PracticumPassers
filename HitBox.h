@@ -1,3 +1,12 @@
+/*
+* Authors: Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas, Nolan Schirripa
+* Assignment Title:  Group Project (HitBox.h)
+* Assignment Description: declares HitBox class that makes an invisible box around a block and detects collisions
+* Due Date: 12/09/2024
+* Date Created: 10/25/2024
+* Date Last Modified: 12/07/2024
+*/
+
 #ifndef hitbox_h
 #define hitbox_h
 
