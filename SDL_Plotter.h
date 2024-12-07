@@ -136,11 +136,22 @@ private:
 
 public:
 	SDL_Renderer* getRenderer() { return renderer; }
-
+    //************************************************************
+    // description: updates the string used to display score
+    // return: string
+    // pre: int score exists
+    // post: returns string with new score
+    //************************************************************
     string updateText(int score);
 
     SDL_Plotter(int r=480, int c=640, bool WITH_SOUND = true);
     ~SDL_Plotter();
+    //************************************************************
+    // description: updates screen and displays text
+    // return: void
+    // pre: int score and window exists
+    // post: screen updates with new score and objects
+    //************************************************************
     void update(int score);
 
     bool getQuit();
