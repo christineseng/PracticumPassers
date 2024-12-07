@@ -75,7 +75,7 @@ SDL_Plotter::SDL_Plotter(int r, int c, bool WITH_SOUND){
         return;
     }
 	// load font
-	font = TTF_OpenFont("ARIAL.TTF", 30);
+	font = TTF_OpenFont("assets/ARIAL.TTF", 30);
 
 
 
@@ -98,6 +98,7 @@ SDL_Plotter::~SDL_Plotter(){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
+	IMG_Quit();
 	TTF_Quit();
     SDL_Quit();
 
