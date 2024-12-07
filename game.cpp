@@ -4,6 +4,7 @@
 
 #include "game.h"
 #include "SDL_Plotter.h"
+#include <SDL_image.h>
 int Game::maxDifficulty = 3;
 int Game::minDifficulty = 1;
 
@@ -11,6 +12,18 @@ Game::Game()
 {
     ballPoint = {500, 50};
     shooter.setBallLoc(ballPoint);
+
+    //Initialize SDL_Image
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        cerr << "SDL_image could not initialize! SDL_image Error: "
+                  << IMG_GetError() << endl;
+    }
+}
+
+Game::~Game()
+{
+    // Existing cleanup
+    IMG_Quit();
 }
 
 void Game::run()
@@ -81,6 +94,7 @@ void Game::run()
 
                 isFalling = false;
             }
+            g.update(score);
             break;
 
         case GAME_OVER:
@@ -102,7 +116,7 @@ void Game::run()
         }
 
         // Update score on screen
-        g.update(score);
+        /*g.update(score);*/
 
         // FPS control
         g.Sleep(10);
@@ -123,14 +137,80 @@ bool Game::checkGameOver() {
     return getGameOver();
 }
 
-void Game::drawEndScreen()
-{
-    shape.drawCircle(startLoc,50,{0,255,0}, g);
-}
-
 void Game::drawStartScreen()
 {
-    shape.drawTriangle(startLoc, 50, {255,0,0}, g);
+    // Clear the renderer first
+    SDL_RenderClear(g.getRenderer());
+
+    // Load the start screen image
+    SDL_Surface* startScreenSurface = IMG_Load("assets/backround.png");
+    if (!startScreenSurface) {
+        std::cerr << "Unable to load start screen image! SDL_image Error: "
+                  << IMG_GetError() << std::endl;
+        SDL_RenderPresent(g.getRenderer());
+        exit(1);
+    }
+
+    // Convert surface to texture
+    SDL_Texture* startScreenTexture = SDL_CreateTextureFromSurface(g.getRenderer(), startScreenSurface);
+    if (!startScreenTexture) {
+        std::cerr << "Unable to create texture from start screen surface! SDL Error: "
+                  << SDL_GetError() << std::endl;
+        SDL_RenderPresent(g.getRenderer());
+        SDL_FreeSurface(startScreenSurface);
+        exit(1);
+    }
+
+    // Render the entire texture
+    SDL_RenderCopy(g.getRenderer(), startScreenTexture, NULL, NULL);
+
+    // Present the renderer
+    SDL_RenderPresent(g.getRenderer());
+
+    // Clean up
+    SDL_FreeSurface(startScreenSurface);
+    SDL_DestroyTexture(startScreenTexture);
+}
+
+void Game::drawEndScreen()
+{
+    // Clear the renderer first
+    SDL_RenderClear(g.getRenderer());
+
+    // Load the end screen image
+    SDL_Surface* endScreenSurface = IMG_Load("assets/backround.png");
+    if (!endScreenSurface) {
+        std::cerr << "Unable to load end screen image! SDL_image Error: "
+                  << IMG_GetError() << std::endl;
+
+        // Fallback to the original circle drawing if image fails to load
+        shape.drawCircle(startLoc, 50, {0,255,0}, g);
+        SDL_RenderPresent(g.getRenderer());
+        return;
+    }
+
+    // Convert surface to texture
+    SDL_Texture* endScreenTexture = SDL_CreateTextureFromSurface(g.getRenderer(), endScreenSurface);
+    if (!endScreenTexture) {
+        std::cerr << "Unable to create texture from end screen surface! SDL Error: "
+                  << SDL_GetError() << std::endl;
+
+        // Fallback to the original circle drawing if texture creation fails
+        shape.drawCircle(startLoc, 50, {0,255,0}, g);
+        SDL_RenderPresent(g.getRenderer());
+        SDL_FreeSurface(endScreenSurface);
+        return;
+    }
+
+    // Render the entire texture
+    SDL_RenderCopy(g.getRenderer(), endScreenTexture, NULL, NULL);
+
+    // Present the renderer
+    SDL_RenderPresent(g.getRenderer());
+
+    // Clean up
+    SDL_FreeSurface(endScreenSurface);
+    SDL_DestroyTexture(endScreenTexture);
 }
 
 bool Game::bottomHit()
@@ -225,8 +305,8 @@ void Game::checkHits(int index)
         }
         Block& currentBlock = shape.getAllActiveShapes().at(index);
         // FIXME should be in data abstraction but weird error if declared there
-        g.initSound("sounds/soundHit.wav");
-        g.playSound("sounds/soundHit.wav");
+        g.initSound("assets/soundHit.wav");
+        g.playSound("assets/soundHit.wav");
         cout << "Before: Block life: " << currentBlock.getLife() << endl;
         cout << "square hit !!" << endl;
         currentBlock.decreaseLife();
