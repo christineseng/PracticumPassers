@@ -1,6 +1,11 @@
-//
-// Created by User on 11/13/2024.
-//
+/*
+* Authors: Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas, Nolan Schirripa
+* Assignment Title:  Group Project (Block.h)
+* Assignment Description: declares block class that can be hit for score and change color when hit
+* Due Date: 12/09/2024
+* Date Created: 10/25/2024
+* Date Last Modified: 12/07/2024
+*/
 
 #ifndef BLOCK_H
 #define BLOCK_H
