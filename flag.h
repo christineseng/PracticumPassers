@@ -1,3 +1,11 @@
+/*
+* Author: Nolan Schirripa, Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas
+* Assignment Title:  Group Project (flag.h)
+* Assignment Description: declares flag class that can detect if ball has hit something
+* Due Date: 12/09/2024
+* Date Created: 10/25/2024
+* Date Last Modified: 12/07/2024
+*/
 #ifndef flag_h
 #define flag_h
 
