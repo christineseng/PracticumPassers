@@ -1,3 +1,11 @@
+/*
+* Author: Nolan Schirripa, Christine Seng, Erick Martinez, Georgia Rushing, Graham Balas
+* Assignment Title:  Group Project (flag.cpp)
+* Assignment Description: defines flag class that can detect if ball has hit something
+* Due Date: 12/09/2024
+* Date Created: 10/25/2024
+* Date Last Modified: 12/07/2024
+*/
 #include "flag.h"
 
 Flag::Flag(){
