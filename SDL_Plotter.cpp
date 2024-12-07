@@ -75,13 +75,16 @@ SDL_Plotter::SDL_Plotter(int r, int c, bool WITH_SOUND){
         return;
     }
 	// load font
-	font = TTF_OpenFont("ARIAL.TTF", 30);
+	font = TTF_OpenFont("assets/ARIAL.TTF", 30);
+
+
+
 
     //SOUND Thread Pool
     Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
     soundCount = 0;
     //update();
-    
+
   }
 
 
@@ -95,6 +98,7 @@ SDL_Plotter::~SDL_Plotter(){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
+	IMG_Quit();
 	TTF_Quit();
     SDL_Quit();
 
@@ -118,7 +122,7 @@ void SDL_Plotter::update(int score){
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 	// renders text to screen
     SDL_FreeSurface(textSurface);
-	SDL_Rect textRect = {5, 5, 150, 70};
+	SDL_Rect textRect = {10, 10, 150, 70};
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
 
     SDL_RenderPresent(renderer);
