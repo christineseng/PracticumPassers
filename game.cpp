@@ -65,6 +65,7 @@ void Game::run()
             break;
 
         case PLAYING:
+            g.initSound("assets/soundHit.wav");
             // Existing game loop logic
             shape.drawLevel(startLoc, g);
             shooter.drawBall(ballPoint, BALLSIZE, BLACKCOLOR, g);
@@ -134,7 +135,6 @@ bool Game::checkGameOver() {
     for (int i = 0; i < shape.getAllActiveShapes().size(); ++i) {
         Block &currentBlock = shape.getAllActiveShapes().at(i);
         if (currentBlock.getLocation().y <= 150 && currentBlock.getLife() != 0) {
-            cout << "GAME OVER!!!!" << endl;
             setGameOver(true);
         }
     }
@@ -308,19 +308,13 @@ void Game::checkHits(int index)
             isFalling = false;
         }
         Block& currentBlock = shape.getAllActiveShapes().at(index);
-        // FIXME should be in data abstraction but weird error if declared there
-        g.initSound("assets/soundHit.wav");
         g.playSound("assets/soundHit.wav");
-        cout << "Before: Block life: " << currentBlock.getLife() << endl;
-        cout << "square hit !!" << endl;
         currentBlock.decreaseLife();
-        cout << "After: Block life: " << currentBlock.getLife() << endl;
 
         if (currentBlock.getLife() <= 0)
         {
             ++score;
         }
-        cout << "Score: " << Game::score << endl;
         if (Game::score % 5 == 0)
         {
             if (Game::maxDifficulty <= 7)
@@ -331,25 +325,17 @@ void Game::checkHits(int index)
             {
                 ++Game::minDifficulty;
             }
-
-            cout << "Max difficulty is now: " << Game::maxDifficulty << endl;
-            cout << "Min difficulty is now: " << Game::minDifficulty << endl;
         }
-
-        cout << endl;
     }
 
     if (flagNum == 0)
     {
         // top hit
-        cout << "top flag initial: " << shooter.getDirection() << endl;
         shooter.setDirection(M_PI - shooter.getDirection());
-        cout << "top flag new: " << shooter.getDirection() << endl;
     }
     else if (flagNum == 2)
     {
         // bottom hit
-        cout << "bottom flag: " << shooter.getDirection() << endl;
         shooter.setDirection(3 * M_PI - shooter.getDirection());
         // if direction is close to straight up/down, set it to the closest PI/8 value so that it doesn't get stuck bouncing up/down
         if (shooter.getDirection() >= 7.0 * M_PI / 8.0 && shooter.getDirection() <= M_PI)
@@ -360,56 +346,47 @@ void Game::checkHits(int index)
         {
             shooter.setDirection(9.0 * M_PI / 8.0);
         }
-        cout << "bottom flag new: " << shooter.getDirection() << endl;
     }
 
     else if (flagNum == 1)
     {
         // right hit
-        cout << "right flag: " << shooter.getDirection() << endl;
         shooter.setDirection(0 - shooter.getDirection());
         if ((shooter.getDirection() > 15.0 / 16.0 * M_PI && shooter.getDirection() < 17.0 / 16.0 * M_PI) || (shooter.
             getDirection() > 31.0 / 16.0 * M_PI) || shooter.getDirection() < 1.0 / 16.0 * M_PI)
         {
             shooter.apply(PUSHLEFT);
         }
-        cout << "right flag new: " << shooter.getDirection() << endl;
     }
     else if (flagNum == 3)
     {
         // left hit
-        cout << "left flag: " << shooter.getDirection() << endl;
         shooter.setDirection(0 - shooter.getDirection());
         if ((shooter.getDirection() > 15.0 / 16.0 * M_PI && shooter.getDirection() < 17.0 / 16.0 * M_PI) || shooter.
             getDirection() > 31.0 / 16.0 || shooter.getDirection() < 1 / 16.0 * M_PI)
         {
             shooter.apply(PUSHRIGHT);
         }
-        cout << "left flag new: " << shooter.getDirection() << endl;
     }
 
     else if (flagNum == 4)
     {
         // top right corner hit
-        cout << "TOP RIGHT CORNER" << endl;
         shooter.setDirection(shooter.getDirection() - M_PI);
     }
     else if (flagNum == 5)
     {
         // bottom right corner hit
-        cout << "BOTTOM RIGHT CORNER" << endl;
         shooter.setDirection(M_PI + shooter.getDirection());
     }
     else if (flagNum == 6)
     {
         // bottom left corner hit
-        cout << "BOTTOM LEFT CORNER" << endl;
         shooter.setDirection(M_PI + shooter.getDirection());
     }
     else if (flagNum == 7)
     {
         // top left corner hit
-        cout << "TOP LEFT CORNER" << endl;
         shooter.setDirection(shooter.getDirection() - M_PI);
     }
 }
@@ -417,7 +394,6 @@ void Game::checkHits(int index)
 void Game::updateLevel()
 {
     g.clear();
-    cout << "POSITION RESET" << endl;
     // reset the ball position to the top
     ballPoint.x = 500;
     ballPoint.y = 50;

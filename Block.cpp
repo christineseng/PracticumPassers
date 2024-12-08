@@ -273,7 +273,6 @@ void Block::nextLevel()
 void Block::decreaseLife() {
 	if (life > 0) {
 		--life;
-		cout << "Life decreased to: " << life << endl;
 		updateBlockColor();
 	}
 }

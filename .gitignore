@@ -1,8 +1,0 @@
-#ignore all executables
-*.exe
-.idea
-*.txt
-*.wav
-CMakeLists.txt
-cmake-build-debug/
-cmake_modules/
