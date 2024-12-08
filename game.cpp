@@ -9,7 +9,6 @@
 
 #include "game.h"
 #include "SDL_Plotter.h"
-#include <SDL_image.h>
 int Game::maxDifficulty = 3;
 int Game::minDifficulty = 1;
 
@@ -148,7 +147,7 @@ void Game::drawStartScreen()
     SDL_RenderClear(g.getRenderer());
 
     // Load the start screen image
-    SDL_Surface* startScreenSurface = IMG_Load("assets/backround.png");
+    SDL_Surface* startScreenSurface = IMG_Load("assets/startScreen.png");
     if (!startScreenSurface) {
         std::cerr << "Unable to load start screen image! SDL_image Error: "
                   << IMG_GetError() << std::endl;
@@ -183,7 +182,7 @@ void Game::drawEndScreen()
     SDL_RenderClear(g.getRenderer());
 
     // Load the end screen image
-    SDL_Surface* endScreenSurface = IMG_Load("assets/backround.png");
+    SDL_Surface* endScreenSurface = IMG_Load("assets/endScreen.png");
     if (!endScreenSurface) {
         std::cerr << "Unable to load end screen image! SDL_image Error: "
                   << IMG_GetError() << std::endl;

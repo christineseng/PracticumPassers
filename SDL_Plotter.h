@@ -24,10 +24,10 @@
 #define SDL_PLOTTER_H_
 
 //OSX Library
-#include <SDL.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-#include <SDL_thread.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_thread.h>
 
 //Windows Library
 //#include <SDL.h>
@@ -39,7 +39,7 @@
 #include <string.h>
 #include <map>
 #include <queue>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 using namespace std;
 
 const char UP_ARROW    = 1;
